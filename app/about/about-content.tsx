@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -533,6 +533,13 @@ function BadgesPanel() {
 
 export function AboutContent() {
   const [tab, setTab] = useState<"about" | "mentors" | "badges">("about");
+
+  // The panels are tab state, not routed sections, so a deep link has to
+  // select the tab rather than scroll to an anchor.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (window.location.hash === "#badges") setTab("badges");
+  }, []);
 
   return (
     <PageTransition>
