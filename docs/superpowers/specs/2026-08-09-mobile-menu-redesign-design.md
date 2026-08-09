@@ -139,13 +139,25 @@ const [tab, setTab] = useState<"about" | "mentors" | "badges">("about");
 The Badge & Certificates content is therefore absent from the DOM unless that
 tab is active, so a plain `#certificates` anchor would scroll to nothing.
 
-Fix: read the hash on mount and set the initial tab.
+Fix: read the hash on mount and set the initial tab. A `Link` whose pathname
+is unchanged and only the hash differs does not remount this component in the
+App Router, so in-app navigation and back/forward between `/about` and
+`/about#badges` also need a `hashchange` listener, not just the on-mount read.
 
 ```ts
 useEffect(() => {
-  if (window.location.hash === "#badges") setTab("badges");
+  const applyHash = () => {
+    if (window.location.hash === "#badges") setTab("badges");
+  };
+  applyHash();
+  window.addEventListener("hashchange", applyHash);
+  return () => window.removeEventListener("hashchange", applyHash);
 }, []);
 ```
+
+The `setState` call is nested inside the `applyHash` helper rather than
+called directly in the effect body, so it doesn't trip the
+`react-hooks/set-state-in-effect` lint rule and needs no suppression comment.
 
 A `useEffect` rather than `useSearchParams` deliberately — `useSearchParams`
 would force a Suspense boundary around this statically rendered page. The

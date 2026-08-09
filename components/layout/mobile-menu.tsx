@@ -129,46 +129,52 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </div>
 
             {/* Groups, scrollable so the footer stays reachable */}
-            <nav className="flex-1 overflow-y-auto px-4 pt-4 pb-2">
-              {navGroups.map((group) => (
-                <div key={group.heading} className="mb-6 last:mb-2">
-                  <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                    {group.heading}
-                  </p>
+            <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-4 pt-4 pb-2">
+              {navGroups.map((group) => {
+                const headingId = `mobile-nav-${group.heading.toLowerCase().replace(/\s+/g, "-")}`;
 
-                  <div className="flex flex-col gap-1">
-                    {group.items.map((item) => {
-                      // Hash links share a pathname with their parent page, so
-                      // matching on pathname alone would light up two rows.
-                      const active = !item.href.includes("#") && pathname === item.href;
-                      const Icon = item.icon;
+                return (
+                  <div key={group.heading} className="mb-6 last:mb-2">
+                    <h2 id={headingId} className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/55">
+                      {group.heading}
+                    </h2>
 
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={onClose}
-                          className={`flex items-center gap-3 rounded-lg border-l-2 px-3 py-2.5 text-[15px] font-semibold transition-colors ${
-                            active
-                              ? "border-yellow bg-white/[0.07] text-white"
-                              : "border-transparent text-white/70 hover:bg-white/[0.05] hover:text-white"
-                          }`}
-                        >
-                          <Icon
-                            className={`h-[18px] w-[18px] shrink-0 ${active ? "text-yellow" : "text-white/40"}`}
-                          />
-                          <span className="flex-1">{item.label}</span>
-                          {item.badge && (
-                            <span className="rounded-full bg-yellow px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-black">
-                              {item.badge}
-                            </span>
-                          )}
-                        </Link>
-                      );
-                    })}
+                    <ul aria-labelledby={headingId} className="flex list-none flex-col gap-1">
+                      {group.items.map((item) => {
+                        // Hash links share a pathname with their parent page, so
+                        // matching on pathname alone would light up two rows.
+                        const active = !item.href.includes("#") && pathname === item.href;
+                        const Icon = item.icon;
+
+                        return (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={onClose}
+                              aria-current={active ? "page" : undefined}
+                              className={`flex items-center gap-3 rounded-lg border-l-2 px-3 py-2.5 text-[15px] font-semibold transition-colors ${
+                                active
+                                  ? "border-yellow bg-white/[0.07] text-white"
+                                  : "border-transparent text-white/70 hover:bg-white/[0.05] hover:text-white"
+                              }`}
+                            >
+                              <Icon
+                                className={`h-[18px] w-[18px] shrink-0 ${active ? "text-yellow" : "text-white/40"}`}
+                              />
+                              <span className="flex-1">{item.label}</span>
+                              {item.badge && (
+                                <span className="rounded-full bg-yellow px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-black">
+                                  {item.badge}
+                                </span>
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </nav>
 
             {/* Footer, pinned below the scroll area */}
@@ -189,7 +195,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 className="flex items-center gap-3 border-t border-white/[0.06] px-4 py-3.5 transition-colors hover:bg-white/[0.04]"
               >
                 <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/[0.12]">
-                  <Image src="/aj-profile.webp" alt="AJ Bactad" fill className="object-cover" />
+                  <Image src="/aj-profile.webp" alt="" fill sizes="40px" className="object-cover" />
                 </span>
                 <span className="min-w-0 flex-1 leading-tight">
                   <span className="block truncate text-[13px] font-bold text-white">AJ Bactad</span>

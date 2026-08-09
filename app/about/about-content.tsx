@@ -535,10 +535,16 @@ export function AboutContent() {
   const [tab, setTab] = useState<"about" | "mentors" | "badges">("about");
 
   // The panels are tab state, not routed sections, so a deep link has to
-  // select the tab rather than scroll to an anchor.
+  // select the tab rather than scroll to an anchor. A Link whose pathname is
+  // unchanged and only the hash differs doesn't remount this component, so we
+  // also have to listen for hashchange to catch in-app navigation and back/forward.
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (window.location.hash === "#badges") setTab("badges");
+    const applyHash = () => {
+      if (window.location.hash === "#badges") setTab("badges");
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
   }, []);
 
   return (

@@ -41,7 +41,7 @@ Other pages: /about /services /packages /system-builds /projects /portfolio /men
 The Funnel Section Builder was extracted out of this portfolio into its own
 full-stack app (repo `funnel-section-builder`, deployed at
 funnel-section-builder.vercel.app; Next.js + Supabase auth/DB). The portfolio
-only links to it now (nav "Real Apps" + /tools cards). There is no `/tools/private`
+only links to it now (nav "MVP" + /tools cards). There is no `/tools/private`
 route or `public/private/` here anymore.
 
 ## Deploy
