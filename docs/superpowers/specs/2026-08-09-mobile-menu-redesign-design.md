@@ -163,10 +163,25 @@ Both must change together — the map's value is compared against the dropdown
 label to decide the active state, so changing one alone silently breaks
 highlighting.
 
+In `components/layout/navbar.tsx`, the dropdown's first item also changes:
+
+- `"All Real Apps"` → `"All MVPs"`
+
+The page copy adopts MVP as well, in `app/real-apps/`:
+
+| Location | From | To |
+|---|---|---|
+| `page.tsx` metadata title | `Real Apps` | `MVP` |
+| `real-apps-content.tsx` kicker | `Real Apps, Not Demos` | `MVPs, Not Demos` |
+| `real-apps-content.tsx` section h2 | `Live Apps` | `Live MVPs` |
+
+The H1, `Products I Built, Shipped, And Actually Run.`, is unchanged. It
+never said "Real Apps", so nothing there needs renaming.
+
 The route stays `/real-apps`. It was pushed to production on 2026-08-08;
 renaming it would 404 any existing link and require a redirect for no user
-benefit. Page content, headings, and the `/tools` cards keep their current
-wording.
+benefit. The `/tools` page's Build & Learn Hub cards are a separate section
+and keep their current wording.
 
 ## 7. Verification
 
