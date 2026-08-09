@@ -32,9 +32,9 @@ const solutionsDropdown: NavDropdown = {
 };
 
 const workDropdown: NavDropdown = {
-  label: "Real Apps",
+  label: "MVP",
   items: [
-    { label: "All Real Apps", emoji: "\u{1F5C2}", href: "/real-apps", description: "Every app I've shipped" },
+    { label: "All MVPs", emoji: "\u{1F5C2}", href: "/real-apps", description: "Every app I've shipped" },
     { label: "Funnel Builder", emoji: "\u{1F9E9}", href: "https://funnel-section-builder.vercel.app/", description: "Full-stack AI funnel prompt builder (live app)" },
     { label: "AI Learning Hub", emoji: "\u{1F393}", href: "https://ai-specialist-learning-hub.vercel.app/", description: "My AI-specialist learning hub" },
   ],
@@ -61,7 +61,7 @@ const routeToActiveNav: Record<string, string> = {
   "/projects": "Gallery",
   "/packages": "Gallery",
   "/services": "Gallery",
-  "/real-apps": "Real Apps",
+  "/real-apps": "MVP",
   "/tools": "Tools",
   "/tools/ghl-audit": "Tools",
   "/tools/revenue-audit": "Tools",

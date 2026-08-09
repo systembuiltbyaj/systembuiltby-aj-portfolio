@@ -43,7 +43,7 @@ export function RealAppsContent() {
         <div className="mx-auto max-w-4xl">
           <div className="mb-10 text-center">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-white/40">
-              Real Apps, Not Demos
+              MVPs, Not Demos
             </p>
             <h1 className="text-4xl font-black leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
               Products I Built, Shipped, And{" "}
@@ -94,7 +94,7 @@ export function RealAppsContent() {
                 Section 01
               </p>
               <h2 className="mb-2 text-2xl font-bold leading-tight text-white md:text-4xl">
-                Live <span className="text-yellow">Apps</span>
+                Live <span className="text-yellow">MVPs</span>
               </h2>
               <p className="max-w-xl text-[14px] leading-relaxed text-white/55 md:text-base">
                 Full products I designed, built, and deployed end to end.
