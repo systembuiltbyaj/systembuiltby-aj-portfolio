@@ -35,8 +35,9 @@ const workDropdown: NavDropdown = {
   label: "MVP",
   items: [
     { label: "All MVPs", emoji: "\u{1F5C2}", href: "/real-apps", description: "Every app I've shipped" },
-    { label: "Funnel Builder", emoji: "\u{1F9E9}", href: "https://funnel-section-builder.vercel.app/", description: "Full-stack AI funnel prompt builder (live app)" },
     { label: "AI Learning Hub", emoji: "\u{1F393}", href: "https://ai-specialist-learning-hub.vercel.app/", description: "My AI-specialist learning hub" },
+    { label: "Onboarding Client Hub", emoji: "\u{1F4CB}", href: "https://onboarding-client-hub.vercel.app/login", description: "Client portal for project onboarding (invite only)" },
+    { label: "Funnel Builder", emoji: "\u{1F9E9}", href: "https://funnel-section-builder.vercel.app/", description: "Full-stack AI funnel prompt builder (live app)" },
   ],
   dividerAfter: 0,
 };
