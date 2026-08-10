@@ -54,7 +54,7 @@ export function RealAppsContent() {
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/60">
               Not automations or templates, full apps with auth, databases, and
-              real users. Sign up, click around, and see how they work.
+              real users. Click through and see how they actually work.
             </p>
           </div>
 
