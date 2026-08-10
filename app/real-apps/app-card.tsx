@@ -25,11 +25,17 @@ const cardCls =
 export function AppCard({ app }: { app: App }) {
   return (
     <StaggerItem>
-      <a href={app.href} target="_blank" rel="noopener noreferrer" className={cardCls}>
+      <a
+        href={app.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${app.cta} (opens in a new tab)`}
+        className={cardCls}
+      >
         <div className="relative flex aspect-[3/2] items-center justify-center overflow-hidden bg-gradient-to-br from-persian/20 via-[#1a0845]/40 to-[#2a0f6a]/30">
           <Image
             src={app.image}
-            alt={app.title}
+            alt=""
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover"
@@ -49,18 +55,16 @@ export function AppCard({ app }: { app: App }) {
 
           {/* Stack is supporting evidence, deliberately muted so it does not
               compete with the title or the CTA. */}
-          {app.stack.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {app.stack.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-md border border-white/[0.10] bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium text-white/55"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {app.stack.map((tech) => (
+              <span
+                key={tech}
+                className="rounded-md border border-white/[0.10] bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium text-white/55"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
 
           <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-bold text-yellow transition-colors group-hover:text-yellow-dark">
             {app.cta}

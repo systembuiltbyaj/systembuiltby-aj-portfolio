@@ -98,8 +98,8 @@ export function RealAppsContent() {
               </h2>
               <p className="max-w-xl text-[14px] leading-relaxed text-white/55 md:text-base">
                 Three apps running in production right now. Real auth, real
-                databases, real users. No demos, no mockups, sign up and break
-                something.
+                databases, real data. Two are open to anyone, the client portal
+                is invite only.
               </p>
             </div>
           </ScrollReveal>
