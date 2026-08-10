@@ -7,38 +7,41 @@ import { AppCard, type App } from "./app-card";
 
 const apps: App[] = [
   {
-    title: "Funnel Builder",
-    category: "Live App",
-    description:
-      "A full-stack app I built, turn the 10P framework into copy-ready AI prompts for every funnel section. Sign up and try it.",
-    emoji: "🧩",
-    image: "/real-apps/funnel-builder.webp",
-    href: "https://funnel-section-builder.vercel.app/",
-    cta: "Open Builder",
-  },
-  {
     title: "AI Learning Hub",
     category: "Live App",
     description:
-      "My personal learning hub for mastering AI-specialist skills, lessons, references, and resources.",
-    emoji: "🎓",
+      "A plain-English reference for AI terminology, RAG, MCP, tokens, A2A. The vocabulary and the tools under the surface, explained the way I wish someone had explained them to me.",
     image: "/real-apps/ai-learning-hub.webp",
     href: "https://ai-specialist-learning-hub.vercel.app/",
     cta: "Open Learning Hub",
+    stack: ["Next.js", "Supabase", "Vercel"],
   },
   {
-    title: "Next App In Build",
-    category: "In Build",
+    title: "Onboarding Client Hub",
+    category: "Live App",
     description:
-      "Another full-stack build is in progress. Same approach, a real problem, a real database, and a real app you can sign up for.",
-    emoji: "🚧",
+      "A client portal for project onboarding. Invited clients sign in with a magic link, no passwords to manage, and track their project from one place.",
+    image: "/real-apps/onboarding-client-hub.webp",
+    href: "https://onboarding-client-hub.vercel.app/login",
+    cta: "Open Client Portal",
+    stack: ["Next.js", "Supabase", "Resend", "Vercel"],
+  },
+  {
+    title: "Funnel Builder",
+    category: "Live App",
+    description:
+      "Turn the 10P framework into copy-ready AI prompts for every funnel section. Pick your sections and walk away with prompts that build the whole page.",
+    image: "/real-apps/funnel-builder.webp",
+    href: "https://funnel-section-builder.vercel.app/",
+    cta: "Open Builder",
+    stack: ["Next.js", "Supabase", "Resend", "Vercel"],
   },
 ];
 
 export function RealAppsContent() {
   return (
     <PageTransition>
-      {/* Intro + video (no video yet, frame shows Coming Soon) */}
+      {/* Intro + video (no video yet, frame shows a placeholder state) */}
       <section className="relative px-6 pt-20 pb-6">
         <div className="mx-auto max-w-4xl">
           <div className="mb-10 text-center">
@@ -83,21 +86,20 @@ export function RealAppsContent() {
         </div>
       </section>
 
-      {/* Section 01, the apps */}
+      {/* The apps */}
       <section className="relative px-5 py-14 sm:px-6 md:py-20">
         <div className="pointer-events-none absolute top-1/3 left-[15%] h-[400px] w-[400px] rounded-full bg-persian/10 blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="mb-8 md:mb-10">
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-yellow md:text-xs">
-                Section 01
-              </p>
               <h2 className="mb-2 text-2xl font-bold leading-tight text-white md:text-4xl">
-                Live <span className="text-yellow">MVPs</span>
+                Go Try Them <span className="text-yellow">Yourself</span>
               </h2>
               <p className="max-w-xl text-[14px] leading-relaxed text-white/55 md:text-base">
-                Full products I designed, built, and deployed end to end.
+                Three apps running in production right now. Real auth, real
+                databases, real users. No demos, no mockups, sign up and break
+                something.
               </p>
             </div>
           </ScrollReveal>
