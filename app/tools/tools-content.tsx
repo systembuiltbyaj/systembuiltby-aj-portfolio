@@ -63,6 +63,15 @@ const buildLearnTools: Tool[] = [
     cta: "Open Learning Hub",
     badge: "LIVE",
   },
+  {
+    href: "/tools/playbook",
+    icon: "📓",
+    title: "Client Playbook",
+    description:
+      "My process for taking a client from first message to retainer, the call checklist I run live, and the prompts I paste before every build.",
+    cta: "Open Playbook",
+    badge: "PRIVATE",
+  },
 ];
 
 // The Claude Code skills & frameworks I build with (links open on GitHub)
