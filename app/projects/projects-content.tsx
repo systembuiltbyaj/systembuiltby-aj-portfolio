@@ -157,6 +157,22 @@ const funnels = [
 
 const coachingFunnels = [
   {
+    title: "Paid Webinar",
+    subtitle: "ASVA Breakthrough",
+    gradientFrom: "#1c1305",
+    gradientTo: "#3d2a10",
+    emoji: "\uD83C\uDF93",
+    url: "https://www.amaze.ph/02-asva",
+    isLive: true,
+    thumbnail: "/mockups/paid-webinar-d.webp",
+    mockups: [
+      "/mockups/paid-webinar-a.webp",
+      "/mockups/paid-webinar-b.webp",
+      "/mockups/paid-webinar-c.webp",
+      "/mockups/paid-webinar-d.webp",
+    ],
+  },
+  {
     title: "Zack Andrei",
     subtitle: "High-Performance Coaching",
     gradientFrom: "#1a0b2e",
@@ -170,6 +186,22 @@ const coachingFunnels = [
       "/mockups/zack-andrei-b.webp",
       "/mockups/zack-andrei-c.webp",
       "/mockups/zack-andrei-d.webp",
+    ],
+  },
+  {
+    title: "Core Offer",
+    subtitle: "ASVA Challenge",
+    gradientFrom: "#1c1305",
+    gradientTo: "#3d2a10",
+    emoji: "\uD83C\uDFAF",
+    url: "https://www.amaze.ph/02-asva-core-offer",
+    isLive: true,
+    thumbnail: "/mockups/core-offer-d.webp",
+    mockups: [
+      "/mockups/core-offer-a.webp",
+      "/mockups/core-offer-b.webp",
+      "/mockups/core-offer-c.webp",
+      "/mockups/core-offer-d.webp",
     ],
   },
   {
