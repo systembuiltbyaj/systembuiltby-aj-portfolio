@@ -173,7 +173,9 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.55 }}
-            className="flex items-center gap-6 pt-4"
+            // gap-3 on mobile keeps all six icons at their full 44px tap target;
+            // gap-6 would squeeze them to 37px once the GHL mark was added.
+            className="flex items-center gap-3 pt-4 sm:gap-6"
           >
             {socials.map((s) => (
               <a

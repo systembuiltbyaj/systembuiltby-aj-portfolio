@@ -26,6 +26,8 @@ const techStack: Tool[] = [
       { src: "/badges/badges.webp", label: "HL Accelerator — Certified Admin, Tier 3" },
       { src: "/badges/hla-badge.webp", label: "HL Accelerator — Automation Builder" },
       { src: "/badges/certified-admin-badge.webp", label: "HighLevel Directory — Certified Admin" },
+      { src: "/badges/ghl-skills-badges.webp", label: "HighLevel — 6 Verified Skills Badges" },
+      { src: "/badges/ghl-directory-profile.webp", label: "HighLevel Directory — Public Profile" },
       { src: "/badges/certificate.webp", label: "Certification Letter" },
       { src: "/badges/certified-admin-passed.webp", label: "Certified Admin — Exam Passed" },
     ],

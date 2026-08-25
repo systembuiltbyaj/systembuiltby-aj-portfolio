@@ -280,7 +280,7 @@ export function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden flex items-center justify-center w-10 h-10 shrink-0 rounded-lg border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/[0.08] transition-colors"
+              className="md:hidden flex items-center justify-center w-11 h-11 shrink-0 rounded-lg border border-white/15 bg-white/[0.04] text-white/80 hover:text-white hover:bg-white/[0.08] transition-colors"
               aria-label="Open menu"
             >
               <svg width="22" height="16" viewBox="0 0 22 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
