@@ -22,6 +22,16 @@ export type SystemBuild = {
 
 export const clientProjects: SystemBuild[] = [
   {
+    title: "Complete GoHighLevel Client System Build | From Planning to Handover",
+    category: "Client Project",
+    description:
+      "See how I approach a complete GoHighLevel client build from start to finish. This walkthrough covers how I plan, build, connect, test, and hand over a full system including funnels, pipelines, workflows, products, memberships, and lead nurture. It shows my process for turning a client's requirements into a clean, automated, and scalable GoHighLevel system.",
+    emoji: "🏗️",
+    image: "/system-builds/ghl-client-system-build.webp",
+    videoId: "n3HtTo7JG6A",
+    duration: "32:00",
+  },
+  {
     title: "AI Automation Course",
     category: "Course",
     description:
