@@ -74,61 +74,99 @@ const buildLearnTools: Tool[] = [
   },
 ];
 
-// The Claude Code skills & frameworks I build with (links open on GitHub)
+// The Claude Code skills & frameworks I actually have installed, ordered by
+// GitHub stars. Star counts were read from the GitHub API on 2026-09-09 and are
+// rounded — they are a sense of scale, not a live counter.
 const aiStack = [
   {
     name: "Superpowers",
     author: "obra",
     tag: "Agentic Framework",
     icon: "⚡",
+    stars: "284k",
     description:
       "Brainstorm → plan → TDD → review. The skill methodology behind how I ship, structured, test-driven, and reviewed before merge.",
     href: "https://github.com/obra/superpowers",
   },
   {
-    name: "GSD, Get Shit Done",
-    author: "gsd-build",
-    tag: "Workflow",
-    icon: "🎯",
+    name: "Karpathy Skills",
+    author: "forrestchang",
+    tag: "Coding Taste",
+    icon: "🧭",
+    stars: "212k",
     description:
-      "A plan / execute / verify coding workflow with atomic commits, cross-session memory, and drift-detection safeguards.",
-    href: "https://github.com/gsd-build/get-shit-done",
+      "Andrej Karpathy's engineering principles as a rules file. The taste layer that keeps generated code simple, readable, and boring in the right places.",
+    href: "https://github.com/forrestchang/andrej-karpathy-skills",
   },
   {
-    name: "GStack",
-    author: "Garry Tan",
-    tag: "Dev Team",
-    icon: "🧱",
+    name: "Agent Skills",
+    author: "Anthropic",
+    tag: "Official Skills",
+    icon: "🎨",
+    stars: "175k",
     description:
-      "23 opinionated tools that turn Claude into a full engineering team, from CEO and designer down to QA and release.",
-    href: "https://github.com/garrytan/gstack",
-  },
-  {
-    name: "Context7",
-    author: "Upstash",
-    tag: "Live Docs",
-    icon: "📚",
-    description:
-      "Version-accurate library documentation injected straight into context, no stale APIs, no hallucinated code.",
-    href: "https://github.com/upstash/context7",
+      "Anthropic's own skill library. Frontend Design lives here, the anti-template design layer behind my funnels and sites.",
+    href: "https://github.com/anthropics/skills",
   },
   {
     name: "Claude Mem",
     author: "thedotmack",
     tag: "Memory",
     icon: "🧠",
+    stars: "94k",
     description:
       "Persistent memory across sessions, captures the work, compresses it, and re-injects the relevant context next time.",
     href: "https://github.com/thedotmack/claude-mem",
   },
   {
-    name: "Frontend Design",
-    author: "Anthropic",
-    tag: "Design Skill",
-    icon: "🎨",
+    name: "Ruflo",
+    author: "ruvnet",
+    tag: "Swarm",
+    icon: "🌊",
+    stars: "72k",
     description:
-      "Anthropic's own skill for distinctive, intentional UI, the anti-template design layer behind my funnels and sites.",
-    href: "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+      "The original agent meta-harness. Multi-agent swarms with shared memory, for work too big to fit in one context window.",
+    href: "https://github.com/ruvnet/ruflo",
+  },
+  {
+    name: "GSD, Get Shit Done",
+    author: "gsd-build",
+    tag: "Workflow",
+    icon: "🎯",
+    stars: "65k",
+    description:
+      "A plan / execute / verify coding workflow with atomic commits, cross-session memory, and drift-detection safeguards.",
+    href: "https://github.com/gsd-build/get-shit-done",
+  },
+  {
+    name: "Context7",
+    author: "Upstash",
+    tag: "Live Docs",
+    icon: "📚",
+    stars: "62k",
+    description:
+      "Version-accurate library documentation injected straight into context, no stale APIs, no hallucinated code.",
+    href: "https://github.com/upstash/context7",
+  },
+  {
+    name: "Context Mode",
+    author: "mksglu",
+    tag: "Context",
+    icon: "🪟",
+    stars: "22k",
+    description:
+      "Sandboxes tool output so a huge log, page snapshot, or API response never floods the context window mid-build.",
+    href: "https://github.com/mksglu/context-mode",
+  },
+  {
+    name: "Supabase Agent Skills",
+    author: "Supabase",
+    tag: "Database",
+    icon: "🗄️",
+    stars: "2.6k",
+    description:
+      "Supabase's official skills for schema, auth, and row-level security, the database layer when a build needs more than a CRM.",
+    href: "https://github.com/supabase/agent-skills",
   },
 ];
 
@@ -214,7 +252,8 @@ export function ToolsContent() {
           </h2>
           <p className="mb-7 max-w-2xl text-sm leading-relaxed text-white/55">
             The Claude Code skills &amp; frameworks powering how I ship automations, funnels, and
-            AI systems, fast, and production-grade. Tap any to view it on GitHub.
+            AI systems, fast, and production-grade. Everything here is installed in my setup and
+            in use on real client work, ordered by GitHub stars. Tap any to view it on GitHub.
           </p>
           <StaggerChildren className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {aiStack.map((s) => (
@@ -231,6 +270,15 @@ export function ToolsContent() {
                     </span>
                     <span className="rounded-full border border-persian/30 bg-persian/15 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-persian-light">
                       {s.tag}
+                    </span>
+                    <span
+                      className="ml-auto inline-flex shrink-0 items-center gap-1 text-xs font-bold text-white/45"
+                      title={`${s.stars} GitHub stars`}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" />
+                      </svg>
+                      {s.stars}
                     </span>
                   </div>
                   <h3 className="text-lg font-black text-white">{s.name}</h3>
