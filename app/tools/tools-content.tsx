@@ -139,16 +139,6 @@ const aiStack = [
     href: "https://github.com/gsd-build/get-shit-done",
   },
   {
-    name: "Context7",
-    author: "Upstash",
-    tag: "Live Docs",
-    icon: "📚",
-    stars: "62k",
-    description:
-      "Version-accurate library documentation injected straight into context, no stale APIs, no hallucinated code.",
-    href: "https://github.com/upstash/context7",
-  },
-  {
     name: "Context Mode",
     author: "mksglu",
     tag: "Context",
@@ -165,8 +155,18 @@ const aiStack = [
     icon: "🗄️",
     stars: "2.6k",
     description:
-      "Supabase's official skills for schema, auth, and row-level security, the database layer when a build needs more than a CRM.",
+      "Supabase's official skills for schema, auth, and row-level security, the database layer behind the Funnel Section Builder app.",
     href: "https://github.com/supabase/agent-skills",
+  },
+  {
+    name: "Obsidian CLI",
+    author: "pablo-mano",
+    tag: "Knowledge Base",
+    icon: "🗂️",
+    stars: "431",
+    description:
+      "Drives my Obsidian vault straight from the terminal, so build notes, client context, and process maps stay one place I can query.",
+    href: "https://github.com/pablo-mano/Obsidian-CLI-skill",
   },
 ];
 
@@ -252,8 +252,8 @@ export function ToolsContent() {
           </h2>
           <p className="mb-7 max-w-2xl text-sm leading-relaxed text-white/55">
             The Claude Code skills &amp; frameworks powering how I ship automations, funnels, and
-            AI systems, fast, and production-grade. Everything here is installed in my setup and
-            in use on real client work, ordered by GitHub stars. Tap any to view it on GitHub.
+            AI systems, fast, and production-grade. Every one of these is installed and switched on
+            in my own setup, ordered by GitHub stars. Tap any to view it on GitHub.
           </p>
           <StaggerChildren className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {aiStack.map((s) => (
