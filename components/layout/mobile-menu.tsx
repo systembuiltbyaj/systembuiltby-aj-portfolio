@@ -49,7 +49,7 @@ const navGroups: MobileNavGroup[] = [
       { label: "System Builds", href: "/system-builds", icon: Clapperboard },
       { label: "Web Showcase", href: "/projects", icon: Globe },
       { label: "MVP", href: "/real-apps", icon: LayoutGrid },
-      { label: "Certificates & Badges", href: "/about#badges", icon: Award },
+      { label: "Certificates & Badges", href: "/credentials", icon: Award },
     ],
   },
   {

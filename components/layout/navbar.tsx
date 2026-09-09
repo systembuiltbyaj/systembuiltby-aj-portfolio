@@ -24,7 +24,7 @@ const solutionsDropdown: NavDropdown = {
   label: "Gallery",
   items: [
     { label: "About", emoji: "\u{1F91D}", href: "/about", description: "My story, mentors & how I work" },
-    { label: "Badges & Certificates", emoji: "\u{1F396}", href: "/about#badges", description: "GoHighLevel Certified Admin + 11 more" },
+    { label: "Badges & Certificates", emoji: "\u{1F396}", href: "/credentials", description: "GoHighLevel · Claude · n8n · Zapier" },
     { label: "System Builds", emoji: "\u{1F3AC}", href: "/system-builds", description: "Recorded walkthroughs of every build" },
     { label: "Web Showcase ⭐", emoji: "\u{1F310}", href: "/projects", description: "Explore live websites & funnels" },
     { label: "Services", emoji: "\u{1F9E9}", href: "/services", description: "All 8 service categories" },
