@@ -5,6 +5,7 @@ import { Vault } from "@/components/sections/vault";
 import { Philosophy } from "@/components/sections/philosophy";
 import { Services } from "@/components/sections/services";
 import { FeaturedBuilds } from "@/components/sections/featured-builds";
+import { ClientFunnels } from "@/components/sections/client-funnels";
 import { Testimonials } from "@/components/sections/testimonials";
 import { WorkflowScreens } from "@/components/sections/workflow-screens";
 import { AutomationFlows } from "@/components/sections/automation-flows";
@@ -31,6 +32,8 @@ export default function HomePage() {
       <Philosophy />
       <Divider />
       <FeaturedBuilds />
+      <Divider />
+      <ClientFunnels />
       <Divider />
       <Testimonials />
       <Divider />

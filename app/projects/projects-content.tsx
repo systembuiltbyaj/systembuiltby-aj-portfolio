@@ -155,7 +155,39 @@ const funnels = [
 /*  Data, Premium Coaching Funnels (with mockup galleries)            */
 /* ------------------------------------------------------------------ */
 
-const coachingFunnels = [
+export const coachingFunnels = [
+  {
+    title: "Free Webinar",
+    subtitle: "AI Masterclass · Amaze",
+    gradientFrom: "#1e0714",
+    gradientTo: "#3f1029",
+    emoji: "🎤",
+    url: "https://www.amaze.ph/ai-upgrade",
+    isLive: true,
+    thumbnail: "/mockups/aiwa-webinar-d.webp",
+    mockups: [
+      "/mockups/aiwa-webinar-a.webp",
+      "/mockups/aiwa-webinar-b.webp",
+      "/mockups/aiwa-webinar-c.webp",
+      "/mockups/aiwa-webinar-d.webp",
+    ],
+  },
+  {
+    title: "Core Offer",
+    subtitle: "Build Your AI System · Amaze",
+    gradientFrom: "#1e0714",
+    gradientTo: "#3f1029",
+    emoji: "⚡",
+    url: "https://www.amaze.ph/aiwa-upgrade",
+    isLive: true,
+    thumbnail: "/mockups/aiwa-core-offer-d.webp",
+    mockups: [
+      "/mockups/aiwa-core-offer-a.webp",
+      "/mockups/aiwa-core-offer-b.webp",
+      "/mockups/aiwa-core-offer-c.webp",
+      "/mockups/aiwa-core-offer-d.webp",
+    ],
+  },
   {
     title: "Paid Webinar",
     subtitle: "ASVA Breakthrough",
