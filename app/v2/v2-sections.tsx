@@ -5,79 +5,56 @@ import Link from "next/link";
 import { useState } from "react";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels } from "@/app/projects/projects-content";
-import { clientProjects } from "@/app/system-builds/system-builds-content";
+import {
+  clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects,
+} from "@/app/system-builds/system-builds-content";
+
+// Every recorded build, not just the client ones — same five arrays the
+// /system-builds page renders, so the count here matches what is actually there.
+const allBuilds = [
+  ...clientProjects, ...ajTutorials, ...claudeProjects, ...zapierTutorials, ...n8nProjects,
+];
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
 import { techStack } from "@/components/sections/certificates-explorer";
 
 /* ------------------------------------------------------------------ */
-/*  Shared bits                                                        */
+/*  Shared                                                             */
 /* ------------------------------------------------------------------ */
+
+/** Card surface. One constant so light and dark stay in step everywhere. */
+const CARD =
+  "rounded-2xl border border-black/[0.08] bg-white shadow-[0_2px_14px_-6px_rgba(20,16,31,0.16)] dark:border-white/[0.09] dark:bg-[#120e20] dark:shadow-none";
+
+const MUTED = "text-black/55 dark:text-white/55";
+const FAINT = "text-black/40 dark:text-white/40";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-persian-light">{children}</p>
+    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-persian dark:text-persian-light">
+      {children}
+    </p>
   );
 }
 
 function Title({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mt-2.5 max-w-[22ch] text-[clamp(1.6rem,3.1vw,2.5rem)] font-black leading-[1.08] tracking-[-0.03em] text-white">
+    <h2 className="mt-2.5 max-w-[22ch] text-[clamp(1.6rem,3.1vw,2.5rem)] font-black leading-[1.08] tracking-[-0.03em] text-[#14101f] dark:text-white">
       {children}
     </h2>
   );
 }
 
-/** Pager used by every section that holds more than one screen of cards. */
-function Pager({
-  page,
-  pages,
-  onChange,
-}: {
-  page: number;
-  pages: number;
-  onChange: (p: number) => void;
-}) {
-  if (pages <= 1) return null;
+/**
+ * Sections are one viewport tall, so a long list scrolls inside its own grid
+ * rather than behind next/next arrows. Everything is reachable in one place.
+ */
+function ScrollGrid({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className="mt-6 flex items-center justify-center gap-4">
-      <button
-        type="button"
-        onClick={() => onChange((page - 1 + pages) % pages)}
-        aria-label="Previous"
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] text-white/70 transition-colors hover:bg-white/[0.12] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
-      </button>
-      <div className="flex items-center gap-1.5">
-        {Array.from({ length: pages }).map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => onChange(i)}
-            aria-label={`Page ${i + 1} of ${pages}`}
-            aria-current={i === page ? "true" : undefined}
-            className={`h-1.5 rounded-full transition-all ${i === page ? "w-7 bg-yellow" : "w-1.5 bg-white/25 hover:bg-white/50"}`}
-          />
-        ))}
-      </div>
-      <button
-        type="button"
-        onClick={() => onChange((page + 1) % pages)}
-        aria-label="Next"
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-persian text-white transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M9 18l6-6-6-6" /></svg>
-      </button>
+    <div className="-mx-1 mt-7 max-h-[calc(100dvh-19rem)] overflow-y-auto overscroll-contain px-1 pb-1">
+      <div className={className}>{children}</div>
     </div>
   );
-}
-
-function usePaged<T>(items: T[], per: number) {
-  const [page, setPage] = useState(0);
-  const pages = Math.max(1, Math.ceil(items.length / per));
-  const slice = items.slice(page * per, page * per + per);
-  return { page, pages, slice, setPage };
 }
 
 /* ------------------------------------------------------------------ */
@@ -95,28 +72,59 @@ const tools = [
   { name: "Notion", src: "/logos/notion.svg" },
 ];
 
+/**
+ * Tools strip as a continuous marquee. The track holds the list twice so the
+ * loop is seamless, it pauses on hover, and prefers-reduced-motion stops it
+ * outright rather than slowing it down.
+ */
+function ToolsMarquee() {
+  const doubled = [...tools, ...tools];
+  return (
+    <div className="mt-9 overflow-hidden rounded-2xl border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
+      <p className={`mb-3 px-4 text-[11px] font-bold uppercase tracking-[0.16em] ${FAINT}`}>
+        Tools I use daily
+      </p>
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#f6f5fa] to-transparent dark:from-[#0d0a18]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#f6f5fa] to-transparent dark:from-[#0d0a18]" />
+        <ul className="marquee-scroll flex w-max gap-2.5 motion-reduce:[animation:none]">
+          {doubled.map((t, i) => (
+            <li
+              key={`${t.name}-${i}`}
+              aria-hidden={i >= tools.length}
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-3 py-2 dark:border-white/[0.08] dark:bg-white/[0.05]"
+            >
+              <Image src={t.src} alt="" width={17} height={17} className="h-[17px] w-[17px] object-contain" />
+              <span className="whitespace-nowrap text-[13px] font-medium text-black/75 dark:text-white/80">{t.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 export function HomeSection({ go }: { go: (id: SectionId) => void }) {
   const featured = clientProjects[0];
   const rest = clientProjects.slice(1, 3);
 
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
-      {/* left */}
       <div className="min-w-0">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2 text-[12.5px] font-semibold text-white/80 backdrop-blur-sm">
-          <span className="text-yellow">✦</span>
+        <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-4 py-2 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.05] dark:text-white/80">
+          <span className="text-persian dark:text-yellow">✦</span>
           GHL Certified Admin &amp; AI Automation Specialist
         </span>
 
-        <h1 className="mt-5 text-[clamp(2.1rem,5vw,3.9rem)] font-black leading-[0.98] tracking-[-0.04em] text-white">
+        <h1 className="mt-5 text-[clamp(2.1rem,5vw,3.9rem)] font-black leading-[0.98] tracking-[-0.04em] text-[#14101f] dark:text-white">
           I don&apos;t chase growth.
           <br />
-          <span className="text-yellow">I engineer the system</span>
+          <span className="text-persian dark:text-yellow">I engineer the system</span>
           <br />
           behind it.
         </h1>
 
-        <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-white/60">
+        <p className={`mt-5 max-w-[56ch] text-[15px] leading-relaxed ${MUTED}`}>
           A missed lead never gets a second chance. I build CRM systems, funnels, and automations
           inside GoHighLevel that capture every enquiry, follow up on their own, and keep working
           long after the project ends.
@@ -125,45 +133,29 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
         <div className="mt-7 flex flex-wrap gap-3">
           <button
             type="button"
-            onClick={() => go("projects")}
-            className="inline-flex h-12 items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white shadow-[0_12px_34px_-10px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            onClick={() => go("builds")}
+            className="inline-flex h-12 items-center rounded-full bg-persian px-6 text-[14.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
           >
             See my work
           </button>
-          <Link
-            href="/consult"
-            className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 text-[14.5px] font-bold text-white transition-colors hover:border-white/30 hover:bg-white/[0.09] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          <button
+            type="button"
+            onClick={() => go("contact")}
+            className="inline-flex h-12 items-center rounded-full border border-black/12 bg-black/[0.03] px-6 text-[14.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
           >
             Start a project
-          </Link>
+          </button>
         </div>
 
-        {/* tools */}
-        <div className="mt-9 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-4 backdrop-blur-sm">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-white/35">
-            Daily drivers · tools I build with
-          </p>
-          <div className="flex gap-2.5 overflow-x-auto pb-1">
-            {tools.map((t) => (
-              <span
-                key={t.name}
-                className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.05] px-3 py-2"
-              >
-                <Image src={t.src} alt="" width={17} height={17} className="h-[17px] w-[17px] object-contain" />
-                <span className="whitespace-nowrap text-[13px] font-medium text-white/80">{t.name}</span>
-              </span>
-            ))}
-          </div>
-        </div>
+        <ToolsMarquee />
       </div>
 
-      {/* right — featured build + two compact rows */}
       <div className="min-w-0">
         <Eyebrow>Selected work</Eyebrow>
         <button
           type="button"
           onClick={() => go("builds")}
-          className="group mt-3 block w-full overflow-hidden rounded-2xl border border-white/[0.09] bg-[#120e20] text-left transition-colors hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          className={`group mt-3 block w-full overflow-hidden text-left transition-colors hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
         >
           {featured?.image && (
             <span className="relative block aspect-[16/9] overflow-hidden">
@@ -171,9 +163,9 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
             </span>
           )}
           <span className="block p-4">
-            <span className="block text-[15px] font-bold leading-snug text-white">{featured?.title}</span>
-            <span className="mt-1 block text-[13px] text-white/50">{featured?.category}</span>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-persian-light transition-colors group-hover:text-yellow">
+            <span className="block text-[15px] font-bold leading-snug text-[#14101f] dark:text-white">{featured?.title}</span>
+            <span className={`mt-1 block text-[13px] ${MUTED}`}>{featured?.category}</span>
+            <span className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-persian transition-colors group-hover:text-persian-dark dark:text-persian-light dark:group-hover:text-yellow">
               View project
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </span>
@@ -186,10 +178,10 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
               key={b.title}
               type="button"
               onClick={() => go("builds")}
-              className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.035] px-4 py-3 text-left transition-colors hover:border-white/20 hover:bg-white/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="flex w-full items-center justify-between gap-3 rounded-xl border border-black/[0.08] bg-white px-4 py-3 text-left transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:bg-white/[0.07]"
             >
-              <span className="truncate text-[13.5px] font-semibold text-white/85">{b.title}</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className="shrink-0 text-white/40"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              <span className="truncate text-[13.5px] font-semibold text-[#14101f] dark:text-white/85">{b.title}</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className={`shrink-0 ${FAINT}`}><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </button>
           ))}
         </div>
@@ -199,24 +191,111 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  2 · Projects                                                       */
+/*  2 · System builds — Funnels | Automations                          */
 /* ------------------------------------------------------------------ */
 
-export function ProjectsSection() {
-  const { page, pages, slice, setPage } = usePaged(coachingFunnels, 3);
+type BuildTab = "funnels" | "automations";
+
+export function BuildsSection() {
+  const [tab, setTab] = useState<BuildTab | null>(null);
+  if (!tab) return <BuildsChooser onPick={setTab} />;
+  return tab === "funnels"
+    ? <FunnelsPanel onBack={() => setTab(null)} />
+    : <AutomationsPanel onBack={() => setTab(null)} />;
+}
+
+function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
+  const options: {
+    id: BuildTab; title: string; blurb: string; count: string; art: string; icon: React.ReactNode;
+  }[] = [
+    {
+      id: "funnels",
+      title: "Funnels",
+      blurb: "Live client funnels and websites — opt-ins, webinars, core offers and full course launches.",
+      count: `${coachingFunnels.length} live builds`,
+      art: coachingFunnels[0]?.thumbnail ?? "",
+      icon: <path d="M3 5h18l-7 8v6l-4 2v-8z" />,
+    },
+    {
+      id: "automations",
+      title: "Automations",
+      blurb: "Recorded walkthroughs of the systems underneath — pipelines, workflows and the logic behind them.",
+      count: `${allBuilds.length} walkthroughs`,
+      art: clientProjects[0]?.image ?? "",
+      icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
+    },
+  ];
+
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <Eyebrow>Projects</Eyebrow>
+      <Eyebrow>System builds</Eyebrow>
+      <Title>Two ways to see the work.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        The funnels are what a client sees. The automations are what runs underneath. Pick either.
+      </p>
+
+      <div className="mt-8 grid gap-5 md:grid-cols-2">
+        {options.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            onClick={() => onPick(o.id)}
+            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+          >
+            <span className="relative block aspect-[16/8] overflow-hidden bg-black/5 dark:bg-black/40">
+              {o.art && <Image src={o.art} alt="" fill sizes="620px" className="object-cover opacity-85 transition-opacity group-hover:opacity-100" />}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+              <span className="absolute bottom-4 left-4 flex items-center gap-2.5">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-persian text-white">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{o.icon}</svg>
+                </span>
+                <span className="text-[20px] font-black tracking-[-0.02em] text-white">{o.title}</span>
+              </span>
+              <span className="absolute right-4 top-4 rounded-full bg-black/65 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+                {o.count}
+              </span>
+            </span>
+            <span className="flex items-center justify-between gap-4 p-5">
+              <span className={`text-[13.5px] leading-relaxed ${MUTED}`}>{o.blurb}</span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BackBar({ onBack }: { onBack: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      className="mb-4 inline-flex h-11 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.03] pl-3 pr-4 text-[13px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
+      System builds
+    </button>
+  );
+}
+
+function FunnelsPanel({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+      <BackBar onBack={onBack} />
+      <Eyebrow>Funnels</Eyebrow>
       <Title>Funnels and websites built to solve real problems.</Title>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {slice.map((f) => (
+      <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {coachingFunnels.map((f) => (
           <a
             key={`${f.title}-${f.subtitle}`}
             href={f.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group overflow-hidden rounded-2xl border border-white/[0.09] bg-[#120e20] transition-all hover:-translate-y-[3px] hover:border-yellow/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/10] overflow-hidden" style={{ background: `linear-gradient(135deg, ${f.gradientFrom}, ${f.gradientTo})` }}>
               {f.thumbnail && <Image src={f.thumbnail} alt="" fill sizes="420px" className="object-cover" />}
@@ -226,45 +305,36 @@ export function ProjectsSection() {
             </span>
             <span className="flex items-center justify-between gap-3 p-4">
               <span className="min-w-0">
-                <span className="block truncate text-[14.5px] font-bold text-white">{f.title}</span>
-                <span className="mt-0.5 block truncate text-[12.5px] text-white/50">{f.subtitle}</span>
+                <span className="block truncate text-[14.5px] font-bold text-[#14101f] dark:text-white">{f.title}</span>
+                <span className={`mt-0.5 block truncate text-[12.5px] ${MUTED}`}>{f.subtitle}</span>
               </span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/70 transition-colors group-hover:bg-yellow group-hover:text-[#08060e]">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
               </span>
             </span>
           </a>
         ))}
-      </div>
-
-      <Pager page={page} pages={pages} onChange={setPage} />
-      <p className="mt-4 text-center text-[12.5px] text-white/35">
-        {coachingFunnels.length} live client funnels ·{" "}
-        <Link href="/projects" className="font-semibold text-persian-light hover:text-yellow">
-          see the full showcase
-        </Link>
+      </ScrollGrid>
+      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
+        All {coachingFunnels.length} live client funnels
       </p>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  3 · System builds                                                  */
-/* ------------------------------------------------------------------ */
-
-export function BuildsSection() {
-  const { page, pages, slice, setPage } = usePaged(clientProjects, 3);
+function AutomationsPanel({ onBack }: { onBack: () => void }) {
   const [playing, setPlaying] = useState<string | null>(null);
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <Eyebrow>System builds</Eyebrow>
+      <BackBar onBack={onBack} />
+      <Eyebrow>Automations</Eyebrow>
       <Title>Watch the actual build, not a highlight reel.</Title>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {slice.map((b) => (
-          <div key={b.title} className="overflow-hidden rounded-2xl border border-white/[0.09] bg-[#120e20]">
-            <div className="relative aspect-[16/9] bg-black/40">
+      <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {allBuilds.map((b) => (
+          <div key={b.title} className={`overflow-hidden ${CARD}`}>
+            <div className="relative aspect-[16/9] bg-black/10 dark:bg-black/40">
               {playing === b.title && b.videoId ? (
                 <iframe
                   src={`https://www.youtube.com/embed/${b.videoId}?autoplay=1`}
@@ -283,86 +353,74 @@ export function BuildsSection() {
                       aria-label={`Play ${b.title}`}
                       className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
                     >
-                      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-yellow">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#08060e]"><path d="M8 5v14l11-7z" /></svg>
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-persian">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
                       </span>
                     </button>
                   )}
                   {b.duration && (
-                    <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">
-                      {b.duration}
-                    </span>
+                    <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{b.duration}</span>
                   )}
                 </>
               )}
             </div>
             <div className="p-4">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-persian-light">{b.category}</span>
-              <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-white">{b.title}</p>
-              <p className="mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed text-white/50">{b.description}</p>
+              <span className="text-[10.5px] font-bold uppercase tracking-wider text-persian dark:text-persian-light">{b.category}</span>
+              <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
+              <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
             </div>
           </div>
         ))}
-      </div>
-
-      <Pager page={page} pages={pages} onChange={setPage} />
-      <p className="mt-4 text-center text-[12.5px] text-white/35">
-        <Link href="/system-builds" className="font-semibold text-persian-light hover:text-yellow">
-          every recorded walkthrough →
-        </Link>
+      </ScrollGrid>
+      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
+        All {allBuilds.length} recorded walkthroughs
       </p>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  4 · Services                                                       */
+/*  3 · Services                                                       */
 /* ------------------------------------------------------------------ */
 
 export function ServicesSection() {
-  const { page, pages, slice, setPage } = usePaged(services, 4);
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Services</Eyebrow>
       <Title>What I build for coaches and agencies.</Title>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        {slice.map((s) => (
-          <div key={s.title} className="rounded-2xl border border-white/[0.09] bg-[#120e20] p-5">
+      <ScrollGrid className="grid gap-4 sm:grid-cols-2">
+        {services.map((s) => (
+          <div key={s.title} className={`p-5 ${CARD}`}>
             <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-xl">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-black/[0.03] text-xl dark:border-white/10 dark:bg-white/[0.06]">
                 {s.icon}
               </span>
               <div className="min-w-0">
-                <p className="text-[15px] font-bold text-white">{s.title}</p>
-                <p className="mt-1 text-[13px] leading-relaxed text-white/55">{s.subtitle}</p>
+                <p className="text-[15px] font-bold text-[#14101f] dark:text-white">{s.title}</p>
+                <p className={`mt-1 text-[13px] leading-relaxed ${MUTED}`}>{s.subtitle}</p>
               </div>
             </div>
-            <ul className="mt-4 space-y-1.5 border-t border-white/[0.06] pt-3.5">
+            <ul className="mt-4 space-y-1.5 border-t border-black/[0.07] pt-3.5 dark:border-white/[0.06]">
               {s.items.slice(0, 3).map((it: string) => (
-                <li key={it} className="flex gap-2.5 text-[12.5px] leading-relaxed text-white/60">
-                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-yellow" />
+                <li key={it} className={`flex gap-2.5 text-[12.5px] leading-relaxed ${MUTED}`}>
+                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-persian dark:bg-yellow" />
                   {it}
                 </li>
               ))}
             </ul>
           </div>
         ))}
-      </div>
-
-      <Pager page={page} pages={pages} onChange={setPage} />
-      <p className="mt-4 text-center text-[12.5px] text-white/35">
-        {services.length} service categories ·{" "}
-        <Link href="/packages" className="font-semibold text-persian-light hover:text-yellow">
-          see packages
-        </Link>
+      </ScrollGrid>
+      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
+        All {services.length} service categories
       </p>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  5 · Credentials                                                    */
+/*  4 · Credentials                                                    */
 /* ------------------------------------------------------------------ */
 
 export function CredentialsSection() {
@@ -384,75 +442,102 @@ export function CredentialsSection() {
                 type="button"
                 onClick={() => setTool(t)}
                 className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
-                  on ? "border-persian/60 bg-persian/15" : "border-white/[0.08] bg-white/[0.035] hover:bg-white/[0.07]"
+                  on
+                    ? "border-persian/60 bg-persian/10 dark:bg-persian/15"
+                    : "border-black/[0.08] bg-white hover:bg-black/[0.03] dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:bg-white/[0.07]"
                 }`}
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-black/[0.06] bg-white dark:border-0">
                   <Image src={t.logo} alt="" width={20} height={20} className="h-5 w-5 object-contain" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[14px] font-bold text-white">{t.name}</span>
-                  <span className="block text-[12px] text-white/45">{t.badges.length} credentials</span>
+                  <span className="block text-[14px] font-bold text-[#14101f] dark:text-white">{t.name}</span>
+                  <span className={`block text-[12px] ${MUTED}`}>{t.badges.length} credentials</span>
                 </span>
-                {on && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-yellow" />}
+                {on && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-persian dark:bg-yellow" />}
               </button>
             );
           })}
-          <p className="pt-1 text-center text-[12.5px] text-white/35">
-            <span className="font-bold text-yellow">{total}</span> verified in total
+          <p className={`pt-1 text-center text-[12.5px] ${FAINT}`}>
+            <span className="font-bold text-persian dark:text-yellow">{total}</span> verified in total
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/[0.09] bg-[#120e20] p-5">
+        <div className={`p-5 ${CARD}`}>
           <div className="grid max-h-[46vh] grid-cols-2 gap-3 overflow-y-auto sm:grid-cols-3 lg:grid-cols-4">
             {tool.badges.map((b) => (
-              <div key={b.src} className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-2.5">
+              <div key={b.src} className="rounded-xl border border-black/[0.06] bg-black/[0.02] p-2.5 dark:border-white/[0.07] dark:bg-white/[0.03]">
                 <span className="relative block aspect-square">
                   <Image src={b.src} alt={b.label} fill sizes="150px" className="object-contain" />
                 </span>
-                <p className="mt-2 line-clamp-2 text-center text-[10.5px] leading-snug text-white/45">{b.label}</p>
+                <p className={`mt-2 line-clamp-2 text-center text-[10.5px] leading-snug ${FAINT}`}>{b.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <p className="mt-4 text-center text-[12.5px] text-white/35">
-        <Link href="/credentials" className="font-semibold text-persian-light hover:text-yellow">
-          open the full credentials page →
-        </Link>
-      </p>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  6 · Testimonials                                                   */
+/*  5 · Testimonials                                                   */
 /* ------------------------------------------------------------------ */
 
+const HIDDEN_TESTIMONIALS = ["Patricia Villanueva", "Daniel Reyes"];
+
 export function TestimonialsSection() {
-  const { page, pages, slice, setPage } = usePaged(testimonials, 3);
+  const shown = testimonials.filter((t) => !HIDDEN_TESTIMONIALS.includes(t.name));
+  const [playing, setPlaying] = useState<string | null>(null);
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Testimonials</Eyebrow>
       <Title>What the people I built for say about the work.</Title>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {slice.map((t) => (
-          <div key={t.name} className="flex flex-col rounded-2xl border border-white/[0.09] bg-[#120e20] p-5">
+      <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {shown.map((t) => (
+          <div key={t.name} className={`flex flex-col p-5 ${CARD}`}>
             {t.type === "video" ? (
-              <span className="relative mb-4 block aspect-video overflow-hidden rounded-xl bg-black/40">
-                {t.poster && <Image src={t.poster} alt="" fill sizes="380px" className="object-cover" />}
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/50 backdrop-blur-sm">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 text-white"><path d="M8 5v14l11-7z" /></svg>
-                  </span>
-                </span>
-              </span>
+              <div className="relative mb-4 aspect-video overflow-hidden rounded-xl bg-black/10 dark:bg-black/40">
+                {playing === t.name ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${t.videoId}?autoplay=1`}
+                    title={`${t.name} testimonial`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full"
+                  />
+                ) : (
+                  <>
+                    {/* Verticals are Shorts: blur a copy behind so the frame fills without cropping faces. */}
+                    {t.poster && t.vertical && (
+                      <Image src={t.poster} alt="" fill sizes="380px" className="scale-110 object-cover blur-xl" />
+                    )}
+                    {t.poster && (
+                      <Image
+                        src={t.poster}
+                        alt=""
+                        fill
+                        sizes="380px"
+                        className={t.vertical ? "object-contain" : "object-cover"}
+                      />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setPlaying(t.name)}
+                      aria-label={`Play ${t.name}'s testimonial`}
+                      className="group absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+                    >
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 text-white"><path d="M8 5v14l11-7z" /></svg>
+                      </span>
+                    </button>
+                  </>
+                )}
+              </div>
             ) : (
-              <p className="mb-4 flex-1 text-[13.5px] leading-relaxed text-white/70">
-                &ldquo;{t.quote}&rdquo;
-              </p>
+              <p className={`mb-4 flex-1 text-[13.5px] leading-relaxed ${MUTED}`}>&ldquo;{t.quote}&rdquo;</p>
             )}
             <div className="mt-auto flex items-center gap-3">
               {t.type === "text" && t.avatar && (
@@ -461,21 +546,19 @@ export function TestimonialsSection() {
                 </span>
               )}
               <span className="min-w-0">
-                <span className="block truncate text-[13.5px] font-bold text-white">{t.name}</span>
-                <span className="block truncate text-[12px] text-white/45">{t.role}</span>
+                <span className="block truncate text-[13.5px] font-bold text-[#14101f] dark:text-white">{t.name}</span>
+                <span className={`block truncate text-[12px] ${MUTED}`}>{t.role}</span>
               </span>
             </div>
           </div>
         ))}
-      </div>
-
-      <Pager page={page} pages={pages} onChange={setPage} />
+      </ScrollGrid>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  7 · About                                                          */
+/*  6 · About                                                          */
 /* ------------------------------------------------------------------ */
 
 const stats = [
@@ -488,7 +571,7 @@ const stats = [
 export function AboutSection() {
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-2xl border border-white/[0.09]">
+      <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09]">
         <Image src="/aj-about.webp" alt="AJ Bactad" fill sizes="340px" className="object-cover object-top" />
       </div>
 
@@ -496,7 +579,7 @@ export function AboutSection() {
         <Eyebrow>About</Eyebrow>
         <Title>From Amazon operations to building the systems businesses run on.</Title>
 
-        <div className="mt-5 space-y-3.5 text-[14.5px] leading-relaxed text-white/60">
+        <div className={`mt-5 space-y-3.5 text-[14.5px] leading-relaxed ${MUTED}`}>
           <p>
             Five years running eCommerce operations, ending as Head of Operations. SOPs, KPIs,
             team management, and the daily work of finding where a process quietly breaks.
@@ -511,38 +594,50 @@ export function AboutSection() {
 
         <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.l} className="rounded-xl border border-white/[0.08] bg-white/[0.035] px-4 py-3">
-              <p className="text-2xl font-black leading-none text-yellow">{s.n}</p>
-              <p className="mt-1.5 text-[11.5px] leading-snug text-white/45">{s.l}</p>
+            <div key={s.l} className="rounded-xl border border-black/[0.08] bg-white px-4 py-3 dark:border-white/[0.08] dark:bg-white/[0.035]">
+              <p className="text-2xl font-black leading-none text-persian dark:text-yellow">{s.n}</p>
+              <p className={`mt-1.5 text-[11.5px] leading-snug ${MUTED}`}>{s.l}</p>
             </div>
           ))}
         </div>
 
-        <Link
-          href="/about"
-          className="mt-7 inline-flex h-11 items-center rounded-full border border-white/15 bg-white/[0.04] px-5 text-[13.5px] font-bold text-white transition-colors hover:bg-white/[0.09]"
-        >
-          Read the full story
-        </Link>
       </div>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  8 · Contact                                                        */
+/*  7 · Contact                                                        */
 /* ------------------------------------------------------------------ */
+
+const socials = [
+  {
+    name: "GitHub",
+    href: "https://github.com/systembuiltbyaj",
+    icon: <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2 0-.4-.5-1.6.2-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z" />,
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/Ajbactad29/",
+    icon: <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />,
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/ajbactad29/",
+    icon: <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />,
+  },
+];
 
 export function ContactSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[860px] flex-col items-center justify-start text-center lg:justify-center">
       <Eyebrow>Contact</Eyebrow>
-      <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black leading-[1.03] tracking-[-0.035em] text-white">
+      <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black leading-[1.03] tracking-[-0.035em] text-[#14101f] dark:text-white">
         Tell me what keeps breaking.
         <br />
-        <span className="text-yellow">I&apos;ll map the fix.</span>
+        <span className="text-persian dark:text-yellow">I&apos;ll map the fix.</span>
       </h2>
-      <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-white/60">
+      <p className={`mt-5 max-w-[52ch] text-[15px] leading-relaxed ${MUTED}`}>
         A free 30-minute call. Bring the process that eats the most time and we will work out
         whether it is worth automating, before anyone talks about building anything.
       </p>
@@ -550,7 +645,7 @@ export function ContactSection() {
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link
           href="/consult"
-          className="inline-flex h-12 items-center rounded-full bg-yellow px-7 text-[14.5px] font-bold text-[#08060e] transition-transform hover:scale-[1.02]"
+          className="inline-flex h-12 items-center rounded-full bg-persian px-7 text-[14.5px] font-bold text-white transition-transform hover:scale-[1.02] dark:bg-yellow dark:text-[#08060e]"
         >
           Book a free consult
         </Link>
@@ -558,18 +653,27 @@ export function ContactSection() {
           href="https://wa.me/639100809837"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-12 items-center rounded-full border border-white/15 bg-white/[0.04] px-7 text-[14.5px] font-bold text-white transition-colors hover:bg-white/[0.09]"
+          className="inline-flex h-12 items-center rounded-full border border-black/12 bg-black/[0.03] px-7 text-[14.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
         >
           Message on WhatsApp
         </a>
       </div>
 
-      <p className="mt-8 text-[13px] text-white/35">
-        Or reach me on{" "}
-        <a href="https://www.linkedin.com/in/ajbactad29/" target="_blank" rel="noopener noreferrer" className="font-semibold text-persian-light hover:text-yellow">LinkedIn</a>
-        {" · "}
-        <a href="https://directory.gohighlevel.com/philippines/san-antonio/certified-admins/allen-bactad" target="_blank" rel="noopener noreferrer" className="font-semibold text-persian-light hover:text-yellow">HighLevel Directory</a>
-      </p>
+      <div className="mt-9 flex items-center gap-3">
+        {socials.map((s) => (
+          <a
+            key={s.name}
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.name}
+            title={s.name}
+            className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/10 bg-white text-black/55 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.05] dark:text-white/60 dark:hover:text-white"
+          >
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{s.icon}</svg>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }

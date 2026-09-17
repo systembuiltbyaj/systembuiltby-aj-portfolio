@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { V2Shell, type SectionId } from "./v2-shell";
 import {
-  HomeSection, ProjectsSection, BuildsSection, ServicesSection,
+  HomeSection, BuildsSection, ServicesSection,
   CredentialsSection, TestimonialsSection, AboutSection, ContactSection,
 } from "./v2-sections";
 
@@ -12,7 +12,6 @@ export function V2Content() {
 
   const panels: Record<SectionId, React.ReactNode> = {
     home: <HomeSection go={setActive} />,
-    projects: <ProjectsSection />,
     builds: <BuildsSection />,
     services: <ServicesSection />,
     credentials: <CredentialsSection />,
