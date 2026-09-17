@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels } from "@/app/projects/projects-content";
 import {
@@ -17,6 +18,10 @@ const allBuilds = [
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
 import { techStack } from "@/components/sections/certificates-explorer";
+import { screens } from "@/components/sections/workflow-screens";
+
+// Script face is used for the single "Hello, I'm" line only, matching v1.
+const script = Dancing_Script({ subsets: ["latin"], weight: ["600", "700"] });
 
 /* ------------------------------------------------------------------ */
 /*  Shared                                                             */
@@ -80,7 +85,7 @@ const tools = [
 function ToolsMarquee() {
   const doubled = [...tools, ...tools];
   return (
-    <div className="mt-9 overflow-hidden rounded-2xl border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
+    <div className="mt-9 max-w-[560px] overflow-hidden rounded-2xl border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
       <p className={`mb-3 px-4 text-[11px] font-bold uppercase tracking-[0.16em] ${FAINT}`}>
         Tools I use daily
       </p>
@@ -104,86 +109,129 @@ function ToolsMarquee() {
   );
 }
 
+const heroStats = [
+  { n: "5+", l: "Years experience" },
+  { n: "10+", l: "Projects completed" },
+  { n: "5+", l: "Happy clients" },
+];
+
+const heroSocials = [
+  { name: "Facebook", href: "https://www.facebook.com/Ajbactad29/", icon: <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /> },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/ajbactad29/", icon: <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /> },
+  { name: "WhatsApp", href: "https://wa.me/639100809837", icon: <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.743-.981z" /> },
+  { name: "GitHub", href: "https://github.com/systembuiltbyaj", icon: <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /> },
+];
+
 export function HomeSection({ go }: { go: (id: SectionId) => void }) {
-  const featured = clientProjects[0];
-  const rest = clientProjects.slice(1, 3);
-
   return (
-    <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
-      <div className="min-w-0">
-        <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-4 py-2 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.05] dark:text-white/80">
-          <span className="text-persian dark:text-yellow">✦</span>
-          GHL Certified Admin &amp; AI Automation Specialist
-        </span>
+    <div className="relative mx-auto min-h-full max-w-[1340px]">
+      {/* Oversized wordmark, same device as v1. Sits behind everything and is
+          hidden from assistive tech — it is texture, not content. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,15vw,11rem)] font-black leading-none tracking-[-0.05em] text-persian/[0.13] dark:text-persian/[0.22]"
+      >
+        PORTFOLIO
+      </span>
 
-        <h1 className="mt-5 text-[clamp(2.1rem,5vw,3.9rem)] font-black leading-[0.98] tracking-[-0.04em] text-[#14101f] dark:text-white">
-          I don&apos;t chase growth.
-          <br />
-          <span className="text-persian dark:text-yellow">I engineer the system</span>
-          <br />
-          behind it.
-        </h1>
-
-        <p className={`mt-5 max-w-[56ch] text-[15px] leading-relaxed ${MUTED}`}>
-          A missed lead never gets a second chance. I build CRM systems, funnels, and automations
-          inside GoHighLevel that capture every enquiry, follow up on their own, and keep working
-          long after the project ends.
-        </p>
-
-        <div className="mt-7 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => go("builds")}
-            className="inline-flex h-12 items-center rounded-full bg-persian px-6 text-[14.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
-          >
-            See my work
-          </button>
-          <button
-            type="button"
-            onClick={() => go("contact")}
-            className="inline-flex h-12 items-center rounded-full border border-black/12 bg-black/[0.03] px-6 text-[14.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
-          >
-            Start a project
-          </button>
-        </div>
-
-        <ToolsMarquee />
+      {/* Portrait sits between the two columns like v1. Decorative, and hidden
+          below lg where there is no room for it. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-1/2 top-0 hidden w-[40%] -translate-x-[10%] lg:block"
+      >
+        <Image
+          src="/aj-hero-cutout.webp"
+          alt=""
+          fill
+          priority
+          sizes="600px"
+          className="object-contain object-bottom opacity-95"
+        />
       </div>
 
-      <div className="min-w-0">
-        <Eyebrow>Selected work</Eyebrow>
-        <button
-          type="button"
-          onClick={() => go("builds")}
-          className={`group mt-3 block w-full overflow-hidden text-left transition-colors hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
-        >
-          {featured?.image && (
-            <span className="relative block aspect-[16/9] overflow-hidden">
-              <Image src={featured.image} alt="" fill sizes="520px" className="object-cover" />
-            </span>
-          )}
-          <span className="block p-4">
-            <span className="block text-[15px] font-bold leading-snug text-[#14101f] dark:text-white">{featured?.title}</span>
-            <span className={`mt-1 block text-[13px] ${MUTED}`}>{featured?.category}</span>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-persian transition-colors group-hover:text-persian-dark dark:text-persian-light dark:group-hover:text-yellow">
-              View project
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-            </span>
+      <div className="relative grid min-h-full content-start gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:content-center lg:gap-10">
+        {/* ---- left: the pitch ---- */}
+        <div className="relative z-10 min-w-0">
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.06] dark:text-white/80">
+            <span className="h-1.5 w-1.5 rounded-full bg-yellow" />
+            Available Nationwide
           </span>
-        </button>
 
-        <div className="mt-2.5 space-y-2.5">
-          {rest.map((b) => (
+          <p className={`${script.className} mt-4 text-[clamp(1.5rem,3vw,2.2rem)] leading-none text-black/70 dark:text-white/80`}>
+            Hello, I&apos;m
+          </p>
+          <h1 className="mt-1 text-[clamp(2.4rem,6vw,4.4rem)] font-black leading-[0.95] tracking-[-0.04em] text-[#14101f] dark:text-white">
+            AJ BACTAD
+          </h1>
+          <p className="mt-2.5 text-[clamp(0.8rem,1.3vw,0.95rem)] font-bold uppercase tracking-[0.13em] text-persian dark:text-yellow">
+            GHL Certified &amp; AI Automation Specialist
+          </p>
+
+          <p className={`mt-4 max-w-[54ch] text-[15px] leading-relaxed ${MUTED}`}>
+            I don&apos;t just connect tools, I engineer the system behind your growth. CRM, funnels,
+            automations, and AI, wired into one operating system that runs the busywork so you can
+            scale without the chaos.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/consult"
+              className="inline-flex h-12 items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            >
+              Book Free Consultation →
+            </Link>
             <button
-              key={b.title}
               type="button"
               onClick={() => go("builds")}
-              className="flex w-full items-center justify-between gap-3 rounded-xl border border-black/[0.08] bg-white px-4 py-3 text-left transition-colors hover:bg-black/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:bg-white/[0.07]"
+              className="inline-flex h-12 items-center rounded-full border border-black/12 bg-black/[0.03] px-6 text-[14.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
             >
-              <span className="truncate text-[13.5px] font-semibold text-[#14101f] dark:text-white/85">{b.title}</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className={`shrink-0 ${FAINT}`}><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              Check My System Build
             </button>
-          ))}
+          </div>
+
+          <ToolsMarquee />
+        </div>
+
+        {/* ---- right: proof column ---- */}
+        <div className="relative z-10 flex min-w-0 flex-col gap-6 lg:items-end lg:pt-14">
+          <div className="flex flex-row justify-between gap-5 lg:flex-col lg:items-end lg:gap-5">
+            {heroStats.map((st) => (
+              <div key={st.l} className="lg:text-right">
+                <p className="text-[clamp(1.6rem,3.4vw,2.6rem)] font-black leading-none text-persian dark:text-yellow">
+                  {st.n}
+                </p>
+                <p className={`mt-1 text-[11px] font-medium uppercase tracking-wider ${FAINT}`}>{st.l}</p>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => go("credentials")}
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-persian px-5 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-3 11.5 3 1.8 3-1.8V22l-3-1.8L9 22z" />
+            </svg>
+            Certificates &amp; Badges
+          </button>
+
+          <div className="flex flex-wrap gap-2.5 lg:justify-end">
+            {heroSocials.map((so) => (
+              <a
+                key={so.name}
+                href={so.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={so.name}
+                title={so.name}
+                className="flex h-11 w-11 items-center justify-center rounded-lg border border-black/10 bg-white text-black/50 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/45 dark:hover:text-white"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{so.icon}</svg>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -211,7 +259,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
     {
       id: "funnels",
       title: "Funnels",
-      blurb: "Live client funnels and websites — opt-ins, webinars, core offers and full course launches.",
+      blurb: "What your client sees. Opt-ins, webinars and core offers, every one of them live and still taking bookings today.",
       count: `${coachingFunnels.length} live builds`,
       art: coachingFunnels[0]?.thumbnail ?? "",
       icon: <path d="M3 5h18l-7 8v6l-4 2v-8z" />,
@@ -219,7 +267,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
     {
       id: "automations",
       title: "Automations",
-      blurb: "Recorded walkthroughs of the systems underneath — pipelines, workflows and the logic behind them.",
+      blurb: "What they never see. The workflows chasing leads at 2am, recorded end to end with nothing edited out.",
       count: `${allBuilds.length} walkthroughs`,
       art: clientProjects[0]?.image ?? "",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
@@ -379,8 +427,49 @@ function AutomationsPanel({ onBack }: { onBack: () => void }) {
   );
 }
 
+
 /* ------------------------------------------------------------------ */
-/*  3 · Services                                                       */
+/*  Under the hood — real screens                                      */
+/* ------------------------------------------------------------------ */
+
+export function ScreensSection() {
+  return (
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+      <Eyebrow>Under the hood</Eyebrow>
+      <Title>The real screens, not a mockup of one.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        Straight out of the accounts these systems run in. Dashboards, routers and workflow
+        libraries, exactly as a client finds them on a Monday morning.
+      </p>
+
+      <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {screens.map((sc) => (
+          <figure key={sc.label} className={`overflow-hidden ${CARD}`}>
+            <span className="relative block aspect-[16/10] overflow-hidden bg-black/5 dark:bg-black/40">
+              {sc.image && (
+                <Image
+                  src={sc.image}
+                  alt={sc.label}
+                  fill
+                  sizes="420px"
+                  className={sc.pos === "center" ? "object-cover object-center" : "object-cover object-top"}
+                />
+              )}
+            </span>
+            <figcaption className="p-4">
+              <p className="text-[14px] font-bold text-[#14101f] dark:text-white">{sc.label}</p>
+              <p className={`mt-1 truncate font-mono text-[11.5px] ${FAINT}`}>{sc.url}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </ScrollGrid>
+      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>All {screens.length} screens</p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Services                                                       */
 /* ------------------------------------------------------------------ */
 
 export function ServicesSection() {

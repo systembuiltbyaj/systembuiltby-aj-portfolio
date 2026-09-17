@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 export type SectionId =
   | "home"
   | "builds"
+  | "screens"
   | "services"
   | "credentials"
   | "testimonials"
@@ -17,6 +18,7 @@ export type SectionId =
 export const SECTIONS: { id: SectionId; label: string; icon: React.ReactNode }[] = [
   { id: "home", label: "Home", icon: <path d="M3 10.5 12 3l9 7.5V21H3z" /> },
   { id: "builds", label: "System builds", icon: <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> },
+  { id: "screens", label: "Under the hood", icon: <path d="M3 4h18v12H3zM8 20h8M12 16v4" /> },
   { id: "services", label: "Services", icon: <path d="M12 3 3 8l9 5 9-5zM3 14l9 5 9-5" /> },
   { id: "credentials", label: "Credentials", icon: <path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7z" /> },
   { id: "testimonials", label: "Testimonials", icon: <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3z" /> },
