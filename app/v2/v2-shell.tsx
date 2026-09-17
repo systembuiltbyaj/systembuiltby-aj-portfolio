@@ -33,23 +33,26 @@ export const SECTIONS: { id: SectionId; label: string; icon: React.ReactNode }[]
  * The video only suits the dark theme; light mode gets a soft wash instead.
  */
 function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
-  if (!dark) {
-    return (
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-[-20%] h-[640px] w-[640px] -translate-x-1/2 rounded-full bg-persian/[0.10] blur-[150px]" />
-        <div className="absolute bottom-[-15%] right-[-8%] h-[460px] w-[460px] rounded-full bg-yellow/[0.14] blur-[140px]" />
-      </div>
-    );
-  }
+  const src = dark ? "/v2/globe.mp4" : "/v2/globe-light.mp4";
+  const poster = dark ? "/v2/globe-poster.webp" : "/v2/globe-light-poster.webp";
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
       {still ? (
-        <Image src="/v2/globe-poster.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-[0.38]" />
+        <Image
+          key={poster}
+          src={poster}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={dark ? "object-cover opacity-[0.38]" : "object-cover opacity-[0.55]"}
+        />
       ) : (
         <video
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.38]"
-          src="/v2/globe.mp4"
-          poster="/v2/globe-poster.webp"
+          key={src}
+          className={`absolute inset-0 h-full w-full object-cover ${dark ? "opacity-[0.38]" : "opacity-[0.55]"}`}
+          src={src}
+          poster={poster}
           autoPlay
           muted
           loop
@@ -57,8 +60,18 @@ function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
           preload="metadata"
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#08060e] via-[#08060e]/80 to-[#08060e]/45" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08060e] via-transparent to-[#08060e]/70" />
+      {/* Scrim keeps copy contrast constant wherever the clip happens to be bright. */}
+      {dark ? (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#08060e] via-[#08060e]/80 to-[#08060e]/45" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#08060e] via-transparent to-[#08060e]/70" />
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f6f5fa] via-[#f6f5fa]/85 to-[#f6f5fa]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#f6f5fa] via-transparent to-[#f6f5fa]/60" />
+        </>
+      )}
     </div>
   );
 }
@@ -132,9 +145,14 @@ export function V2Shell({
             railOpen ? "translate-x-0" : "max-md:-translate-x-full"
           }`}
         >
-          <Link href="/" aria-label="Back to the live site" className="shrink-0">
-            <span className="relative block h-10 w-10 overflow-hidden rounded-full ring-2 ring-persian/70">
-              <Image src="/aj-profile.webp" alt="AJ Bactad" fill sizes="40px" className="object-cover" />
+          <Link
+            href="/"
+            aria-label="System Built by AJ — open the main site"
+            title="Open the main site"
+            className="group shrink-0"
+          >
+            <span className="relative block h-11 w-11 overflow-hidden rounded-xl bg-white ring-1 ring-black/10 transition-all group-hover:ring-2 group-hover:ring-persian dark:bg-white/[0.07] dark:ring-white/15">
+              <Image src="/aj-logo.webp" alt="" fill sizes="44px" className="object-contain p-1.5" />
             </span>
           </Link>
 
@@ -185,11 +203,17 @@ export function V2Shell({
             )}
           </button>
 
-          <p className="mt-2 shrink-0 text-center text-[10px] leading-[1.5] text-black/30 dark:text-white/25">
-            © 2026
-            <br />
-            AJ
-          </p>
+          <div className="mt-2 flex shrink-0 flex-col items-center gap-1.5">
+            <span className="relative flex h-2 w-2" title="Available for work">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow opacity-70 motion-reduce:animate-none" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-yellow" />
+            </span>
+            <p className="text-center text-[9px] font-bold uppercase leading-[1.4] tracking-[0.08em] text-persian dark:text-yellow">
+              Open
+              <br />
+              for work
+            </p>
+          </div>
         </aside>
 
         {/* rail toggle, small screens only */}

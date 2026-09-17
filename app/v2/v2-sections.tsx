@@ -138,7 +138,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           below lg where there is no room for it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-8 left-1/2 top-0 hidden w-[46%] -translate-x-[14%] lg:block"
+        className="pointer-events-none absolute -bottom-10 left-1/2 -top-24 hidden w-[46%] -translate-x-[14%] lg:block xl:-top-28"
       >
         <Image
           src="/aj-hero-cutout.webp"
