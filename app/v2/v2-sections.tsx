@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels } from "@/app/projects/projects-content";
@@ -512,9 +512,12 @@ export function ServicesSection() {
 /*  4 · Credentials                                                    */
 /* ------------------------------------------------------------------ */
 
+type BadgeItem = { src: string; label: string };
+
 export function CredentialsSection() {
   const total = techStack.reduce((n, t) => n + t.badges.length, 0);
   const [tool, setTool] = useState(techStack[0]);
+  const [zoom, setZoom] = useState<BadgeItem | null>(null);
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
@@ -555,17 +558,66 @@ export function CredentialsSection() {
         <div className={`p-5 ${CARD}`}>
           <div className="grid max-h-[46vh] grid-cols-2 gap-3 overflow-y-auto sm:grid-cols-3 lg:grid-cols-4">
             {tool.badges.map((b) => (
-              <div key={b.src} className="rounded-xl border border-black/[0.06] bg-black/[0.02] p-2.5 dark:border-white/[0.07] dark:bg-white/[0.03]">
+              <button
+                key={b.src}
+                type="button"
+                onClick={() => setZoom(b)}
+                aria-label={`View ${b.label} full size`}
+                className="group rounded-xl border border-black/[0.06] bg-black/[0.02] p-2.5 text-left transition-all hover:-translate-y-[2px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.07] dark:bg-white/[0.03]"
+              >
                 <span className="relative block aspect-square">
-                  <Image src={b.src} alt={b.label} fill sizes="150px" className="object-contain" />
+                  <Image src={b.src} alt="" fill sizes="150px" className="object-contain transition-transform group-hover:scale-105" />
                 </span>
                 <p className={`mt-2 line-clamp-2 text-center text-[10.5px] leading-snug ${FAINT}`}>{b.label}</p>
-              </div>
+              </button>
             ))}
           </div>
         </div>
       </div>
 
+      {zoom && <BadgeLightbox badge={zoom} onClose={() => setZoom(null)} />}
+    </div>
+  );
+}
+
+/** Full-size badge view. Escape and the backdrop both close it. */
+function BadgeLightbox({ badge, onClose }: { badge: BadgeItem; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // capture-phase stop, so the shell's arrow-key section nav does not also fire
+      e.stopPropagation();
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={badge.label}
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/85 p-6 backdrop-blur-sm"
+    >
+      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-[520px]">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
+        </button>
+        <Image
+          src={badge.src}
+          alt={badge.label}
+          width={900}
+          height={900}
+          className="mx-auto h-auto max-h-[72vh] w-auto max-w-full object-contain"
+        />
+        <p className="mt-4 text-center text-[13.5px] font-semibold text-white">{badge.label}</p>
+      </div>
     </div>
   );
 }
@@ -588,7 +640,7 @@ export function TestimonialsSection() {
         {shown.map((t) => (
           <div key={t.name} className={`flex flex-col p-5 ${CARD}`}>
             {t.type === "video" ? (
-              <div className="relative mb-4 aspect-video overflow-hidden rounded-xl bg-black/10 dark:bg-black/40">
+              <div className="relative mb-4 aspect-[9/16] overflow-hidden rounded-xl bg-black/10 dark:bg-black/40">
                 {playing === t.name ? (
                   <iframe
                     src={`https://www.youtube.com/embed/${t.videoId}?autoplay=1`}
@@ -657,11 +709,70 @@ const stats = [
   { n: "5+", l: "Happy clients" },
 ];
 
+const INTRO_VIDEO_ID = "0QT3jCMCT74";
+
+/** Same 90-second intro the v1 About page runs. */
+function IntroVideoCard() {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className={`overflow-hidden ${CARD}`}>
+      <div className="relative aspect-video bg-black/10 dark:bg-black/40">
+        {playing ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${INTRO_VIDEO_ID}?autoplay=1`}
+            title="AJ Bactad — introduction"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+          />
+        ) : (
+          <>
+            <Image
+              src={`https://i.ytimg.com/vi/${INTRO_VIDEO_ID}/maxresdefault.jpg`}
+              alt=""
+              fill
+              sizes="380px"
+              unoptimized
+              className="object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              aria-label="Play AJ's introduction"
+              className="group absolute inset-0 flex items-center justify-center bg-black/30 transition-colors hover:bg-black/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            >
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 text-white"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </button>
+          </>
+        )}
+      </div>
+      <p className={`px-4 py-3 text-[12.5px] ${MUTED}`}>
+        <span className="font-bold text-[#14101f] dark:text-white">Watch my intro</span> — 90 seconds
+        on how I work and why the builds keep running.
+      </p>
+    </div>
+  );
+}
+
 export function AboutSection() {
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09]">
-        <Image src="/aj-about.webp" alt="AJ Bactad" fill sizes="340px" className="object-cover object-top" />
+      <div className="mx-auto w-full max-w-[380px] space-y-4">
+        {/* aj-bactad-photo is natively 4:5, so it fills this frame without being
+            upscaled from a square — which is what looked soft before. */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09]">
+          <Image
+            src="/aj-bactad-photo.webp"
+            alt="AJ Bactad"
+            fill
+            quality={92}
+            sizes="(max-width: 1024px) 80vw, 380px"
+            className="object-cover object-top"
+          />
+        </div>
+        <IntroVideoCard />
       </div>
 
       <div className="min-w-0">

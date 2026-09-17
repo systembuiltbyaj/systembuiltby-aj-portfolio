@@ -152,8 +152,8 @@ export function V2Shell({
             title="Open the main site"
             className="group shrink-0"
           >
-            <span className="relative block h-11 w-11 overflow-hidden rounded-xl bg-white ring-1 ring-black/10 transition-all group-hover:ring-2 group-hover:ring-persian dark:bg-white/[0.07] dark:ring-white/15">
-              <Image src="/aj-logo.webp" alt="" fill sizes="44px" className="object-contain p-1.5" />
+            <span className="relative block h-14 w-14 transition-transform group-hover:scale-105">
+              <Image src="/aj-logo-mark.webp" alt="" fill sizes="56px" className="object-contain drop-shadow-[0_2px_10px_rgba(94,23,235,0.55)]" />
             </span>
           </Link>
 

@@ -81,7 +81,7 @@ function Logo() {
     <Link href="/" className="flex items-center gap-2 min-w-0">
       <div className="relative w-11 h-11 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
         <Image
-          src="/aj-logo.webp"
+          src="/aj-logo-mark.webp"
           alt="System-Built By AJ"
           width={120}
           height={120}
