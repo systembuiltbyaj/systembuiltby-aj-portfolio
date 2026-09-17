@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { ChromeGate, MainShell } from "@/components/layout/chrome-gate";
 import { NameRevealIntro } from "@/components/intro/name-reveal-intro";
 import { DeferredChatBubble } from "@/components/chat/deferred-chat-bubble";
 import "./globals.css";
@@ -52,11 +53,17 @@ export default function RootLayout({
           <div className="absolute bottom-[30%] right-[10%] w-[300px] h-[300px] rounded-full bg-[#3a0f7a]/25 blur-[100px]" />
         </div>
         <div className="relative z-10">
-          <Navbar />
-          <main className="pt-20">{children}</main>
-          <Footer />
+          <ChromeGate>
+            <Navbar />
+          </ChromeGate>
+          <MainShell>{children}</MainShell>
+          <ChromeGate>
+            <Footer />
+          </ChromeGate>
         </div>
-        <DeferredChatBubble />
+        <ChromeGate>
+          <DeferredChatBubble />
+        </ChromeGate>
       </body>
     </html>
   );

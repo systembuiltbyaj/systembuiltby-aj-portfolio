@@ -20,7 +20,7 @@ interface Service {
   accent: string;
 }
 
-const services: Service[] = [
+export const services: Service[] = [
   {
     rank: "🥇",
     icon: "🔥",
