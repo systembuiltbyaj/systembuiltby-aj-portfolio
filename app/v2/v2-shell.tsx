@@ -45,12 +45,12 @@ function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
           fill
           priority
           sizes="100vw"
-          className={dark ? "object-cover opacity-[0.38]" : "object-cover opacity-[0.55]"}
+          className={dark ? "object-cover opacity-[0.38]" : "object-cover"}
         />
       ) : (
         <video
           key={src}
-          className={`absolute inset-0 h-full w-full object-cover ${dark ? "opacity-[0.38]" : "opacity-[0.55]"}`}
+          className={`absolute inset-0 h-full w-full object-cover ${dark ? "opacity-[0.38]" : ""}`}
           src={src}
           poster={poster}
           autoPlay
@@ -68,8 +68,9 @@ function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
         </>
       ) : (
         <>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#f6f5fa] via-[#f6f5fa]/85 to-[#f6f5fa]/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#f6f5fa] via-transparent to-[#f6f5fa]/60" />
+          {/* Only enough veil to hold text contrast over the left column — the
+              pattern stays visible everywhere else. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f6f5fa]/92 via-[#f6f5fa]/45 to-transparent" />
         </>
       )}
     </div>
