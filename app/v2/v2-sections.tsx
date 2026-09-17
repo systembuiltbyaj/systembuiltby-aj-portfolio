@@ -124,12 +124,12 @@ const heroSocials = [
 
 export function HomeSection({ go }: { go: (id: SectionId) => void }) {
   return (
-    <div className="relative mx-auto min-h-full max-w-[1340px]">
+    <div className="relative mx-auto min-h-full max-w-[1500px]">
       {/* Oversized wordmark, same device as v1. Sits behind everything and is
           hidden from assistive tech — it is texture, not content. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,17vw,14rem)] font-black leading-none tracking-[-0.05em] text-persian/[0.13] dark:text-persian/[0.22]"
+        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,19vw,17rem)] font-black leading-none tracking-[-0.055em] text-persian/[0.13] dark:text-persian/[0.22]"
       >
         PORTFOLIO
       </span>
@@ -138,7 +138,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           below lg where there is no room for it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-10 left-1/2 -top-24 hidden w-[46%] -translate-x-[14%] dark:lg:block xl:-top-28"
+        className="pointer-events-none absolute bottom-0 left-1/2 top-[13%] hidden w-[34%] -translate-x-[6%] dark:lg:block 2xl:w-[37%] 2xl:-translate-x-[10%]"
       >
         <Image
           src="/aj-hero-cutout.webp"
@@ -146,7 +146,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           fill
           priority
           sizes="600px"
-          className="object-contain object-bottom opacity-95"
+          className="object-cover object-top opacity-95"
         />
       </div>
 
@@ -158,17 +158,17 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
             Available Nationwide
           </span>
 
-          <p className={`${script.className} mt-5 text-[clamp(1.7rem,3.6vw,2.9rem)] leading-none text-black/70 dark:text-white/80`}>
+          <p className={`${script.className} mt-5 text-[clamp(1.8rem,4vw,3.4rem)] leading-none text-black/70 dark:text-white/80`}>
             Hello, I&apos;m
           </p>
-          <h1 className="mt-1.5 text-[clamp(2.6rem,7.2vw,5.8rem)] font-black leading-[0.92] tracking-[-0.045em] text-[#14101f] dark:text-white">
+          <h1 className="mt-1.5 text-[clamp(2.7rem,8vw,6.8rem)] font-black leading-[0.9] tracking-[-0.05em] text-[#14101f] dark:text-white">
             AJ BACTAD
           </h1>
-          <p className="mt-3 text-[clamp(0.85rem,1.55vw,1.15rem)] font-bold uppercase tracking-[0.13em] text-persian dark:text-yellow">
+          <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-persian dark:text-yellow">
             GHL Certified &amp; AI Automation Specialist
           </p>
 
-          <p className={`mt-5 max-w-[52ch] text-[clamp(0.95rem,1.15vw,1.15rem)] leading-relaxed ${MUTED}`}>
+          <p className={`mt-5 max-w-[50ch] text-[clamp(1rem,1.3vw,1.3rem)] leading-relaxed ${MUTED}`}>
             I don&apos;t just connect tools, I engineer the system behind your growth. CRM, funnels,
             automations, and AI, wired into one operating system that runs the busywork so you can
             scale without the chaos.
@@ -198,7 +198,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <div className="flex flex-row justify-between gap-5 lg:flex-col lg:items-end lg:gap-8">
             {heroStats.map((st) => (
               <div key={st.l} className="lg:text-right">
-                <p className="text-[clamp(2rem,4.6vw,3.6rem)] font-black leading-none text-persian dark:text-yellow">
+                <p className="text-[clamp(2.1rem,5.2vw,4.2rem)] font-black leading-none text-persian dark:text-yellow">
                   {st.n}
                 </p>
                 <p className={`mt-1.5 text-[clamp(0.68rem,0.85vw,0.8rem)] font-medium uppercase tracking-wider ${FAINT}`}>{st.l}</p>

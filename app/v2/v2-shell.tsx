@@ -251,7 +251,7 @@ export function V2Shell({
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="h-full w-full overflow-y-auto overscroll-contain px-5 pb-10 pt-24 sm:px-8 md:pt-16 lg:px-14"
+              className="h-full w-full overflow-y-auto overscroll-contain px-5 pb-10 pt-24 sm:px-8 md:pt-14 lg:px-9"
             >
               {children}
             </motion.div>
