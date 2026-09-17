@@ -16,7 +16,7 @@ type Tool = {
 
 // One array drives the whole flow. First badge in each list is the MAIN.
 // To add a tool's certs later, drop files in /public/badges/<tool>/ and list them.
-const techStack: Tool[] = [
+export const techStack: Tool[] = [
   {
     id: "ghl",
     name: "GoHighLevel",

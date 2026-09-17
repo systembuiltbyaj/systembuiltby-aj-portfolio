@@ -27,7 +27,7 @@ type VideoTestimonial = {
 
 type Testimonial = TextTestimonial | VideoTestimonial;
 
-const testimonials: Testimonial[] = [
+export const testimonials: Testimonial[] = [
   {
     type: "video",
     name: "Coach Lish Aquino",

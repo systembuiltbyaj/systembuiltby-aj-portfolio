@@ -3,7 +3,7 @@
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 // Real screens from workflows/dashboards I've built (PII-safe, no client contact data shown)
-const screens: { label: string; url: string; image?: string; pos?: string }[] = [
+export const screens: { label: string; url: string; image?: string; pos?: string }[] = [
   { label: "Monthly Revenue Report", url: "app.gohighlevel.com/reporting", image: "/workflow-screens/revenue-report.webp" },
   { label: "Sales Command Center", url: "app.gohighlevel.com/dashboard", image: "/workflow-screens/sales-dashboard.webp" },
   { label: "Post-Purchase Router", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/post-purchase-router.webp", pos: "center" },
