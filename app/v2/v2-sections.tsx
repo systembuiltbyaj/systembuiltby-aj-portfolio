@@ -85,7 +85,7 @@ const tools = [
 function ToolsMarquee() {
   const doubled = [...tools, ...tools];
   return (
-    <div className="mt-9 max-w-[560px] overflow-hidden rounded-2xl border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
+    <div className="mt-9 max-w-[560px] overflow-hidden rounded-2xl lg:mt-14 border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
       <p className={`mb-3 px-4 text-[11px] font-bold uppercase tracking-[0.16em] ${FAINT}`}>
         Tools I use daily
       </p>
@@ -129,7 +129,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           hidden from assistive tech — it is texture, not content. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,15vw,11rem)] font-black leading-none tracking-[-0.05em] text-persian/[0.13] dark:text-persian/[0.22]"
+        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,17vw,14rem)] font-black leading-none tracking-[-0.05em] text-persian/[0.13] dark:text-persian/[0.22]"
       >
         PORTFOLIO
       </span>
@@ -138,7 +138,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           below lg where there is no room for it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-1/2 top-0 hidden w-[40%] -translate-x-[10%] lg:block"
+        className="pointer-events-none absolute -bottom-8 left-1/2 top-0 hidden w-[46%] -translate-x-[14%] lg:block"
       >
         <Image
           src="/aj-hero-cutout.webp"
@@ -150,41 +150,41 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
         />
       </div>
 
-      <div className="relative grid min-h-full content-start gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:content-center lg:gap-10">
+      <div className="relative grid min-h-full content-start gap-8 lg:h-full lg:grid-cols-[1.22fr_0.78fr] lg:content-center lg:gap-10">
         {/* ---- left: the pitch ---- */}
-        <div className="relative z-10 min-w-0">
-          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black/[0.04] px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.06] dark:text-white/80">
+        <div className="relative z-10 flex min-w-0 flex-col lg:h-full lg:justify-center lg:py-4">
+          <span className="inline-flex w-fit shrink-0 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.04] px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.06] dark:text-white/80">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow" />
             Available Nationwide
           </span>
 
-          <p className={`${script.className} mt-4 text-[clamp(1.5rem,3vw,2.2rem)] leading-none text-black/70 dark:text-white/80`}>
+          <p className={`${script.className} mt-5 text-[clamp(1.7rem,3.6vw,2.9rem)] leading-none text-black/70 dark:text-white/80`}>
             Hello, I&apos;m
           </p>
-          <h1 className="mt-1 text-[clamp(2.4rem,6vw,4.4rem)] font-black leading-[0.95] tracking-[-0.04em] text-[#14101f] dark:text-white">
+          <h1 className="mt-1.5 text-[clamp(2.6rem,7.2vw,5.8rem)] font-black leading-[0.92] tracking-[-0.045em] text-[#14101f] dark:text-white">
             AJ BACTAD
           </h1>
-          <p className="mt-2.5 text-[clamp(0.8rem,1.3vw,0.95rem)] font-bold uppercase tracking-[0.13em] text-persian dark:text-yellow">
+          <p className="mt-3 text-[clamp(0.85rem,1.55vw,1.15rem)] font-bold uppercase tracking-[0.13em] text-persian dark:text-yellow">
             GHL Certified &amp; AI Automation Specialist
           </p>
 
-          <p className={`mt-4 max-w-[54ch] text-[15px] leading-relaxed ${MUTED}`}>
+          <p className={`mt-5 max-w-[52ch] text-[clamp(0.95rem,1.15vw,1.15rem)] leading-relaxed ${MUTED}`}>
             I don&apos;t just connect tools, I engineer the system behind your growth. CRM, funnels,
             automations, and AI, wired into one operating system that runs the busywork so you can
             scale without the chaos.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-3.5">
             <Link
               href="/consult"
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-persian px-8 text-[15.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
             >
               Book Free Consultation →
             </Link>
             <button
               type="button"
               onClick={() => go("builds")}
-              className="inline-flex h-12 items-center rounded-full border border-black/12 bg-black/[0.03] px-6 text-[14.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+              className="inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
             >
               Check My System Build
             </button>
@@ -194,14 +194,14 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
         </div>
 
         {/* ---- right: proof column ---- */}
-        <div className="relative z-10 flex min-w-0 flex-col gap-6 lg:items-end lg:pt-14">
-          <div className="flex flex-row justify-between gap-5 lg:flex-col lg:items-end lg:gap-5">
+        <div className="relative z-10 flex min-w-0 flex-col gap-6 lg:h-full lg:items-end lg:justify-center lg:gap-10 lg:pt-14">
+          <div className="flex flex-row justify-between gap-5 lg:flex-col lg:items-end lg:gap-8">
             {heroStats.map((st) => (
               <div key={st.l} className="lg:text-right">
-                <p className="text-[clamp(1.6rem,3.4vw,2.6rem)] font-black leading-none text-persian dark:text-yellow">
+                <p className="text-[clamp(2rem,4.6vw,3.6rem)] font-black leading-none text-persian dark:text-yellow">
                   {st.n}
                 </p>
-                <p className={`mt-1 text-[11px] font-medium uppercase tracking-wider ${FAINT}`}>{st.l}</p>
+                <p className={`mt-1.5 text-[clamp(0.68rem,0.85vw,0.8rem)] font-medium uppercase tracking-wider ${FAINT}`}>{st.l}</p>
               </div>
             ))}
           </div>
@@ -209,7 +209,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <button
             type="button"
             onClick={() => go("credentials")}
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-persian px-5 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            className="inline-flex h-[3.1rem] items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-3 11.5 3 1.8 3-1.8V22l-3-1.8L9 22z" />
@@ -226,7 +226,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
                 rel="noopener noreferrer"
                 aria-label={so.name}
                 title={so.name}
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-black/10 bg-white text-black/50 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/45 dark:hover:text-white"
+                className="flex h-[3.1rem] w-[3.1rem] items-center justify-center rounded-xl border border-black/10 bg-white text-black/50 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/45 dark:hover:text-white"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{so.icon}</svg>
               </a>
