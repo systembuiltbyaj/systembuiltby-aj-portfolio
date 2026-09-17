@@ -715,7 +715,7 @@ const INTRO_VIDEO_ID = "0QT3jCMCT74";
 function IntroVideoCard() {
   const [playing, setPlaying] = useState(false);
   return (
-    <div className={`overflow-hidden ${CARD}`}>
+    <div className={`mt-7 w-full overflow-hidden ${CARD}`}>
       <div className="relative aspect-video bg-black/10 dark:bg-black/40">
         {playing ? (
           <iframe
@@ -731,7 +731,7 @@ function IntroVideoCard() {
               src={`https://i.ytimg.com/vi/${INTRO_VIDEO_ID}/maxresdefault.jpg`}
               alt=""
               fill
-              sizes="380px"
+              sizes="(max-width: 1024px) 90vw, 780px"
               unoptimized
               className="object-cover"
             />
@@ -741,14 +741,14 @@ function IntroVideoCard() {
               aria-label="Play AJ's introduction"
               className="group absolute inset-0 flex items-center justify-center bg-black/30 transition-colors hover:bg-black/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 text-white"><path d="M8 5v14l11-7z" /></svg>
+              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
               </span>
             </button>
           </>
         )}
       </div>
-      <p className={`px-4 py-3 text-[12.5px] ${MUTED}`}>
+      <p className={`px-5 py-4 text-[13.5px] ${MUTED}`}>
         <span className="font-bold text-[#14101f] dark:text-white">Watch my intro</span> — 90 seconds
         on how I work and why the builds keep running.
       </p>
@@ -759,7 +759,7 @@ function IntroVideoCard() {
 export function AboutSection() {
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      <div className="mx-auto w-full max-w-[380px] space-y-4">
+      <div className="mx-auto w-full max-w-[380px]">
         {/* aj-bactad-photo is natively 4:5, so it fills this frame without being
             upscaled from a square — which is what looked soft before. */}
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09]">
@@ -772,7 +772,6 @@ export function AboutSection() {
             className="object-cover object-top"
           />
         </div>
-        <IntroVideoCard />
       </div>
 
       <div className="min-w-0">
@@ -801,6 +800,7 @@ export function AboutSection() {
           ))}
         </div>
 
+        <IntroVideoCard />
       </div>
     </div>
   );
