@@ -44,7 +44,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function Title({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mt-2.5 max-w-[22ch] text-[clamp(1.6rem,3.1vw,2.5rem)] font-black leading-[1.08] tracking-[-0.03em] text-[#14101f] dark:text-white">
+    <h2 className="mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white">
       {children}
     </h2>
   );
@@ -329,7 +329,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>System builds</Eyebrow>
-      <Title>Two ways to see the work.</Title>
+      <Title>Two ways in.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
         The funnels are what a client sees. The automations are what runs underneath. Pick either.
       </p>
@@ -386,7 +386,7 @@ function FunnelsPanel({ onBack }: { onBack: () => void }) {
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <BackBar onBack={onBack} label="System builds" />
       <Eyebrow>Funnels</Eyebrow>
-      <Title>Funnels and websites built to solve real problems.</Title>
+      <Title>Live client funnels.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {coachingFunnels.map((f) => (
@@ -488,7 +488,7 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <BackBar onBack={onBack} label="Automations" />
       <Eyebrow>{group.label}</Eyebrow>
-      <Title>Watch the actual build, not a highlight reel.</Title>
+      <Title>The actual build.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {group.builds.map((b) => (
@@ -557,7 +557,7 @@ export function ScreensSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Under the hood</Eyebrow>
-      <Title>The real screens, not a mockup of one.</Title>
+      <Title>Real screens. Not mockups.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
         Straight out of the accounts these systems run in. Dashboards, routers and workflow
         libraries, exactly as a client finds them on a Monday morning.
@@ -597,7 +597,7 @@ export function ServicesSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Services</Eyebrow>
-      <Title>GoHighLevel systems and the automation behind them.</Title>
+      <Title>GHL, wired to run.</Title>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2">
         {services.map((s) => (
@@ -643,7 +643,7 @@ export function CredentialsSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Credentials &amp; recognition</Eyebrow>
-      <Title>Certified across the stack I actually build on.</Title>
+      <Title>Certified across the stack.</Title>
 
       <div className="mt-8 grid gap-4 lg:grid-cols-[300px_1fr]">
         <div className="space-y-2.5">
@@ -755,7 +755,7 @@ export function TestimonialsSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Testimonials</Eyebrow>
-      <Title>What the people I built for say about the work.</Title>
+      <Title>In their words.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((t) => (
@@ -897,7 +897,7 @@ export function AboutSection() {
 
       <div className="min-w-0">
         <Eyebrow>About</Eyebrow>
-        <Title>From Amazon operations to building the systems businesses run on.</Title>
+        <Title>Operator first. Builder second.</Title>
 
         <div className={`mt-5 space-y-3.5 text-[14.5px] leading-relaxed ${MUTED}`}>
           <p>
@@ -953,8 +953,8 @@ export function ContactSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[860px] flex-col items-center justify-start text-center lg:justify-center">
       <Eyebrow>Contact</Eyebrow>
-      <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black leading-[1.03] tracking-[-0.035em] text-[#14101f] dark:text-white">
-        Tell me what keeps breaking.
+      <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black uppercase leading-[1.02] tracking-[-0.015em] text-[#14101f] dark:text-white">
+        Tell me what breaks.
         <br />
         <span className="text-persian dark:text-yellow">I&apos;ll map the fix.</span>
       </h2>

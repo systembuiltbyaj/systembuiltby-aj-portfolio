@@ -152,13 +152,19 @@ export function V2Shell({
             title="Open the main site"
             className="group shrink-0"
           >
-            <span className="relative block h-14 w-14 transition-transform group-hover:scale-105">
+            <span className="relative block h-14 w-14 transition-transform group-hover:scale-110">
+              {/* Slow halo behind the mark so it reads as alive without
+                  blinking at someone trying to read the page. */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-1 rounded-full bg-persian/35 blur-lg motion-safe:animate-pulse dark:bg-persian/45"
+              />
               <Image
-                src={dark ? "/aj-mark-dark.webp" : "/aj-mark-light.webp"}
+                src={dark ? "/aj-mark-dark.webp" : "/aj-mark-violet.webp"}
                 alt=""
                 fill
                 sizes="56px"
-                className="object-contain"
+                className="relative object-contain drop-shadow-[0_2px_8px_rgba(94,23,235,0.45)]"
               />
             </span>
           </Link>
