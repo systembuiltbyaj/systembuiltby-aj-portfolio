@@ -371,7 +371,7 @@ function FunnelsPanel({ onBack }: { onBack: () => void }) {
             <span className="flex items-center justify-between gap-3 p-4">
               <span className="min-w-0">
                 <span className="block truncate text-[14.5px] font-bold text-[#14101f] dark:text-white">{f.title}</span>
-                <span className={`mt-0.5 block truncate text-[12.5px] ${MUTED}`}>{f.subtitle}</span>
+                <span className={`mt-0.5 block text-[12.5px] leading-snug ${MUTED}`}>{f.subtitle}</span>
               </span>
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
