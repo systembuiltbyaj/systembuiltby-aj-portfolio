@@ -261,7 +261,7 @@ const AUTOMATION_GROUPS: {
 }[] = [
   {
     id: "client",
-    label: "Clients Real Project",
+    label: "GHL Project",
     accent: "#f6cb1f",
     builds: clientProjects,
     blurb: "Real client builds \u2014 planning and funnel setup through CRM automation, testing and handover. Each one is designed around an actual business process, not a demo.",
@@ -274,11 +274,12 @@ const AUTOMATION_GROUPS: {
     blurb: "GoHighLevel walkthroughs covering funnels, workflows, pipelines, calendars, subaccounts and reusable snapshots for service businesses and agencies.",
   },
   {
-    id: "claude",
-    label: "Claude Test Project",
-    accent: "#D97757",
-    builds: claudeProjects,
-    blurb: "Claude-powered builds for research, content systems, documentation, knowledge management and AI-assisted workflows that support real operations.",
+    // No builds recorded yet; the chooser renders this as coming soon.
+    id: "agents",
+    label: "AI Agent Projects",
+    accent: "#8b5cf6",
+    builds: [],
+    blurb: "Agents that qualify leads, answer FAQs from a knowledge base, summarise information, trigger follow-ups and hand complex cases to a human.",
   },
   {
     id: "zapier",
@@ -295,12 +296,11 @@ const AUTOMATION_GROUPS: {
     blurb: "n8n experiments for heavier logic \u2014 API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
   },
   {
-    // No builds recorded yet; the chooser renders this as coming soon.
-    id: "agents",
-    label: "AI Agent Projects",
-    accent: "#8b5cf6",
-    builds: [],
-    blurb: "Agents that qualify leads, answer FAQs from a knowledge base, summarise information, trigger follow-ups and hand complex cases to a human.",
+    id: "claude",
+    label: "Claude Test Project",
+    accent: "#D97757",
+    builds: claudeProjects,
+    blurb: "Claude-powered builds for research, content systems, documentation, knowledge management and AI-assisted workflows that support real operations.",
   },
 ];
 
@@ -496,9 +496,13 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
             {/* Thumbnails are designed graphics with text on them, so they are
                 contained rather than cropped — object-cover cut the titles off. */}
             <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
-              {playing === b.title && b.videoId ? (
+              {playing === b.title && (b.videoId || b.vimeoId) ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${b.videoId}?autoplay=1`}
+                  src={
+                    b.vimeoId
+                      ? `https://player.vimeo.com/video/${b.vimeoId}?autoplay=1`
+                      : `https://www.youtube.com/embed/${b.videoId}?autoplay=1`
+                  }
                   title={b.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
                   allowFullScreen
@@ -516,7 +520,7 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
                       </span>
                     </span>
                   )}
-                  {b.videoId && (
+                  {(b.videoId || b.vimeoId) && (
                     <button
                       type="button"
                       onClick={() => setPlaying(b.title)}
@@ -773,18 +777,26 @@ export function TestimonialsSection() {
                 ) : (
                   <>
                     {/* Verticals are Shorts: blur a copy behind so the frame fills without cropping faces. */}
-                    {t.poster && t.vertical && (
-                      <Image src={t.poster} alt="" fill sizes="380px" className="scale-110 object-cover blur-xl" />
-                    )}
-                    {t.poster && (
-                      <Image
-                        src={t.poster}
-                        alt=""
-                        fill
-                        sizes="380px"
-                        className={t.vertical ? "object-contain" : "object-cover"}
-                      />
-                    )}
+                    {/* Not every video has a custom poster; fall back to
+                        YouTube's own still so the card is never blank. */}
+                    {(() => {
+                      const poster = t.poster ?? `https://i.ytimg.com/vi/${t.videoId}/hqdefault.jpg`;
+                      return (
+                        <>
+                          {t.vertical && (
+                            <Image src={poster} alt="" fill sizes="380px" unoptimized className="scale-110 object-cover blur-xl" />
+                          )}
+                          <Image
+                            src={poster}
+                            alt=""
+                            fill
+                            sizes="380px"
+                            unoptimized={!t.poster}
+                            className={t.vertical ? "object-contain" : "object-cover"}
+                          />
+                        </>
+                      );
+                    })()}
                     <button
                       type="button"
                       onClick={() => setPlaying(t.name)}
@@ -880,10 +892,10 @@ function IntroVideoCard() {
 export function AboutSection() {
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      <div className="mx-auto w-full max-w-[380px]">
+      <div className="mx-auto w-full max-w-[380px] lg:h-full">
         {/* aj-bactad-photo is natively 4:5, so it fills this frame without being
             upscaled from a square — which is what looked soft before. */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09]">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] lg:aspect-auto lg:h-full">
           <Image
             src="/aj-bactad-photo.webp"
             alt="AJ Bactad"
