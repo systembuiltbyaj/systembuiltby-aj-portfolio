@@ -27,7 +27,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "How I present a real client proposal as a GoHighLevel and AI Automation Consultant. I turn the client's current problems into a clear process map, CRM structure, automation plan, and complete system — all before starting the actual build.",
     emoji: "🤝",
-    image: "/system-builds/ghl-client-proposal.webp",
+    image: "/system-builds/ghl-proposal-walkthrough.webp",
     videoId: "wxAqeT5mdhQ",
   },
   {
@@ -36,7 +36,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "See how I approach a complete GoHighLevel client build from start to finish. This walkthrough covers how I plan, build, connect, test, and hand over a full system including funnels, pipelines, workflows, products, memberships, and lead nurture. It shows my process for turning a client's requirements into a clean, automated, and scalable GoHighLevel system.",
     emoji: "🏗️",
-    image: "/system-builds/ghl-client-system-build.webp",
+    image: "/system-builds/ghl-full-system-build.webp",
     videoId: "n3HtTo7JG6A",
     duration: "32:00",
   },
@@ -46,7 +46,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "A complete AI Automation Course — step-by-step video lessons, real automation examples, and GHL + AI agent integrations, plus workflow blueprints and bonus templates. Everything to go from beginner to automation pro.",
     emoji: "🎓",
-    image: "/system-builds/ai-automation-course.webp",
+    image: "/system-builds/ghl-ai-automation-course.webp",
     videoId: "7XCfAifD378",
   },
   {
@@ -55,7 +55,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "The moment a customer buys a course on the site, a Zapier webhook fires an instant order notification into our ClickUp channel, every sale logged in real time, so the team never misses an order. Fully automated, zero manual checking.",
     emoji: "📋",
-    image: "/system-builds/sb-ghl-clickup.webp",
+    image: "/system-builds/ghl-clickup-alert.webp",
     videoId: "cBkmitMksrk",
   },
   {
@@ -64,7 +64,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "Bulk-migrate a WooCommerce store into GoHighLevel, an automation workflow that fetches products, maps fields (price, stock, etc.), creates/updates them in GHL, syncs media, and confirms completion. Category sync + inventory updates included.",
     emoji: "🛒",
-    image: "/system-builds/migrating-woocommerce-ghl.webp",
+    image: "/system-builds/ghl-woocommerce-migration.webp",
     videoId: "SlZROJx4Obo",
   },
   {
@@ -73,7 +73,7 @@ export const clientProjects: SystemBuild[] = [
     description:
       "Calendar sync, multi-touch reminders, no-show recovery, and post-appointment follow-up, built from scratch for myoldretirement.com.",
     emoji: "📅",
-    image: "/system-builds/appointment-booking.webp",
+    image: "/system-builds/ghl-appointment-booking.webp",
     videoId: "9FOymB9sZEs",
   },
 ];
