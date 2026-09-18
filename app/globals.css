@@ -258,6 +258,58 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ------------------------------------------------------------------ */
+/*  v2 motion                                                          */
+/* ------------------------------------------------------------------ */
+
+/* v2 sections mount on navigation rather than scrolling into view, so
+   entrances are keyed to mount. Kept short and small deliberately, the
+   point is that the panel arrives, not that it performs. */
+@keyframes v2-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.v2-rise {
+  animation: v2-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Hovering a service card runs it: a signal travels the card the way it
+   travels the workflow the card describes, then the steps fire in order.
+   Brand violet into gold, the same pair .glow-border uses. */
+@keyframes v2-signal {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+.v2-wired::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  opacity: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, #5e17eb 38%, #f6cb1f 68%, transparent);
+}
+.v2-wired:hover::after,
+.v2-wired:focus-within::after {
+  opacity: 1;
+  animation: v2-signal 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes v2-step {
+  0%, 100% { transform: scale(1); }
+  45%      { transform: scale(2.4); }
+}
+.v2-wired:hover .v2-step,
+.v2-wired:focus-within .v2-step {
+  animation: v2-step 0.5s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-wired:hover::after,
+  .v2-wired:focus-within::after { opacity: 0; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
 import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels } from "@/app/projects/projects-content";
@@ -36,7 +36,7 @@ const FAINT = "text-black/40 dark:text-white/40";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-persian dark:text-persian-light">
+    <p className="v2-rise text-[11px] font-bold uppercase tracking-[0.2em] text-persian dark:text-persian-light">
       {children}
     </p>
   );
@@ -44,7 +44,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function Title({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white">
+    <h2 className="v2-rise mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white" style={{ animationDelay: "70ms" }}>
       {children}
     </h2>
   );
@@ -57,7 +57,19 @@ function Title({ children }: { children: React.ReactNode }) {
 function ScrollGrid({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <div className="-mx-1 mt-7 max-h-[calc(100dvh-19rem)] overflow-y-auto overscroll-contain px-1 pb-1">
-      <div className={className}>{children}</div>
+      <div className={className}>
+        {/* Cards arrive in reading order. Cloning rather than wrapping keeps
+            each card the grid item, so no layout changes. The delay is capped
+            so a 23-item list does not leave the last card waiting a second. */}
+        {Children.map(children, (child, i) =>
+          isValidElement<{ className?: string; style?: React.CSSProperties }>(child)
+            ? cloneElement(child, {
+                className: `${child.props.className ?? ""} v2-rise`,
+                style: { ...child.props.style, animationDelay: `${110 + Math.min(i, 8) * 45}ms` },
+              })
+            : child,
+        )}
+      </div>
     </div>
   );
 }
@@ -321,7 +333,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       title: "Automations",
       blurb: "What they never see. The workflows chasing leads at 2am, recorded end to end with nothing edited out.",
       count: `${allBuilds.length} walkthroughs`,
-      art: clientProjects[0]?.image ?? "",
+      art: "/system-builds/ghl-claude-tutorial.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
     },
   ];
@@ -335,12 +347,13 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       </p>
 
       <div className="mt-8 grid gap-5 md:grid-cols-2">
-        {options.map((o) => (
+        {options.map((o, i) => (
           <button
             key={o.id}
             type="button"
             onClick={() => onPick(o.id)}
-            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+            style={{ animationDelay: `${110 + i * 90}ms` }}
+            className={`v2-rise group overflow-hidden text-left transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_14px_38px_-16px_rgba(94,23,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/8] overflow-hidden bg-black/5 dark:bg-black/40">
               {o.art && <Image src={o.art} alt="" fill sizes="620px" className="object-cover opacity-85 transition-opacity group-hover:opacity-100" />}
@@ -605,9 +618,12 @@ export function ServicesSection() {
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2">
         {services.map((s) => (
-          <div key={s.title} className={`p-5 ${CARD}`}>
+          <div
+            key={s.title}
+            className={`v2-wired group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_10px_30px_-12px_rgba(94,23,235,0.35)] ${CARD}`}
+          >
             <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-black/[0.03] text-xl dark:border-white/10 dark:bg-white/[0.06]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-black/[0.03] text-xl transition-transform duration-300 group-hover:scale-110 dark:border-white/10 dark:bg-white/[0.06]">
                 {s.icon}
               </span>
               <div className="min-w-0">
@@ -616,9 +632,12 @@ export function ServicesSection() {
               </div>
             </div>
             <ul className="mt-4 space-y-1.5 border-t border-black/[0.07] pt-3.5 dark:border-white/[0.06]">
-              {s.items.slice(0, 3).map((it: string) => (
+              {s.items.slice(0, 3).map((it: string, i: number) => (
                 <li key={it} className={`flex gap-2.5 text-[12.5px] leading-relaxed ${MUTED}`}>
-                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-persian dark:bg-yellow" />
+                  <span
+                    className="v2-step mt-[7px] h-1 w-1 shrink-0 rounded-full bg-persian dark:bg-yellow"
+                    style={{ animationDelay: `${i * 110}ms` }}
+                  />
                   {it}
                 </li>
               ))}
