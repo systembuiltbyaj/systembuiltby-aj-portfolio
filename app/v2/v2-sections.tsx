@@ -256,17 +256,52 @@ export function BuildsSection() {
 
 /* The five groups mirror the sections on the v1 /system-builds page, accent
    colours included, so both pages describe the work the same way. */
-const AUTOMATION_GROUPS = [
-  { id: "client", label: "Clients Real Project", accent: "#f6cb1f", builds: clientProjects,
-    blurb: "Paid client systems, planning through handover." },
-  { id: "ghl", label: "GHL Tutorial", accent: "#5B9DF9", builds: ajTutorials,
-    blurb: "GoHighLevel walkthroughs and teardowns." },
-  { id: "claude", label: "Claude Test Project", accent: "#D97757", builds: claudeProjects,
-    blurb: "What Claude builds when pointed at real work." },
-  { id: "zapier", label: "Zapier Test Project", accent: "#FF8A3D", builds: zapierTutorials,
-    blurb: "Zaps, webhooks and multi-path routing." },
-  { id: "n8n", label: "n8n Test Project", accent: "#EA4B71", builds: n8nProjects,
-    blurb: "Self-hosted orchestration experiments." },
+const AUTOMATION_GROUPS: {
+  id: string; label: string; accent: string; builds: typeof clientProjects; blurb: string;
+}[] = [
+  {
+    id: "client",
+    label: "Clients Real Project",
+    accent: "#f6cb1f",
+    builds: clientProjects,
+    blurb: "Real client builds \u2014 planning and funnel setup through CRM automation, testing and handover. Each one is designed around an actual business process, not a demo.",
+  },
+  {
+    id: "ghl",
+    label: "GHL Tutorial",
+    accent: "#5B9DF9",
+    builds: ajTutorials,
+    blurb: "GoHighLevel walkthroughs covering funnels, workflows, pipelines, calendars, subaccounts and reusable snapshots for service businesses and agencies.",
+  },
+  {
+    id: "claude",
+    label: "Claude Test Project",
+    accent: "#D97757",
+    builds: claudeProjects,
+    blurb: "Claude-powered builds for research, content systems, documentation, knowledge management and AI-assisted workflows that support real operations.",
+  },
+  {
+    id: "zapier",
+    label: "Zapier Test Project",
+    accent: "#FF8A3D",
+    builds: zapierTutorials,
+    blurb: "Zapier automations connecting forms, email, Slack, Discord, Sheets and CRMs \u2014 multi-step workflows, webhooks, filters, paths and reliable data routing.",
+  },
+  {
+    id: "n8n",
+    label: "n8n Test Project",
+    accent: "#EA4B71",
+    builds: n8nProjects,
+    blurb: "n8n experiments for heavier logic \u2014 API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
+  },
+  {
+    // No builds recorded yet; the chooser renders this as coming soon.
+    id: "agents",
+    label: "AI Agent Projects",
+    accent: "#8b5cf6",
+    builds: [],
+    blurb: "Agents that qualify leads, answer FAQs from a knowledge base, summarise information, trigger follow-ups and hand complex cases to a human.",
+  },
 ];
 
 function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
@@ -411,9 +446,9 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
               {g.builds[0]?.image ? (
                 <Image src={g.builds[0].image} alt="" fill sizes="420px" className="object-contain" />
               ) : (
-                /* Some builds are still being recorded and have no thumbnail. */
-                <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-70">
-                  {g.builds[0]?.emoji}
+                /* No artwork yet: an unrecorded build, or a group with none. */
+                <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-60">
+                  {g.builds[0]?.emoji ?? "✨"}
                 </span>
               )}
               <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
@@ -421,7 +456,9 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
                 className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
                 style={{ background: g.accent }}
               >
-                {g.builds.length} {g.builds.length === 1 ? "build" : "builds"}
+                {g.builds.length === 0
+                  ? "Coming soon"
+                  : `${g.builds.length} ${g.builds.length === 1 ? "build" : "builds"}`}
               </span>
               <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
                 {g.label}
