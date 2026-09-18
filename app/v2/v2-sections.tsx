@@ -102,8 +102,8 @@ function ToolsMarquee() {
         Tools I use daily
       </p>
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#f6f5fa] to-transparent dark:from-[#0d0a18]" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#f6f5fa] to-transparent dark:from-[#0d0a18]" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#e9e7ee] to-transparent dark:from-[#0d0a18]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e9e7ee] to-transparent dark:from-[#0d0a18]" />
         <ul className="marquee-scroll flex w-max gap-2.5 motion-reduce:[animation:none]">
           {doubled.map((t, i) => (
             <li
@@ -173,7 +173,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <p className={`${script.className} mt-5 text-[clamp(1.8rem,4vw,3.4rem)] leading-none text-black/70 dark:text-white/80`}>
             Hello, I&apos;m
           </p>
-          <h1 className="mt-1.5 text-[clamp(2.7rem,8vw,6.8rem)] font-black leading-[0.9] tracking-[-0.05em] text-[#14101f] dark:text-white">
+          <h1 className="mt-1.5 text-[clamp(2.7rem,8vw,6.8rem)] font-black leading-[0.9] tracking-[-0.05em] text-[#231145] dark:text-white">
             AJ BACTAD
           </h1>
           <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-persian dark:text-yellow">
@@ -189,14 +189,14 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <div className="mt-7 flex flex-wrap gap-3.5">
             <Link
               href="/consult"
-              className="inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-persian px-8 text-[15.5px] font-bold text-white shadow-[0_12px_34px_-12px_rgba(94,23,235,0.9)] transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="cta-primary inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-persian px-8 text-[15.5px] font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
             >
               Book Free Consultation →
             </Link>
             <button
               type="button"
               onClick={() => go("builds")}
-              className="inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+              className="cta-lift inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
             >
               Check My System Build
             </button>
@@ -221,7 +221,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <button
             type="button"
             onClick={() => go("credentials")}
-            className="inline-flex h-[3.1rem] items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white transition-transform hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            className="cta-lift inline-flex h-[3.1rem] items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-3 11.5 3 1.8 3-1.8V22l-3-1.8L9 22z" />
@@ -1065,7 +1065,7 @@ export function ContactSection() {
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link
           href="/consult"
-          className="inline-flex h-12 items-center rounded-full bg-persian px-7 text-[14.5px] font-bold text-white transition-transform hover:scale-[1.02] dark:bg-yellow dark:text-[#08060e]"
+          className="cta-primary inline-flex h-12 items-center rounded-full bg-persian px-7 text-[14.5px] font-bold text-white dark:bg-yellow dark:text-[#08060e]"
         >
           Book a free consult
         </Link>

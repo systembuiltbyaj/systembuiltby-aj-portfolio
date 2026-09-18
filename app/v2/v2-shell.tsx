@@ -68,9 +68,10 @@ function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
         </>
       ) : (
         <>
-          {/* Only enough veil to hold text contrast over the left column — the
-              pattern stays visible everywhere else. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#f6f5fa]/92 via-[#f6f5fa]/45 to-transparent" />
+          {/* Heaviest over the left column where the copy sits. It no longer
+              fades to nothing on the right: bare backdrop there read as glare
+              against the smoke ground. The dot pattern still shows through. */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#e9e7ee]/94 via-[#e9e7ee]/62 to-[#e9e7ee]/55" />
         </>
       )}
     </div>
@@ -137,7 +138,7 @@ export function V2Shell({
 
   return (
     <div>
-      <div className="relative h-[100dvh] w-full overflow-hidden bg-[#f6f5fa] text-[#14101f] transition-colors duration-300 dark:bg-[#08060e] dark:text-[#ece9f4]">
+      <div className="relative h-[100dvh] w-full overflow-hidden bg-[#e9e7ee] text-[#14101f] transition-colors duration-300 dark:bg-[#08060e] dark:text-[#ece9f4]">
         <GlobeBackdrop still={Boolean(reduce)} dark={dark} />
 
         {/* ------------------------------------------------ rail */}
@@ -246,7 +247,7 @@ export function V2Shell({
         {/* ------------------------------------------------ floating CTA */}
         <Link
           href="/consult"
-          className="absolute right-5 top-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-persian px-5 text-sm font-bold text-white shadow-[0_10px_34px_-8px_rgba(94,23,235,0.55)] transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian max-sm:right-4 max-sm:h-10 max-sm:px-4 max-sm:text-[13px]"
+          className="cta-lift absolute right-5 top-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-persian px-5 text-sm font-bold text-white shadow-[0_10px_34px_-8px_rgba(94,23,235,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian max-sm:right-4 max-sm:h-10 max-sm:px-4 max-sm:text-[13px]"
         >
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
