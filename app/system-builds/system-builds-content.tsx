@@ -85,7 +85,7 @@ export const ajTutorials: SystemBuild[] = [
     description:
       "Step-by-step GHL workflow, capture a snapshot of an account, spin up a new subaccount, and load the snapshot in. Fast, easy, repeatable.",
     emoji: "📸",
-    image: "/system-builds/snapshot-tutorial.webp",
+    image: "/system-builds/ghl-snapshot-tutorial.webp",
     videoId: "OQXXNVjJfgE",
   },
   {
@@ -94,7 +94,7 @@ export const ajTutorials: SystemBuild[] = [
     description:
       "Build a high-converting funnel from scratch, Attract · Engage · Convert · Retain. Built with HighLevel (built-in) or Vercel. Step-by-step, no experience needed.",
     emoji: "🎯",
-    image: "/system-builds/funnel-tutorial.webp",
+    image: "/system-builds/ghl-funnel-tutorial.webp",
     videoId: "iIZPsP7MTYs",
   },
   {
@@ -103,7 +103,7 @@ export const ajTutorials: SystemBuild[] = [
     description:
       "Connect Claude to GoHighLevel via the GHL MCP and run your account with AI, lead research, content creation, automations, and follow-ups. Step-by-step, beginner-friendly.",
     emoji: "🤖",
-    image: "/system-builds/how-to-use-claude.webp",
+    image: "/system-builds/ghl-claude-tutorial.webp",
     vimeoId: "1197634726",
   },
 ];
