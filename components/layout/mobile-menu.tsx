@@ -113,7 +113,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <div className="flex shrink-0 items-center justify-between border-b border-white/[0.08] px-4 py-4">
               <div className="flex items-center gap-2.5">
                 <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-[9px] bg-white/[0.06] ring-1 ring-white/[0.1]">
-                  <Image src="/aj-logo-mark.webp" alt="AJ" fill className="object-contain p-1" />
+                  <Image src="/aj-mark-dark.webp" alt="AJ" fill className="object-contain p-1" />
                 </span>
                 <span className="text-[13px] font-extrabold leading-tight text-white">
                   System Built <span className="text-yellow">By AJ</span>

@@ -153,7 +153,13 @@ export function V2Shell({
             className="group shrink-0"
           >
             <span className="relative block h-14 w-14 transition-transform group-hover:scale-105">
-              <Image src="/aj-logo-mark.webp" alt="" fill sizes="56px" className="object-contain drop-shadow-[0_2px_10px_rgba(94,23,235,0.55)]" />
+              <Image
+                src={dark ? "/aj-mark-dark.webp" : "/aj-mark-light.webp"}
+                alt=""
+                fill
+                sizes="56px"
+                className="object-contain"
+              />
             </span>
           </Link>
 

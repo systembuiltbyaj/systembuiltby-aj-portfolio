@@ -246,11 +246,28 @@ type BuildTab = "funnels" | "automations";
 
 export function BuildsSection() {
   const [tab, setTab] = useState<BuildTab | null>(null);
-  if (!tab) return <BuildsChooser onPick={setTab} />;
-  return tab === "funnels"
-    ? <FunnelsPanel onBack={() => setTab(null)} />
-    : <AutomationsPanel onBack={() => setTab(null)} />;
+  const [cat, setCat] = useState<string | null>(null);
+
+  if (!tab) return <BuildsChooser onPick={(t) => { setTab(t); setCat(null); }} />;
+  if (tab === "funnels") return <FunnelsPanel onBack={() => setTab(null)} />;
+  if (!cat) return <AutomationsChooser onBack={() => setTab(null)} onPick={setCat} />;
+  return <AutomationsPanel catId={cat} onBack={() => setCat(null)} />;
 }
+
+/* The five groups mirror the sections on the v1 /system-builds page, accent
+   colours included, so both pages describe the work the same way. */
+const AUTOMATION_GROUPS = [
+  { id: "client", label: "Clients Real Project", accent: "#f6cb1f", builds: clientProjects,
+    blurb: "Paid client systems, planning through handover." },
+  { id: "ghl", label: "GHL Tutorial", accent: "#5B9DF9", builds: ajTutorials,
+    blurb: "GoHighLevel walkthroughs and teardowns." },
+  { id: "claude", label: "Claude Test Project", accent: "#D97757", builds: claudeProjects,
+    blurb: "What Claude builds when pointed at real work." },
+  { id: "zapier", label: "Zapier Test Project", accent: "#FF8A3D", builds: zapierTutorials,
+    blurb: "Zaps, webhooks and multi-path routing." },
+  { id: "n8n", label: "n8n Test Project", accent: "#EA4B71", builds: n8nProjects,
+    blurb: "Self-hosted orchestration experiments." },
+];
 
 function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
   const options: {
@@ -316,7 +333,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
   );
 }
 
-function BackBar({ onBack }: { onBack: () => void }) {
+function BackBar({ onBack, label }: { onBack: () => void; label: string }) {
   return (
     <button
       type="button"
@@ -324,7 +341,7 @@ function BackBar({ onBack }: { onBack: () => void }) {
       className="mb-4 inline-flex h-11 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.03] pl-3 pr-4 text-[13px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
     >
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
-      System builds
+      {label}
     </button>
   );
 }
@@ -332,7 +349,7 @@ function BackBar({ onBack }: { onBack: () => void }) {
 function FunnelsPanel({ onBack }: { onBack: () => void }) {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <BackBar onBack={onBack} />
+      <BackBar onBack={onBack} label="System builds" />
       <Eyebrow>Funnels</Eyebrow>
       <Title>Funnels and websites built to solve real problems.</Title>
 
@@ -346,7 +363,7 @@ function FunnelsPanel({ onBack }: { onBack: () => void }) {
             className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/10] overflow-hidden" style={{ background: `linear-gradient(135deg, ${f.gradientFrom}, ${f.gradientTo})` }}>
-              {f.thumbnail && <Image src={f.thumbnail} alt="" fill sizes="420px" className="object-cover" />}
+              {f.thumbnail && <Image src={f.thumbnail} alt="" fill sizes="420px" className="object-contain" />}
               <span className="absolute left-3 top-3 rounded-full bg-persian px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-white shadow-lg">
                 GoHighLevel build
               </span>
@@ -370,19 +387,78 @@ function FunnelsPanel({ onBack }: { onBack: () => void }) {
   );
 }
 
-function AutomationsPanel({ onBack }: { onBack: () => void }) {
+/** Second level: pick which stack of automations to browse. */
+function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (id: string) => void }) {
+  return (
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+      <BackBar onBack={onBack} label="System builds" />
+      <Eyebrow>Automations</Eyebrow>
+      <Title>Pick a stack.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        Client work first, then the builds I broke on purpose to learn each tool.
+      </p>
+
+      <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {AUTOMATION_GROUPS.map((g) => (
+          <button
+            key={g.id}
+            type="button"
+            onClick={() => onPick(g.id)}
+            disabled={g.builds.length === 0}
+            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
+          >
+            <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
+              {g.builds[0]?.image ? (
+                <Image src={g.builds[0].image} alt="" fill sizes="420px" className="object-contain" />
+              ) : (
+                /* Some builds are still being recorded and have no thumbnail. */
+                <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-70">
+                  {g.builds[0]?.emoji}
+                </span>
+              )}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+              <span
+                className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
+                style={{ background: g.accent }}
+              >
+                {g.builds.length} {g.builds.length === 1 ? "build" : "builds"}
+              </span>
+              <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
+                {g.label}
+              </span>
+            </span>
+            <span className={`flex items-center justify-between gap-3 p-4 text-[12.5px] leading-relaxed ${MUTED}`}>
+              {g.blurb}
+              <span
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-black/50 dark:text-white/60"
+                style={{ borderColor: g.accent + "66" }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </span>
+          </button>
+        ))}
+      </ScrollGrid>
+    </div>
+  );
+}
+
+function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void }) {
   const [playing, setPlaying] = useState<string | null>(null);
+  const group = AUTOMATION_GROUPS.find((g) => g.id === catId) ?? AUTOMATION_GROUPS[0];
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <BackBar onBack={onBack} />
-      <Eyebrow>Automations</Eyebrow>
+      <BackBar onBack={onBack} label="Automations" />
+      <Eyebrow>{group.label}</Eyebrow>
       <Title>Watch the actual build, not a highlight reel.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {allBuilds.map((b) => (
+        {group.builds.map((b) => (
           <div key={b.title} className={`overflow-hidden ${CARD}`}>
-            <div className="relative aspect-[16/9] bg-black/10 dark:bg-black/40">
+            {/* Thumbnails are designed graphics with text on them, so they are
+                contained rather than cropped — object-cover cut the titles off. */}
+            <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
               {playing === b.title && b.videoId ? (
                 <iframe
                   src={`https://www.youtube.com/embed/${b.videoId}?autoplay=1`}
@@ -393,7 +469,16 @@ function AutomationsPanel({ onBack }: { onBack: () => void }) {
                 />
               ) : (
                 <>
-                  {b.image && <Image src={b.image} alt="" fill sizes="420px" className="object-cover" />}
+                  {b.image ? (
+                    <Image src={b.image} alt="" fill sizes="420px" className="object-contain" />
+                  ) : (
+                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                      <span className="text-5xl opacity-70">{b.emoji}</span>
+                      <span className={`text-[11px] font-bold uppercase tracking-wider ${FAINT}`}>
+                        Recording in progress
+                      </span>
+                    </span>
+                  )}
                   {b.videoId && (
                     <button
                       type="button"
@@ -413,7 +498,7 @@ function AutomationsPanel({ onBack }: { onBack: () => void }) {
               )}
             </div>
             <div className="p-4">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider text-persian dark:text-persian-light">{b.category}</span>
+              <span className="text-[10.5px] font-bold uppercase tracking-wider" style={{ color: group.accent }}>{b.category}</span>
               <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
               <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
             </div>
@@ -421,12 +506,11 @@ function AutomationsPanel({ onBack }: { onBack: () => void }) {
         ))}
       </ScrollGrid>
       <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
-        All {allBuilds.length} recorded walkthroughs
+        {group.builds.length} in {group.label}
       </p>
     </div>
   );
 }
-
 
 /* ------------------------------------------------------------------ */
 /*  Under the hood — real screens                                      */
