@@ -310,6 +310,84 @@
   .v2-wired:focus-within::after { opacity: 0; }
 }
 
+/* ------------------------------------------------------------------ */
+/*  CTA motion candidates  (preview at /v2/motion-preview)             */
+/*  Four treatments to pick from. Once one is chosen the other three   */
+/*  come out; nothing here is applied to a live CTA yet.               */
+/* ------------------------------------------------------------------ */
+
+/* Shared: every candidate needs a positioned, clipped box. */
+.cta-lift, .cta-sweep, .cta-ring, .cta-wipe { position: relative; overflow: hidden; }
+
+/* 1 · Magnetic lift — the button rises and its shadow spreads under it. */
+.cta-lift {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cta-lift:hover, .cta-lift:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 40px -12px rgba(94, 23, 235, 0.85);
+}
+
+/* 2 · Signal sweep — a gold pass crosses the button, the same signal the
+   service cards run. Consistent with the rest of the system. */
+@keyframes cta-sweep-pass {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(220%) skewX(-18deg); }
+}
+.cta-sweep { transition: transform 0.25s ease; }
+.cta-sweep::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 42%;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(246, 203, 31, 0.75), transparent);
+}
+.cta-sweep:hover, .cta-sweep:focus-visible { transform: scale(1.02); }
+.cta-sweep:hover::after, .cta-sweep:focus-visible::after {
+  opacity: 1;
+  animation: cta-sweep-pass 0.75s ease-out;
+}
+
+/* 3 · Pulse ring — a violet ring breathes outward on its own. The only
+   candidate that moves without being touched, so it pulls the eye. */
+@keyframes cta-ring-out {
+  0%   { box-shadow: 0 0 0 0 rgba(94, 23, 235, 0.55); }
+  70%  { box-shadow: 0 0 0 14px rgba(94, 23, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(94, 23, 235, 0); }
+}
+.cta-ring {
+  overflow: visible;
+  animation: cta-ring-out 2.4s ease-out infinite;
+  transition: transform 0.25s ease;
+}
+.cta-ring:hover, .cta-ring:focus-visible {
+  transform: scale(1.03);
+  animation-duration: 1.2s;
+}
+
+/* 4 · Fill wipe — violet wipes to gold and the label flips to near-black.
+   The loudest of the four. */
+.cta-wipe { transition: color 0.3s ease 0.08s; }
+.cta-wipe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, #5e17eb, #f6cb1f);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cta-wipe:hover, .cta-wipe:focus-visible { color: #08060e; }
+.cta-wipe:hover::before, .cta-wipe:focus-visible::before { transform: scaleX(1); }
+.cta-wipe > * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-ring { animation: none; }
+  .cta-sweep:hover::after, .cta-sweep:focus-visible::after { opacity: 0; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

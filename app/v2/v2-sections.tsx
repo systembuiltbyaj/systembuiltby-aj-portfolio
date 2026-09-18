@@ -570,7 +570,11 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
 /*  Under the hood — real screens                                      */
 /* ------------------------------------------------------------------ */
 
+type ScreenItem = (typeof screens)[number];
+
 export function ScreensSection() {
+  const [open, setOpen] = useState<ScreenItem | null>(null);
+
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Under the hood</Eyebrow>
@@ -582,18 +586,32 @@ export function ScreensSection() {
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {screens.map((sc) => (
-          <figure key={sc.label} className={`overflow-hidden ${CARD}`}>
-            <span className="relative block aspect-[16/10] overflow-hidden bg-black/5 dark:bg-black/40">
+          <figure key={sc.label} className={`group overflow-hidden transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_14px_34px_-16px_rgba(94,23,235,0.45)] ${CARD}`}>
+            <button
+              type="button"
+              onClick={() => setOpen(sc)}
+              aria-label={`View ${sc.label} full size`}
+              className="relative block aspect-[16/10] w-full overflow-hidden bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-persian dark:bg-black/40"
+            >
               {sc.image && (
                 <Image
                   src={sc.image}
                   alt={sc.label}
                   fill
                   sizes="420px"
-                  className={sc.pos === "center" ? "object-cover object-center" : "object-cover object-top"}
+                  className={`transition-transform duration-500 group-hover:scale-[1.04] ${sc.pos === "center" ? "object-cover object-center" : "object-cover object-top"}`}
                 />
               )}
-            </span>
+              {/* These screenshots are dense; the cue says the full view exists. */}
+              <span className="absolute inset-0 flex items-center justify-center bg-[#08060e]/0 opacity-0 transition-all duration-300 group-hover:bg-[#08060e]/45 group-hover:opacity-100">
+                <span className="inline-flex items-center gap-2 rounded-full bg-persian px-4 py-2 text-[12.5px] font-bold text-white shadow-lg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="7" /><path d="M20 20l-4.3-4.3M11 8v6M8 11h6" />
+                  </svg>
+                  View full size
+                </span>
+              </span>
+            </button>
             <figcaption className="p-4">
               <p className="text-[14px] font-bold text-[#14101f] dark:text-white">{sc.label}</p>
               <p className={`mt-1 truncate font-mono text-[11.5px] ${FAINT}`}>{sc.url}</p>
@@ -602,6 +620,56 @@ export function ScreensSection() {
         ))}
       </ScrollGrid>
       <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>All {screens.length} screens</p>
+
+      {open && <ScreenLightbox screen={open} onClose={() => setOpen(null)} />}
+    </div>
+  );
+}
+
+/** Full-size screenshot. Escape and the backdrop both close it. */
+function ScreenLightbox({ screen, onClose }: { screen: ScreenItem; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // capture-phase stop, so the shell's arrow-key section nav does not also fire
+      e.stopPropagation();
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={screen.label}
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/88 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-[1180px]">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
+        </button>
+        {screen.image && (
+          <Image
+            src={screen.image}
+            alt={screen.label}
+            width={2400}
+            height={1500}
+            sizes="(max-width: 1240px) 96vw, 1180px"
+            className="max-h-[78dvh] w-full rounded-xl object-contain"
+          />
+        )}
+        <div className="mt-3 text-center">
+          <p className="text-[15px] font-bold text-white">{screen.label}</p>
+          <p className="mt-0.5 font-mono text-[12px] text-white/45">{screen.url}</p>
+        </div>
+      </div>
     </div>
   );
 }
