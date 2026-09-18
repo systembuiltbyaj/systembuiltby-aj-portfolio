@@ -157,8 +157,8 @@ const funnels = [
 
 export const coachingFunnels = [
   {
-    title: "Free Webinar",
-    subtitle: "AI Masterclass · Amaze",
+    title: "Free AI Masterclass",
+    subtitle: "AmazeNation × Faith Works · live",
     gradientFrom: "#1e0714",
     gradientTo: "#3f1029",
     emoji: "🎤",
@@ -173,8 +173,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Core Offer",
-    subtitle: "Build Your AI System · Amaze",
+    title: "AI Workforce Accelerator",
+    subtitle: "Build your own AI system · ₱9,897",
     gradientFrom: "#1e0714",
     gradientTo: "#3f1029",
     emoji: "⚡",
@@ -189,8 +189,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Paid Webinar",
-    subtitle: "ASVA Breakthrough",
+    title: "Amazon VA Bootcamp",
+    subtitle: "3 hours, 3 portfolio samples · ₱987",
     gradientFrom: "#1c1305",
     gradientTo: "#3d2a10",
     emoji: "\uD83C\uDF93",
@@ -206,7 +206,7 @@ export const coachingFunnels = [
   },
   {
     title: "Zack Andrei",
-    subtitle: "High-Performance Coaching",
+    subtitle: "Leadership, growth & performance coaching",
     gradientFrom: "#1a0b2e",
     gradientTo: "#3a1d6b",
     emoji: "👑",
@@ -221,8 +221,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Core Offer",
-    subtitle: "ASVA Challenge",
+    title: "ASVA Advanced",
+    subtitle: "Client-ready Amazon VA training · ₱19,987",
     gradientFrom: "#1c1305",
     gradientTo: "#3d2a10",
     emoji: "\uD83C\uDFAF",
@@ -237,8 +237,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Black Couture",
-    subtitle: "The Luxury Boudoir Experience",
+    title: "Couture Black",
+    subtitle: "Luxury boudoir studio · Boston",
     gradientFrom: "#1c0608",
     gradientTo: "#4d0d15",
     emoji: "🖤",
@@ -253,8 +253,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "AI Accelerator",
-    subtitle: "AI Automation Course · Amaze",
+    title: "AI Accelerator Webinar",
+    subtitle: "Learn AI without coding · ₱987",
     gradientFrom: "#1c1305",
     gradientTo: "#3d2a10",
     emoji: "🤖",
@@ -271,7 +271,7 @@ export const coachingFunnels = [
   },
   {
     title: "Ava Sterling",
-    subtitle: "Mindset & High Performance Coaching",
+    subtitle: "The Sterling Performance Method",
     gradientFrom: "#0f1f1a",
     gradientTo: "#2e4d3f",
     emoji: "✨",
@@ -287,7 +287,7 @@ export const coachingFunnels = [
   },
   {
     title: "Self Love Co",
-    subtitle: "The Couples Boudoir Experience",
+    subtitle: "Luxe couples boudoir portraits",
     gradientFrom: "#1c0608",
     gradientTo: "#4d0d15",
     emoji: "❤️",
@@ -302,8 +302,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "AI Workforce",
-    subtitle: "AI Workforce Accelerator · Amaze",
+    title: "AI Certification Pathway",
+    subtitle: "Four levels, for Filipino professionals",
     gradientFrom: "#1c1305",
     gradientTo: "#3d2a10",
     emoji: "⚡",
@@ -319,7 +319,7 @@ export const coachingFunnels = [
   },
   {
     title: "Kurious Group",
-    subtitle: "Your Partners in Growth · Small Business",
+    subtitle: "Marketing for portrait photography studios",
     gradientFrom: "#08201d",
     gradientTo: "#1d4d44",
     emoji: "📈",
@@ -334,8 +334,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Convert Website",
-    subtitle: "High-Converting Web Design",
+    title: "Convert",
+    subtitle: "Resort, restaurant & clinic websites",
     gradientFrom: "#1a0b3e",
     gradientTo: "#3b2d9a",
     emoji: "🌐",
@@ -350,8 +350,8 @@ export const coachingFunnels = [
     ],
   },
   {
-    title: "Website Studio",
-    subtitle: "Premium Websites & Content",
+    title: "WebDev by AJ",
+    subtitle: "Premium websites & branded content",
     gradientFrom: "#12082e",
     gradientTo: "#2e1d6b",
     emoji: "🎨",
