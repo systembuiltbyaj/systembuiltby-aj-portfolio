@@ -27,7 +27,7 @@ const solutionsDropdown: NavDropdown = {
     { label: "Badges & Certificates", emoji: "\u{1F396}", href: "/credentials", description: "GoHighLevel · Claude · n8n · Zapier" },
     { label: "System Builds", emoji: "\u{1F3AC}", href: "/system-builds", description: "Recorded walkthroughs of every build" },
     { label: "Web Showcase ⭐", emoji: "\u{1F310}", href: "/projects", description: "Explore live websites & funnels" },
-    { label: "Services", emoji: "\u{1F9E9}", href: "/services", description: "All 8 service categories" },
+    { label: "Services", emoji: "\u{1F9E9}", href: "/services", description: "GHL, automation & AI systems" },
     { label: "Packages", emoji: "\u{1F4E6}", href: "/packages", description: "Starter \u00B7 Growth \u00B7 Scale" },
   ],
 };

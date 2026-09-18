@@ -597,7 +597,7 @@ export function ServicesSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Services</Eyebrow>
-      <Title>What I build for coaches and agencies.</Title>
+      <Title>GoHighLevel systems and the automation behind them.</Title>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2">
         {services.map((s) => (
