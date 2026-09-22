@@ -233,6 +233,15 @@ export const zapierTutorials: SystemBuild[] = [
 
 export const n8nProjects: SystemBuild[] = [
   {
+    title: "7 Real-World n8n Workflows for Real Business Problems",
+    category: "n8n Automation",
+    description:
+      "Seven practical n8n workflows built to solve real business problems, contract review, order processing, customer requests, supplier files, customer data, and employee onboarding. Each one handles work a team would otherwise do by hand.",
+    emoji: "⚙️",
+    image: "/system-builds/n8n-seven-workflows.webp",
+    videoId: "Qd7NOH0qJEc",
+  },
+  {
     title: "Self-Hosted n8n Workflow",
     category: "n8n Automation",
     description:

@@ -325,7 +325,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       title: "Funnels",
       blurb: "What your client sees. Opt-ins, webinars and core offers, every one of them live and still taking bookings today.",
       count: `${coachingFunnels.length} live builds`,
-      art: coachingFunnels[0]?.thumbnail ?? "",
+      art: coachingFunnels.find((f) => f.title === "Self Love Co")?.thumbnail ?? coachingFunnels[0]?.thumbnail ?? "",
       icon: <path d="M3 5h18l-7 8v6l-4 2v-8z" />,
     },
     {
@@ -333,7 +333,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       title: "Automations",
       blurb: "What they never see. The workflows chasing leads at 2am, recorded end to end with nothing edited out.",
       count: `${allBuilds.length} walkthroughs`,
-      art: "/system-builds/ghl-claude-tutorial.webp",
+      art: "/system-builds/n8n-seven-workflows.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
     },
   ];
