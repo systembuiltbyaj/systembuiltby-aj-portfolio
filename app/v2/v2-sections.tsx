@@ -276,14 +276,14 @@ const AUTOMATION_GROUPS: {
     label: "GHL Project",
     accent: "#f6cb1f",
     builds: clientProjects,
-    blurb: "Real client builds \u2014 planning and funnel setup through CRM automation, testing and handover. Each one is designed around an actual business process, not a demo.",
+    blurb: "Real client builds — planning and funnel setup through CRM automation, testing and handover. Each one is designed around an actual business process, not a demo.",
   },
   {
-    id: "ghl",
-    label: "GHL Tutorial",
-    accent: "#5B9DF9",
-    builds: ajTutorials,
-    blurb: "GoHighLevel walkthroughs covering funnels, workflows, pipelines, calendars, subaccounts and reusable snapshots for service businesses and agencies.",
+    id: "n8n",
+    label: "N8N Project",
+    accent: "#EA4B71",
+    builds: n8nProjects,
+    blurb: "n8n experiments for heavier logic — API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
   },
   {
     // No builds recorded yet; the chooser renders this as coming soon.
@@ -294,18 +294,18 @@ const AUTOMATION_GROUPS: {
     blurb: "Agents that qualify leads, answer FAQs from a knowledge base, summarise information, trigger follow-ups and hand complex cases to a human.",
   },
   {
+    id: "ghl",
+    label: "GHL Test Project",
+    accent: "#5B9DF9",
+    builds: ajTutorials,
+    blurb: "GoHighLevel walkthroughs covering funnels, workflows, pipelines, calendars, subaccounts and reusable snapshots for service businesses and agencies.",
+  },
+  {
     id: "zapier",
     label: "Zapier Test Project",
     accent: "#FF8A3D",
     builds: zapierTutorials,
-    blurb: "Zapier automations connecting forms, email, Slack, Discord, Sheets and CRMs \u2014 multi-step workflows, webhooks, filters, paths and reliable data routing.",
-  },
-  {
-    id: "n8n",
-    label: "n8n Test Project",
-    accent: "#EA4B71",
-    builds: n8nProjects,
-    blurb: "n8n experiments for heavier logic \u2014 API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
+    blurb: "Zapier automations connecting forms, email, Slack, Discord, Sheets and CRMs — multi-step workflows, webhooks, filters, paths and reliable data routing.",
   },
   {
     id: "claude",
@@ -333,7 +333,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       title: "Automations",
       blurb: "What they never see. The workflows chasing leads at 2am, recorded end to end with nothing edited out.",
       count: `${allBuilds.length} walkthroughs`,
-      art: "/system-builds/n8n-seven-workflows.webp",
+      art: "/system-builds/ghl-proposal-walkthrough.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
     },
   ];
