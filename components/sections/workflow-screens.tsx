@@ -14,7 +14,6 @@ export const screens: { label: string; url: string; image?: string; pos?: string
   { label: "Revenue Dashboard", url: "app.gohighlevel.com/dashboard", image: "/workflow-screens/revenue-dashboard.webp" },
   { label: "Form → Sheet Sync Suite", url: "zapier.com/app/zaps", image: "/workflow-screens/zapier-zaps.webp" },
   { label: "Workflow Library", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/workflow-library.webp" },
-  { label: "High-Ticket Funnel", url: "funnels.ajautomate.co", image: "/workflow-screens/va-ladder-funnel.webp", pos: "center" },
 ];
 
 function WorkflowPlaceholder({ label }: { label: string }) {

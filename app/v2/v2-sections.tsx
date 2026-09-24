@@ -577,11 +577,11 @@ export function ScreensSection() {
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <Eyebrow>Under the hood</Eyebrow>
-      <Title>Real screens. Not mockups.</Title>
+      <Eyebrow>Real results</Eyebrow>
+      <Title>Real systems. Real automations.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        Straight out of the accounts these systems run in. Dashboards, routers and workflow
-        libraries, exactly as a client finds them on a Monday morning.
+        Dashboards, workflows, routers, and automation systems I&apos;ve built for real client
+        operations.
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
