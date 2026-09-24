@@ -18,6 +18,8 @@ export type SystemBuild = {
   vimeoId?: string;
   emoji: string;
   image?: string;
+  /** Live app link — when set, the card opens this in a new tab instead of a video. */
+  url?: string;
 };
 
 export const clientProjects: SystemBuild[] = [

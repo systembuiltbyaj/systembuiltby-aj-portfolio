@@ -270,7 +270,6 @@ export function BuildsSection() {
    colours included, so both pages describe the work the same way. */
 const AUTOMATION_GROUPS: {
   id: string; label: string; accent: string; builds: typeof clientProjects; blurb: string;
-  href?: string; image?: string;
 }[] = [
   {
     id: "client",
@@ -287,15 +286,21 @@ const AUTOMATION_GROUPS: {
     blurb: "n8n experiments for heavier logic — API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
   },
   {
-    // Live app, not a recorded walkthrough — links straight out instead of
-    // opening an internal build list.
     id: "mvp",
     label: "MVP Project",
     accent: "#8b5cf6",
-    builds: [],
-    blurb: "A plain-English reference for AI terminology, RAG, MCP, tokens, A2A — live in production, built and shipped end to end.",
-    href: "https://ai-specialist-learning-hub.vercel.app/",
-    image: "/real-apps/ai-learning-hub.webp",
+    builds: [
+      {
+        title: "AI Learning Hub",
+        category: "MVP Project",
+        description:
+          "A plain-English reference for AI terminology, RAG, MCP, tokens, A2A — live in production, built and shipped end to end.",
+        emoji: "🌐",
+        image: "/real-apps/ai-learning-hub.webp",
+        url: "https://ai-specialist-learning-hub.vercel.app/",
+      },
+    ],
+    blurb: "Full web apps I've designed, built, and shipped end to end — live in production, not a recorded walkthrough.",
   },
   {
     id: "ghl",
@@ -451,72 +456,47 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {AUTOMATION_GROUPS.map((g) => {
-          const thumb = g.image ?? g.builds[0]?.image;
-          const inner = (
-            <>
-              <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
-                {thumb ? (
-                  <Image src={thumb} alt="" fill sizes="420px" className="object-contain" />
-                ) : (
-                  /* No artwork yet: an unrecorded build, or a group with none. */
-                  <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-60">
-                    {g.builds[0]?.emoji ?? "✨"}
-                  </span>
-                )}
-                <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-                <span
-                  className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
-                  style={{ background: g.accent }}
-                >
-                  {g.href
-                    ? "Live app"
-                    : g.builds.length === 0
-                      ? "Coming soon"
-                      : `${g.builds.length} ${g.builds.length === 1 ? "build" : "builds"}`}
+        {AUTOMATION_GROUPS.map((g) => (
+          <button
+            key={g.id}
+            type="button"
+            onClick={() => onPick(g.id)}
+            disabled={g.builds.length === 0}
+            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
+          >
+            <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
+              {g.builds[0]?.image ? (
+                <Image src={g.builds[0].image} alt="" fill sizes="420px" className="object-contain" />
+              ) : (
+                /* No artwork yet: an unrecorded build, or a group with none. */
+                <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-60">
+                  {g.builds[0]?.emoji ?? "✨"}
                 </span>
-                <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
-                  {g.label}
-                </span>
-              </span>
-              <span className={`flex items-center justify-between gap-3 p-4 text-[12.5px] leading-relaxed ${MUTED}`}>
-                {g.blurb}
-                <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-black/50 dark:text-white/60"
-                  style={{ borderColor: g.accent + "66" }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-                </span>
-              </span>
-            </>
-          );
-
-          if (g.href) {
-            return (
-              <a
-                key={g.id}
-                href={g.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+              )}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+              <span
+                className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
+                style={{ background: g.accent }}
               >
-                {inner}
-              </a>
-            );
-          }
-
-          return (
-            <button
-              key={g.id}
-              type="button"
-              onClick={() => onPick(g.id)}
-              disabled={g.builds.length === 0}
-              className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
-            >
-              {inner}
-            </button>
-          );
-        })}
+                {g.builds.length === 0
+                  ? "Coming soon"
+                  : `${g.builds.length} ${g.builds.length === 1 ? "build" : "builds"}`}
+              </span>
+              <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
+                {g.label}
+              </span>
+            </span>
+            <span className={`flex items-center justify-between gap-3 p-4 text-[12.5px] leading-relaxed ${MUTED}`}>
+              {g.blurb}
+              <span
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-black/50 dark:text-white/60"
+                style={{ borderColor: g.accent + "66" }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </span>
+          </button>
+        ))}
       </ScrollGrid>
     </div>
   );
@@ -533,60 +513,94 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
       <Title>The actual build.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {group.builds.map((b) => (
-          <div key={b.title} className={`overflow-hidden ${CARD}`}>
-            {/* Thumbnails are designed graphics with text on them, so they are
-                contained rather than cropped — object-cover cut the titles off. */}
-            <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
-              {playing === b.title && (b.videoId || b.vimeoId) ? (
-                <iframe
-                  src={
-                    b.vimeoId
-                      ? `https://player.vimeo.com/video/${b.vimeoId}?autoplay=1`
-                      : `https://www.youtube.com/embed/${b.videoId}?autoplay=1`
-                  }
-                  title={b.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 h-full w-full"
-                />
-              ) : (
-                <>
-                  {b.image ? (
-                    <Image src={b.image} alt="" fill sizes="420px" className="object-contain" />
-                  ) : (
-                    <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                      <span className="text-5xl opacity-70">{b.emoji}</span>
-                      <span className={`text-[11px] font-bold uppercase tracking-wider ${FAINT}`}>
-                        Recording in progress
+        {group.builds.map((b) => {
+          const card = (
+            <>
+              {/* Thumbnails are designed graphics with text on them, so they are
+                  contained rather than cropped — object-cover cut the titles off. */}
+              <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
+                {playing === b.title && (b.videoId || b.vimeoId) ? (
+                  <iframe
+                    src={
+                      b.vimeoId
+                        ? `https://player.vimeo.com/video/${b.vimeoId}?autoplay=1`
+                        : `https://www.youtube.com/embed/${b.videoId}?autoplay=1`
+                    }
+                    title={b.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full"
+                  />
+                ) : (
+                  <>
+                    {b.image ? (
+                      <Image src={b.image} alt="" fill sizes="420px" className="object-contain" />
+                    ) : (
+                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <span className="text-5xl opacity-70">{b.emoji}</span>
+                        <span className={`text-[11px] font-bold uppercase tracking-wider ${FAINT}`}>
+                          Recording in progress
+                        </span>
                       </span>
-                    </span>
-                  )}
-                  {(b.videoId || b.vimeoId) && (
-                    <button
-                      type="button"
-                      onClick={() => setPlaying(b.title)}
-                      aria-label={`Play ${b.title}`}
-                      className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
-                    >
-                      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-persian">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
+                    )}
+                    {b.url && (
+                      <span className="absolute left-3 top-3 rounded-full bg-persian px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-white shadow-lg">
+                        Live app
                       </span>
-                    </button>
-                  )}
-                  {b.duration && (
-                    <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{b.duration}</span>
-                  )}
-                </>
-              )}
+                    )}
+                    {(b.videoId || b.vimeoId) && (
+                      <button
+                        type="button"
+                        onClick={() => setPlaying(b.title)}
+                        aria-label={`Play ${b.title}`}
+                        className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+                      >
+                        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-persian">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
+                        </span>
+                      </button>
+                    )}
+                    {b.duration && (
+                      <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{b.duration}</span>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="flex items-center justify-between gap-3 p-4">
+                <span className="min-w-0">
+                  <span className="text-[10.5px] font-bold uppercase tracking-wider" style={{ color: group.accent }}>{b.category}</span>
+                  <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
+                  <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
+                </span>
+                {b.url && (
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
+                  </span>
+                )}
+              </div>
+            </>
+          );
+
+          if (b.url) {
+            return (
+              <a
+                key={b.title}
+                href={b.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+              >
+                {card}
+              </a>
+            );
+          }
+
+          return (
+            <div key={b.title} className={`overflow-hidden ${CARD}`}>
+              {card}
             </div>
-            <div className="p-4">
-              <span className="text-[10.5px] font-bold uppercase tracking-wider" style={{ color: group.accent }}>{b.category}</span>
-              <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
-              <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </ScrollGrid>
       <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
         {group.builds.length} in {group.label}
