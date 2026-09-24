@@ -270,6 +270,7 @@ export function BuildsSection() {
    colours included, so both pages describe the work the same way. */
 const AUTOMATION_GROUPS: {
   id: string; label: string; accent: string; builds: typeof clientProjects; blurb: string;
+  href?: string; image?: string;
 }[] = [
   {
     id: "client",
@@ -286,12 +287,15 @@ const AUTOMATION_GROUPS: {
     blurb: "n8n experiments for heavier logic — API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
   },
   {
-    // No builds recorded yet; the chooser renders this as coming soon.
-    id: "agents",
-    label: "AI Agent Projects",
+    // Live app, not a recorded walkthrough — links straight out instead of
+    // opening an internal build list.
+    id: "mvp",
+    label: "MVP Project",
     accent: "#8b5cf6",
     builds: [],
-    blurb: "Agents that qualify leads, answer FAQs from a knowledge base, summarise information, trigger follow-ups and hand complex cases to a human.",
+    blurb: "A plain-English reference for AI terminology, RAG, MCP, tokens, A2A — live in production, built and shipped end to end.",
+    href: "https://ai-specialist-learning-hub.vercel.app/",
+    image: "/real-apps/ai-learning-hub.webp",
   },
   {
     id: "ghl",
@@ -447,47 +451,72 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {AUTOMATION_GROUPS.map((g) => (
-          <button
-            key={g.id}
-            type="button"
-            onClick={() => onPick(g.id)}
-            disabled={g.builds.length === 0}
-            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
-          >
-            <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
-              {g.builds[0]?.image ? (
-                <Image src={g.builds[0].image} alt="" fill sizes="420px" className="object-contain" />
-              ) : (
-                /* No artwork yet: an unrecorded build, or a group with none. */
-                <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-60">
-                  {g.builds[0]?.emoji ?? "✨"}
+        {AUTOMATION_GROUPS.map((g) => {
+          const thumb = g.image ?? g.builds[0]?.image;
+          const inner = (
+            <>
+              <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
+                {thumb ? (
+                  <Image src={thumb} alt="" fill sizes="420px" className="object-contain" />
+                ) : (
+                  /* No artwork yet: an unrecorded build, or a group with none. */
+                  <span className="absolute inset-0 flex items-center justify-center text-5xl opacity-60">
+                    {g.builds[0]?.emoji ?? "✨"}
+                  </span>
+                )}
+                <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+                <span
+                  className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
+                  style={{ background: g.accent }}
+                >
+                  {g.href
+                    ? "Live app"
+                    : g.builds.length === 0
+                      ? "Coming soon"
+                      : `${g.builds.length} ${g.builds.length === 1 ? "build" : "builds"}`}
                 </span>
-              )}
-              <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-              <span
-                className="absolute right-3 top-3 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#08060e]"
-                style={{ background: g.accent }}
+                <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
+                  {g.label}
+                </span>
+              </span>
+              <span className={`flex items-center justify-between gap-3 p-4 text-[12.5px] leading-relaxed ${MUTED}`}>
+                {g.blurb}
+                <span
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-black/50 dark:text-white/60"
+                  style={{ borderColor: g.accent + "66" }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </span>
+              </span>
+            </>
+          );
+
+          if (g.href) {
+            return (
+              <a
+                key={g.id}
+                href={g.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
               >
-                {g.builds.length === 0
-                  ? "Coming soon"
-                  : `${g.builds.length} ${g.builds.length === 1 ? "build" : "builds"}`}
-              </span>
-              <span className="absolute bottom-3 left-4 right-4 block text-[16px] font-black leading-tight text-white">
-                {g.label}
-              </span>
-            </span>
-            <span className={`flex items-center justify-between gap-3 p-4 text-[12.5px] leading-relaxed ${MUTED}`}>
-              {g.blurb}
-              <span
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-black/50 dark:text-white/60"
-                style={{ borderColor: g.accent + "66" }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </span>
-            </span>
-          </button>
-        ))}
+                {inner}
+              </a>
+            );
+          }
+
+          return (
+            <button
+              key={g.id}
+              type="button"
+              onClick={() => onPick(g.id)}
+              disabled={g.builds.length === 0}
+              className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
+            >
+              {inner}
+            </button>
+          );
+        })}
       </ScrollGrid>
     </div>
   );
