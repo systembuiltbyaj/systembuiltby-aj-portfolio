@@ -368,6 +368,34 @@ export const coachingFunnels = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Data, Premium Websites (custom-coded, one per industry)           */
+/* ------------------------------------------------------------------ */
+
+export const premiumWebsites = [
+  {
+    title: "Keel",
+    industry: "Coaching",
+    subtitle: "Operator coaching for founders at $1M to $20M",
+    url: "https://keel-coaching.vercel.app/",
+    thumbnail: "/showcase/keel-coaching.webp",
+  },
+  {
+    title: "Meridian Private Estates",
+    industry: "Real estate",
+    subtitle: "Private advisory for villas, penthouses and estates",
+    url: "https://meridian-estates.vercel.app/",
+    thumbnail: "/showcase/meridian-estates.webp",
+  },
+  {
+    title: "Halden",
+    industry: "Ecommerce",
+    subtitle: "Furniture and objects made for slow living",
+    url: "https://halden-home.vercel.app/",
+    thumbnail: "/showcase/halden-home.webp",
+  },
+];
+
+/* ------------------------------------------------------------------ */
 /*  Data, Websites                                                    */
 /* ------------------------------------------------------------------ */
 

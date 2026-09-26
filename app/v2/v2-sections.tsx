@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
 import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
-import { coachingFunnels } from "@/app/projects/projects-content";
+import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
 import {
   clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects,
 } from "@/app/system-builds/system-builds-content";
@@ -255,15 +255,32 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
 /* ------------------------------------------------------------------ */
 
 type BuildTab = "funnels" | "automations";
+type FunnelTab = "funnels" | "websites";
 
-export function BuildsSection() {
-  const [tab, setTab] = useState<BuildTab | null>(null);
-  const [cat, setCat] = useState<string | null>(null);
+/**
+ * The view comes from the URL (#live-system/<tab>/<sub>), so every level can be
+ * linked to directly. Unknown segments fall back to the level above.
+ */
+export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path: string[]) => void }) {
+  const [tab, sub] = path;
 
-  if (!tab) return <BuildsChooser onPick={(t) => { setTab(t); setCat(null); }} />;
-  if (tab === "funnels") return <FunnelsPanel onBack={() => setTab(null)} />;
-  if (!cat) return <AutomationsChooser onBack={() => setTab(null)} onPick={setCat} />;
-  return <AutomationsPanel catId={cat} onBack={() => setCat(null)} />;
+  if (tab === "funnels") {
+    const view: FunnelTab = sub === "websites" ? "websites" : "funnels";
+    return (
+      <FunnelsPanel
+        view={view}
+        onView={(v) => onPath(v === "websites" ? ["funnels", "websites"] : ["funnels"])}
+        onBack={() => onPath([])}
+      />
+    );
+  }
+  if (tab === "automations") {
+    if (sub && AUTOMATION_GROUPS.some((g) => g.id === sub)) {
+      return <AutomationsPanel catId={sub} onBack={() => onPath(["automations"])} />;
+    }
+    return <AutomationsChooser onBack={() => onPath([])} onPick={(id) => onPath(["automations", id])} />;
+  }
+  return <BuildsChooser onPick={(t: BuildTab) => onPath([t])} />;
 }
 
 /* The five groups mirror the sections on the v1 /system-builds page, accent
@@ -333,7 +350,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       id: "funnels",
       title: "Funnels",
       blurb: "What your client sees. Opt-ins, webinars and core offers, every one of them live and still taking bookings today.",
-      count: `${coachingFunnels.length} live builds`,
+      count: `${coachingFunnels.length + premiumWebsites.length} live builds`,
       art: coachingFunnels.find((f) => f.title === "Self Love Co")?.thumbnail ?? coachingFunnels[0]?.thumbnail ?? "",
       icon: <path d="M3 5h18l-7 8v6l-4 2v-8z" />,
     },
@@ -403,26 +420,102 @@ function BackBar({ onBack, label }: { onBack: () => void; label: string }) {
   );
 }
 
-function FunnelsPanel({ onBack }: { onBack: () => void }) {
+/** Both tabs render the same card, so each list is mapped onto one shape. */
+type LiveCard = {
+  key: string; title: string; subtitle: string; url: string; thumbnail: string;
+  badge: string; background?: string; cover: boolean;
+};
+
+const FUNNEL_TABS: { id: FunnelTab; label: string; title: string; footer: string; cards: LiveCard[] }[] = [
+  {
+    id: "funnels",
+    label: "GoHighLevel funnels",
+    title: "Live client funnels.",
+    footer: `All ${coachingFunnels.length} live client funnels`,
+    cards: coachingFunnels.map((f) => ({
+      key: `${f.title}-${f.subtitle}`,
+      title: f.title,
+      subtitle: f.subtitle,
+      url: f.url,
+      thumbnail: f.thumbnail,
+      badge: "GoHighLevel build",
+      background: `linear-gradient(135deg, ${f.gradientFrom}, ${f.gradientTo})`,
+      // Mockup art has its own framing, so it is contained rather than cropped.
+      cover: false,
+    })),
+  },
+  {
+    id: "websites",
+    label: "Premium websites",
+    title: "Premium websites.",
+    footer: `All ${premiumWebsites.length} premium websites`,
+    cards: premiumWebsites.map((w) => ({
+      key: w.url,
+      title: w.title,
+      subtitle: w.subtitle,
+      url: w.url,
+      thumbnail: w.thumbnail,
+      badge: w.industry,
+      // Full-bleed hero screenshots, captured at the card's own 16:10.
+      cover: true,
+    })),
+  },
+];
+
+function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: FunnelTab) => void; onBack: () => void }) {
+  const active = FUNNEL_TABS.find((t) => t.id === view) ?? FUNNEL_TABS[0];
+
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <BackBar onBack={onBack} label="System builds" />
       <Eyebrow>Funnels</Eyebrow>
-      <Title>Live client funnels.</Title>
+      <Title>{active.title}</Title>
 
-      <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {coachingFunnels.map((f) => (
+      <div role="tablist" aria-label="Live build type" className="mt-5 inline-flex w-fit gap-1 rounded-full border border-black/10 bg-black/[0.03] p-1 dark:border-white/12 dark:bg-white/[0.04]">
+        {FUNNEL_TABS.map((t) => {
+          const on = t.id === active.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => onView(t.id)}
+              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-bold transition-colors sm:gap-2 sm:px-4 sm:text-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
+                on
+                  ? "bg-persian text-white"
+                  : "text-black/55 hover:text-black dark:text-white/55 dark:hover:text-white"
+              }`}
+            >
+              {t.label}
+              <span className={`text-[11px] ${on ? "text-white/70" : FAINT}`}>{t.cards.length}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Keyed on the tab so the cards replay their entrance when it switches. */}
+      <ScrollGrid key={active.id} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {active.cards.map((f) => (
           <a
-            key={`${f.title}-${f.subtitle}`}
+            key={f.key}
             href={f.url}
             target="_blank"
             rel="noopener noreferrer"
             className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
           >
-            <span className="relative block aspect-[16/10] overflow-hidden" style={{ background: `linear-gradient(135deg, ${f.gradientFrom}, ${f.gradientTo})` }}>
-              {f.thumbnail && <Image src={f.thumbnail} alt="" fill sizes="420px" className="object-contain" />}
+            <span className="relative block aspect-[16/10] overflow-hidden bg-black/[0.06] dark:bg-black/50" style={f.background ? { background: f.background } : undefined}>
+              {f.thumbnail && (
+                <Image
+                  src={f.thumbnail}
+                  alt=""
+                  fill
+                  sizes="420px"
+                  className={f.cover ? "object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" : "object-contain"}
+                />
+              )}
               <span className="absolute left-3 top-3 rounded-full bg-persian px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-white shadow-lg">
-                GoHighLevel build
+                {f.badge}
               </span>
             </span>
             <span className="flex items-center justify-between gap-3 p-4">
@@ -437,9 +530,7 @@ function FunnelsPanel({ onBack }: { onBack: () => void }) {
           </a>
         ))}
       </ScrollGrid>
-      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
-        All {coachingFunnels.length} live client funnels
-      </p>
+      <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>{active.footer}</p>
     </div>
   );
 }
