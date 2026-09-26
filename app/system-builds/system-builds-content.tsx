@@ -244,6 +244,15 @@ export const n8nProjects: SystemBuild[] = [
     videoId: "Qd7NOH0qJEc",
   },
   {
+    title: "AI Affiliate Content",
+    category: "n8n Automation",
+    description:
+      "An n8n workflow that uses AI to produce affiliate content, walked through end to end from trigger to finished output.",
+    emoji: "📣",
+    image: "/system-builds/n8n-ai-affiliate-content.webp",
+    videoId: "-WgDZJQwJQQ",
+  },
+  {
     title: "Self-Hosted n8n Workflow",
     category: "n8n Automation",
     description:
