@@ -99,7 +99,7 @@ function ToolsMarquee() {
   return (
     <div className="mt-9 max-w-[560px] overflow-hidden rounded-2xl lg:mt-14 border border-black/[0.07] bg-black/[0.02] py-4 backdrop-blur-sm dark:border-white/[0.07] dark:bg-white/[0.03]">
       <p className={`mb-3 px-4 text-[11px] font-bold uppercase tracking-[0.16em] ${FAINT}`}>
-        Tools I use daily
+        Tools I build with
       </p>
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#e9e7ee] to-transparent dark:from-[#0d0a18]" />
@@ -167,7 +167,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
         <div className="relative z-10 flex min-w-0 flex-col lg:h-full lg:justify-center lg:py-4">
           <span className="inline-flex w-fit shrink-0 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.04] px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 backdrop-blur-sm dark:border-white/12 dark:bg-white/[0.06] dark:text-white/80">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow" />
-            Available Nationwide
+            Available for projects
           </span>
 
           <p className={`${script.className} mt-5 text-[clamp(1.8rem,4vw,3.4rem)] leading-none text-black/70 dark:text-white/80`}>
@@ -177,13 +177,13 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
             AJ BACTAD
           </h1>
           <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-persian dark:text-yellow">
-            GHL Certified &amp; AI Automation Specialist
+            Certified GHL Admin &amp; AI Automation Specialist
           </p>
 
           <p className={`mt-5 max-w-[50ch] text-[clamp(1rem,1.3vw,1.3rem)] leading-relaxed ${MUTED}`}>
-            I don&apos;t just connect tools, I engineer the system behind your growth. CRM, funnels,
-            automations, and AI, wired into one operating system that runs the busywork so you can
-            scale without the chaos.
+            I build the systems behind the business. GoHighLevel, n8n, AI, APIs and custom tools,
+            connected so leads get followed up, work gets routed, and your team stops doing it by
+            hand.
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3.5">
@@ -191,14 +191,14 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
               href="/consult"
               className="cta-primary inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-persian px-8 text-[15.5px] font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
             >
-              Book Free Consultation →
+              Book a Free Consultation →
             </Link>
             <button
               type="button"
               onClick={() => go("builds")}
               className="cta-lift inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
             >
-              Check My System Build
+              See What I&apos;ve Built
             </button>
           </div>
 
@@ -348,16 +348,16 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
   }[] = [
     {
       id: "funnels",
-      title: "Funnels",
-      blurb: "What your client sees. Opt-ins, webinars and core offers, every one of them live and still taking bookings today.",
+      title: "Funnels & Websites",
+      blurb: "What the customer clicks through. Opt-ins, webinars and booking funnels built in GoHighLevel, plus custom-coded sites.",
       count: `${coachingFunnels.length + premiumWebsites.length} live builds`,
       art: coachingFunnels.find((f) => f.title === "Self Love Co")?.thumbnail ?? coachingFunnels[0]?.thumbnail ?? "",
       icon: <path d="M3 5h18l-7 8v6l-4 2v-8z" />,
     },
     {
       id: "automations",
-      title: "Automations",
-      blurb: "What they never see. The workflows chasing leads at 2am, recorded end to end with nothing edited out.",
+      title: "Automations & Systems",
+      blurb: "What runs underneath. GHL workflows, n8n, APIs and AI chasing leads at 2am, recorded end to end with nothing edited out.",
       count: `${allBuilds.length} walkthroughs`,
       art: "/system-builds/ghl-proposal-walkthrough.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
@@ -367,9 +367,10 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>System builds</Eyebrow>
-      <Title>Two ways in.</Title>
+      <Title>What I build.<br />How it runs.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        The funnels are what a client sees. The automations are what runs underneath. Pick either.
+        Start with the funnels and websites customers click through, or go behind them to the
+        workflows doing the follow-up.
       </p>
 
       <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -426,11 +427,15 @@ type LiveCard = {
   badge: string; background?: string; cover: boolean;
 };
 
-const FUNNEL_TABS: { id: FunnelTab; label: string; title: string; footer: string; cards: LiveCard[] }[] = [
+const FUNNEL_TABS: {
+  id: FunnelTab; label: string; eyebrow: string; title: string; blurb: string; footer: string; cards: LiveCard[];
+}[] = [
   {
     id: "funnels",
     label: "GoHighLevel funnels",
+    eyebrow: "Funnels",
     title: "Live client funnels.",
+    blurb: "Opt-ins, webinars, applications and core offers built in GoHighLevel for real clients. Every one opens live.",
     footer: `All ${coachingFunnels.length} live client funnels`,
     cards: coachingFunnels.map((f) => ({
       key: `${f.title}-${f.subtitle}`,
@@ -446,9 +451,11 @@ const FUNNEL_TABS: { id: FunnelTab; label: string; title: string; footer: string
   },
   {
     id: "websites",
-    label: "Premium websites",
-    title: "Premium websites.",
-    footer: `All ${premiumWebsites.length} premium websites`,
+    label: "Custom websites",
+    eyebrow: "Websites",
+    title: "Custom-coded websites.",
+    blurb: "Concept builds, one per industry, coded from scratch for when a brand needs more than a page builder allows.",
+    footer: `All ${premiumWebsites.length} custom websites`,
     cards: premiumWebsites.map((w) => ({
       key: w.url,
       title: w.title,
@@ -468,8 +475,9 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <BackBar onBack={onBack} label="System builds" />
-      <Eyebrow>Funnels</Eyebrow>
+      <Eyebrow>{active.eyebrow}</Eyebrow>
       <Title>{active.title}</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>{active.blurb}</p>
 
       <div role="tablist" aria-label="Live build type" className="mt-5 inline-flex w-fit gap-1 rounded-full border border-black/10 bg-black/[0.03] p-1 dark:border-white/12 dark:bg-white/[0.04]">
         {FUNNEL_TABS.map((t) => {
@@ -712,10 +720,10 @@ export function ScreensSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Real results</Eyebrow>
-      <Title>Real systems. Real automations.</Title>
+      <Title>The work behind<br />the funnel.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        Dashboards, workflows, routers, and automation systems I&apos;ve built for real client
-        operations.
+        Dashboards, workflows, lead routers and automations from real client builds. The part
+        customers never see, and the part that does the work.
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -816,7 +824,11 @@ export function ServicesSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Services</Eyebrow>
-      <Title>GHL, wired to run.</Title>
+      <Title>Built to run<br />without you.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        CRM, funnels, booking, AI agents and custom integrations. Fix the one piece that&apos;s
+        breaking, or have the whole system built.
+      </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2">
         {services.map((s) => (
@@ -868,7 +880,10 @@ export function CredentialsSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Credentials &amp; recognition</Eyebrow>
-      <Title>Certified across the stack.</Title>
+      <Title>Certified across<br />the stack.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        Certificates cover the fundamentals. The builds show how I use them.
+      </p>
 
       <div className="mt-8 grid gap-4 lg:grid-cols-[300px_1fr]">
         <div className="space-y-2.5">
@@ -981,6 +996,9 @@ export function TestimonialsSection() {
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Testimonials</Eyebrow>
       <Title>In their words.</Title>
+      <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        What working with me looks like, from the people who hired me.
+      </p>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((t) => (
