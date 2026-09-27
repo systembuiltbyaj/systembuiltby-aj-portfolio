@@ -393,6 +393,20 @@ export const premiumWebsites = [
     url: "https://halden-home.vercel.app/",
     thumbnail: "/showcase/halden-home.webp",
   },
+  {
+    title: "Sidequest",
+    industry: "Beverage",
+    subtitle: "Sparkling yuzu and grape water, told as a scroll story",
+    url: "https://sidequest-scroll.vercel.app/",
+    thumbnail: "/showcase/sidequest-scroll.webp",
+  },
+  {
+    title: "Sorrel Family Dental",
+    industry: "Dental",
+    subtitle: "Family dentistry with same-day emergency slots",
+    url: "https://sorrel-dental.vercel.app/",
+    thumbnail: "/showcase/sorrel-dental.webp",
+  },
 ];
 
 /* ------------------------------------------------------------------ */
