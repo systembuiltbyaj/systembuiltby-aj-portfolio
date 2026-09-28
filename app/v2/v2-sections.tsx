@@ -789,18 +789,32 @@ function ScreenLightbox({ screen, onClose }: { screen: ScreenItem; onClose: () =
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
         {screen.image && (
-          <Image
-            src={screen.image}
-            alt={screen.label}
-            width={2400}
-            height={1500}
-            sizes="(max-width: 1240px) 96vw, 1180px"
-            className="max-h-[78dvh] w-full rounded-xl object-contain"
-          />
+          // Some workflows are 10,000px tall: fit them to the width and scroll,
+          // instead of shrinking the whole canvas into an unreadable strip.
+          <div className="max-h-[78dvh] overflow-y-auto overscroll-contain rounded-xl">
+            <Image
+              src={screen.image}
+              alt={screen.label}
+              width={2400}
+              height={1500}
+              sizes="(max-width: 1240px) 96vw, 1180px"
+              className="h-auto w-full"
+            />
+          </div>
         )}
         <div className="mt-3 text-center">
           <p className="text-[15px] font-bold text-white">{screen.label}</p>
           <p className="mt-0.5 font-mono text-[12px] text-white/45">{screen.url}</p>
+          {screen.image && (
+            <a
+              href={screen.image}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-[12.5px] font-semibold text-persian-light underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            >
+              Open full resolution
+            </a>
+          )}
         </div>
       </div>
     </div>

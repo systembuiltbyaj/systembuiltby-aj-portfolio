@@ -14,6 +14,23 @@ export const screens: { label: string; url: string; image?: string; pos?: string
   { label: "Revenue Dashboard", url: "app.gohighlevel.com/dashboard", image: "/workflow-screens/revenue-dashboard.webp" },
   { label: "Form → Sheet Sync Suite", url: "zapier.com/app/zaps", image: "/workflow-screens/zapier-zaps.webp" },
   { label: "Workflow Library", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/workflow-library.webp" },
+  { label: "Webinar Registration & Reminders", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-webinar-reminders.webp" },
+  { label: "Quiz Result Nurture, 4 Paths", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-quiz-nurture.webp" },
+  { label: "Onboarding + MOA Follow-Up", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-onboarding-moa-followup.webp" },
+  { label: "MOA Signed → Tiered Welcome", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-moa-tier-welcome.webp" },
+  { label: "Purchase Onboarding Router", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-purchase-onboarding.webp" },
+  { label: "Payment Router", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-payment-router.webp" },
+  { label: "Course Access + Opportunity Sync", url: "app.gohighlevel.com/workflows", image: "/workflow-screens/ghl-course-access-opportunity.webp" },
+  { label: "Lead Intake & Assignment", url: "n8n workflow", image: "/workflow-screens/n8n-lead-intake.webp" },
+  { label: "Lead SLA Monitor", url: "n8n workflow", image: "/workflow-screens/n8n-lead-sla-monitor.webp" },
+  { label: "Weekly Lead Report", url: "n8n workflow", image: "/workflow-screens/n8n-weekly-lead-report.webp" },
+  { label: "AI Contract Review", url: "n8n workflow", image: "/workflow-screens/n8n-contract-review.webp" },
+  { label: "Batch Order Summary", url: "n8n workflow", image: "/workflow-screens/n8n-order-summary.webp" },
+  { label: "Customer Change Tracker", url: "n8n workflow", image: "/workflow-screens/n8n-customer-change-tracker.webp" },
+  { label: "Supplier File Intake", url: "n8n workflow", image: "/workflow-screens/n8n-supplier-file-intake.webp" },
+  { label: "Employee Onboarding Orchestrator", url: "n8n workflow", image: "/workflow-screens/n8n-employee-onboarding.webp" },
+  { label: "UGC Script Approval", url: "n8n workflow", image: "/workflow-screens/n8n-ugc-script-approval.webp" },
+  { label: "UGC Video Scheduling", url: "n8n workflow", image: "/workflow-screens/n8n-ugc-video-scheduling.webp" },
 ];
 
 function WorkflowPlaceholder({ label }: { label: string }) {
