@@ -178,7 +178,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
             AJ BACTAD
           </h1>
           <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-persian dark:text-yellow">
-            Certified GHL Admin &amp; AI Automation Specialist
+            AI Automation &amp; Business Systems Engineer
           </p>
 
           <p className={`mt-5 max-w-[50ch] text-[clamp(1rem,1.3vw,1.3rem)] leading-relaxed ${MUTED}`}>
