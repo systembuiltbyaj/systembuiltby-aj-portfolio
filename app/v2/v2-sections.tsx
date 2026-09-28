@@ -1074,14 +1074,11 @@ export function TestimonialsSection() {
 }
 
 /**
- * The 16:9 card image. A made-for-purpose thumbnail wins; until one exists a
- * portrait video's clean poster sits contained over a blurred copy of itself so faces
- * are never cropped, and anything else falls back to YouTube's own still.
+ * The 16:9 card image. A portrait video's clean poster sits contained over a
+ * blurred copy of itself so faces are never cropped; anything else falls back to
+ * YouTube's own still.
  */
 function TestimonialThumb({ t }: { t: VideoTestimonial }) {
-  if (t.thumbnail) {
-    return <Image src={t.thumbnail} alt="" fill sizes="(max-width: 768px) 92vw, 560px" className="object-cover" />;
-  }
   if (t.vertical && t.poster) {
     return (
       <>

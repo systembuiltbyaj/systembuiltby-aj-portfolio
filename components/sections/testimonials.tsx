@@ -26,7 +26,6 @@ type VideoTestimonial = TestimonialBase & {
   type: "video";
   videoId: string;
   quote?: string; // cleaned-up English pull quote from the video
-  thumbnail?: string; // 16:9 case-study thumbnail for the v2 cards
   poster?: string; // custom poster (e.g. a clean vertical frame for a Short)
   vertical?: boolean; // portrait video: plays in a 9:16 frame; a clean poster also gets the blurred-backdrop treatment
 };
