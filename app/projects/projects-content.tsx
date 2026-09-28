@@ -373,6 +373,13 @@ export const coachingFunnels = [
 
 export const premiumWebsites = [
   {
+    title: "OnWe Construction",
+    industry: "Construction",
+    subtitle: "Denver contractor, fixed scope, written price",
+    url: "https://onwe-construction.vercel.app/",
+    thumbnail: "/showcase/onwe-construction.webp",
+  },
+  {
     title: "Keel",
     industry: "Coaching",
     subtitle: "Operator coaching for founders at $1M to $20M",
