@@ -8,21 +8,27 @@ import {
   StaggerItem,
 } from "@/components/motion/stagger-children";
 
-type TextTestimonial = {
-  type: "text";
+/** `title` and `tag` headline the v2 case-study cards; v1 ignores them. */
+type TestimonialBase = {
   name: string;
   role: string;
+  title?: string;
+  tag?: string;
+};
+
+type TextTestimonial = TestimonialBase & {
+  type: "text";
   avatar: string;
   quote: string;
 };
 
-type VideoTestimonial = {
+type VideoTestimonial = TestimonialBase & {
   type: "video";
-  name: string;
-  role: string;
   videoId: string;
+  quote?: string; // cleaned-up English pull quote from the video
+  thumbnail?: string; // 16:9 case-study thumbnail for the v2 cards
   poster?: string; // custom poster (e.g. a clean vertical frame for a Short)
-  vertical?: boolean; // vertical/Short: blurred backdrop + contained frame so it fills the card
+  vertical?: boolean; // portrait video: plays in a 9:16 frame; a clean poster also gets the blurred-backdrop treatment
 };
 
 type Testimonial = TextTestimonial | VideoTestimonial;
@@ -32,6 +38,10 @@ export const testimonials: Testimonial[] = [
     type: "video",
     name: "Coach Lish Aquino",
     role: "Amaze OPC · Coaching Business",
+    title: "Built the Full Student Journey for a Coaching Program",
+    tag: "Coaching System",
+    quote:
+      "AJ is very reliable. He knows his craft and he knows exactly what he's doing. Before every launch in GoHighLevel, he walks us through it on video for our approval. He's not only an automation expert, he has an eye for design too. I highly recommend him.",
     videoId: "TK_K5MhsfFs",
     poster: "/testimonials/lish-aquino.webp",
     vertical: true,
@@ -48,7 +58,12 @@ export const testimonials: Testimonial[] = [
     type: "video",
     name: "Josh Broach",
     role: "Retirement Consultant for Teachers",
+    title: "A Complex GHL CRM, Live in One Week",
+    tag: "CRM Setup",
+    quote:
+      "He's done a fantastic job setting up our GoHighLevel CRM. Within a week, AJ had everything up, running and ready for our product launch. Since then we've had great success, and everything's been running smoothly.",
     videoId: "VAuLfl_P5ms",
+    vertical: true,
   },
   {
     type: "text",
@@ -111,9 +126,10 @@ function VideoCard({ t }: { t: VideoTestimonial }) {
           aria-label={`Play ${t.name} video testimonial`}
           className="absolute inset-0 h-full w-full cursor-pointer"
         >
-          {/* Poster — vertical Shorts get a blurred backdrop + contained frame so
-              the card fills edge-to-edge instead of showing black bars. */}
-          {t.vertical ? (
+          {/* Poster — vertical videos with a clean poster get a blurred backdrop +
+              contained frame so the card fills edge-to-edge instead of showing
+              black bars. YouTube's own still already has bars baked in. */}
+          {t.vertical && t.poster ? (
             <>
               <img
                 src={poster}

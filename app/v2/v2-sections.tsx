@@ -994,9 +994,12 @@ function BadgeLightbox({ badge, onClose }: { badge: BadgeItem; onClose: () => vo
 
 const HIDDEN_TESTIMONIALS = ["Patricia Villanueva", "Daniel Reyes"];
 
+type Testimonial = (typeof testimonials)[number];
+type VideoTestimonial = Extract<Testimonial, { type: "video" }>;
+
 export function TestimonialsSection() {
   const shown = testimonials.filter((t) => !HIDDEN_TESTIMONIALS.includes(t.name));
-  const [playing, setPlaying] = useState<string | null>(null);
+  const [playing, setPlaying] = useState<VideoTestimonial | null>(null);
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
       <Eyebrow>Testimonials</Eyebrow>
@@ -1005,72 +1008,143 @@ export function TestimonialsSection() {
         What working with me looks like, from the people who hired me.
       </p>
 
-      <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ScrollGrid className="grid max-w-[1180px] gap-5 md:grid-cols-2">
         {shown.map((t) => (
-          <div key={t.name} className={`flex flex-col p-5 ${CARD}`}>
-            {t.type === "video" ? (
-              <div className="relative mb-4 aspect-[9/16] overflow-hidden rounded-xl bg-black/10 dark:bg-black/40">
-                {playing === t.name ? (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${t.videoId}?autoplay=1`}
-                    title={`${t.name} testimonial`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 h-full w-full"
-                  />
-                ) : (
-                  <>
-                    {/* Verticals are Shorts: blur a copy behind so the frame fills without cropping faces. */}
-                    {/* Not every video has a custom poster; fall back to
-                        YouTube's own still so the card is never blank. */}
-                    {(() => {
-                      const poster = t.poster ?? `https://i.ytimg.com/vi/${t.videoId}/hqdefault.jpg`;
-                      return (
-                        <>
-                          {t.vertical && (
-                            <Image src={poster} alt="" fill sizes="380px" unoptimized className="scale-110 object-cover blur-xl" />
-                          )}
-                          <Image
-                            src={poster}
-                            alt=""
-                            fill
-                            sizes="380px"
-                            unoptimized={!t.poster}
-                            className={t.vertical ? "object-contain" : "object-cover"}
-                          />
-                        </>
-                      );
-                    })()}
-                    <button
-                      type="button"
-                      onClick={() => setPlaying(t.name)}
-                      aria-label={`Play ${t.name}'s testimonial`}
-                      className="group absolute inset-0 flex items-center justify-center bg-black/20 transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
-                    >
-                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5 text-white"><path d="M8 5v14l11-7z" /></svg>
-                      </span>
-                    </button>
-                  </>
-                )}
-              </div>
-            ) : (
-              <p className={`mb-4 flex-1 text-[13.5px] leading-relaxed ${MUTED}`}>&ldquo;{t.quote}&rdquo;</p>
+          <article key={t.name} className={`flex flex-col p-4 sm:p-5 ${CARD}`}>
+            {t.type === "video" && (
+              <button
+                type="button"
+                onClick={() => setPlaying(t)}
+                aria-label={`Play ${t.name}'s testimonial`}
+                className="group relative aspect-video w-full overflow-hidden rounded-xl bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:bg-black/40"
+              >
+                <TestimonialThumb t={t} />
+                <span className="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors group-hover:bg-black/0">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-persian text-white shadow-[0_10px_30px_-6px_rgba(94,23,235,0.7)] transition-transform duration-300 group-hover:scale-110 dark:bg-yellow dark:text-[#08060e] dark:shadow-[0_10px_30px_-6px_rgba(246,203,31,0.55)]">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
+                  </span>
+                </span>
+              </button>
             )}
-            <div className="mt-auto flex items-center gap-3">
-              {t.type === "text" && t.avatar && (
-                <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
-                  <Image src={t.avatar} alt="" fill sizes="36px" className="object-cover" />
+
+            <div className="flex flex-1 flex-col px-1 pt-5">
+              <p className="flex gap-1 text-yellow" aria-label="5 out of 5 stars">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.1l-5.9 3.2 1.3-6.5-4.9-4.5 6.6-.8z" />
+                  </svg>
+                ))}
+              </p>
+
+              {t.title && (
+                <h3 className="mt-3.5 text-[clamp(1.15rem,1.7vw,1.45rem)] font-extrabold leading-snug text-persian dark:text-yellow">
+                  {t.title}
+                </h3>
+              )}
+              {t.tag && (
+                <span className="mt-3 w-fit rounded-full border border-persian/30 bg-persian/[0.06] px-3 py-1 text-[12px] font-semibold text-persian dark:border-yellow/30 dark:bg-yellow/[0.07] dark:text-yellow">
+                  {t.tag}
                 </span>
               )}
-              <span className="min-w-0">
-                <span className="block truncate text-[13.5px] font-bold text-[#14101f] dark:text-white">{t.name}</span>
-                <span className={`block truncate text-[12px] ${MUTED}`}>{t.role}</span>
-              </span>
+              {t.quote && (
+                <blockquote className="mt-5 border-l-2 border-persian/50 pl-4 text-[14.5px] italic leading-relaxed text-black/70 dark:border-yellow/40 dark:text-white/75">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+              )}
+
+              <div className="mt-auto flex items-center gap-3 border-t border-black/[0.08] pt-4 dark:border-white/[0.08]">
+                {t.type === "text" && (
+                  <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
+                    <Image src={t.avatar} alt="" fill sizes="36px" className="object-cover" />
+                  </span>
+                )}
+                <span className="min-w-0">
+                  <span className="block truncate text-[15px] font-black uppercase tracking-[0.08em] text-[#14101f] dark:text-white">{t.name}</span>
+                  <span className={`block truncate text-[12px] ${MUTED}`}>{t.role}</span>
+                </span>
+              </div>
             </div>
-          </div>
+          </article>
         ))}
       </ScrollGrid>
+
+      {playing && <TestimonialLightbox t={playing} onClose={() => setPlaying(null)} />}
+    </div>
+  );
+}
+
+/**
+ * The 16:9 card image. A made-for-purpose thumbnail wins; until one exists a
+ * portrait video's clean poster sits contained over a blurred copy of itself so faces
+ * are never cropped, and anything else falls back to YouTube's own still.
+ */
+function TestimonialThumb({ t }: { t: VideoTestimonial }) {
+  if (t.thumbnail) {
+    return <Image src={t.thumbnail} alt="" fill sizes="(max-width: 768px) 92vw, 560px" className="object-cover" />;
+  }
+  if (t.vertical && t.poster) {
+    return (
+      <>
+        <Image src={t.poster} alt="" fill sizes="560px" className="scale-110 object-cover opacity-80 blur-xl" />
+        <Image src={t.poster} alt="" fill sizes="(max-width: 768px) 92vw, 560px" className="object-contain" />
+      </>
+    );
+  }
+  return (
+    <Image
+      src={t.poster ?? `https://i.ytimg.com/vi/${t.videoId}/hqdefault.jpg`}
+      alt=""
+      fill
+      sizes="(max-width: 768px) 92vw, 560px"
+      unoptimized={!t.poster}
+      className="object-cover"
+    />
+  );
+}
+
+/**
+ * Plays the video full-size, in its own shape: portrait videos stay vertical instead of
+ * shrinking inside the 16:9 card. Escape and the backdrop both close it.
+ */
+function TestimonialLightbox({ t, onClose }: { t: VideoTestimonial; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // capture-phase stop, so the shell's arrow-key section nav does not also fire
+      e.stopPropagation();
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${t.name} testimonial`}
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/88 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={t.vertical ? "relative aspect-[9/16] h-[min(80dvh,760px)] max-w-full" : "relative aspect-video w-full max-w-[1100px]"}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
+        </button>
+        <iframe
+          src={`https://www.youtube.com/embed/${t.videoId}?autoplay=1&rel=0`}
+          title={`${t.name} testimonial`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+          allowFullScreen
+          className="h-full w-full rounded-xl bg-black"
+        />
+      </div>
     </div>
   );
 }
