@@ -261,6 +261,70 @@ export const n8nProjects: SystemBuild[] = [
   },
 ];
 
+/** One motion case study per custom website, in the same order as the v2 Custom websites tab. */
+export const motionPresentations: SystemBuild[] = [
+  {
+    title: "OnWe Construction",
+    category: "Motion Presentation",
+    description:
+      "A contractor site that prices the job before the first call: pick the project, size and finish, get a real range and timeline, then book a site visit.",
+    duration: "0:47",
+    emoji: "🏗️",
+    image: "/system-builds/onwe-case-study.webp",
+    videoId: "Fdqm_DAs3sQ",
+  },
+  {
+    title: "Keel",
+    category: "Motion Presentation",
+    description:
+      "A coaching site that qualifies before it books: operator scorecard, an application that carries the answers over, and booking in the visitor's time zone.",
+    duration: "0:55",
+    emoji: "🧭",
+    image: "/system-builds/keel-case-study.webp",
+    videoId: "YbZeGt0qYUY",
+  },
+  {
+    title: "Meridian Private Estates",
+    category: "Motion Presentation",
+    description:
+      "A real estate build: filters synced to the map, side-by-side compare, financing that recalculates live and private viewings booked in the estate's own time.",
+    duration: "1:00",
+    emoji: "🏝️",
+    image: "/system-builds/meridian-case-study.webp",
+    videoId: "O_nPMPxKN8U",
+  },
+  {
+    title: "Halden",
+    category: "Motion Presentation",
+    description:
+      "An ecommerce build, screen by screen: shoppable rooms, one-keystroke search, live pricing, a bag that totals itself and filters by material.",
+    duration: "0:56",
+    emoji: "🪑",
+    image: "/system-builds/halden-case-study.webp",
+    videoId: "lmUxtWFg9LI",
+  },
+  {
+    title: "Sidequest",
+    category: "Motion Presentation",
+    description:
+      "A scroll-driven product page: a hand-made scroll engine moves the mascot, the whole outfit is shoppable and priced, and it holds up on mobile.",
+    duration: "0:50",
+    emoji: "🦊",
+    image: "/system-builds/sidequest-case-study.webp",
+    videoId: "mguDIP2tBpw",
+  },
+  {
+    title: "Sorrel Family Dental",
+    category: "Motion Presentation",
+    description:
+      "A dental site that triages before it books: tap where it hurts, get matched to the right visit and dentist, and book in about a minute.",
+    duration: "0:53",
+    emoji: "🦷",
+    image: "/system-builds/sorrel-case-study.webp",
+    videoId: "7ZRtQ31t4Bk",
+  },
+];
+
 function BuildCard({ build, accent = "text-persian-light" }: { build: SystemBuild; accent?: string }) {
   const [playing, setPlaying] = useState(false);
   const hasVideo = Boolean(build.videoId || build.vimeoId);

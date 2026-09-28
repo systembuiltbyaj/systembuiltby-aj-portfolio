@@ -7,13 +7,14 @@ import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
 import {
-  clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects,
+  clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects, motionPresentations,
 } from "@/app/system-builds/system-builds-content";
 
-// Every recorded build, not just the client ones — same five arrays the
-// /system-builds page renders, so the count here matches what is actually there.
+// Every recorded build, not just the client ones, so the count here matches
+// what the Automations panels actually hold.
 const allBuilds = [
   ...clientProjects, ...ajTutorials, ...claudeProjects, ...zapierTutorials, ...n8nProjects,
+  ...motionPresentations,
 ];
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
@@ -303,21 +304,11 @@ const AUTOMATION_GROUPS: {
     blurb: "n8n experiments for heavier logic — API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
   },
   {
-    id: "mvp",
-    label: "MVP Project",
+    id: "motion",
+    label: "Motion Presentation",
     accent: "#8b5cf6",
-    builds: [
-      {
-        title: "AI Learning Hub",
-        category: "MVP Project",
-        description:
-          "A plain-English reference for AI terminology, RAG, MCP, tokens, A2A — live in production, built and shipped end to end.",
-        emoji: "🌐",
-        image: "/real-apps/ai-learning-hub.webp",
-        url: "https://ai-specialist-learning-hub.vercel.app/",
-      },
-    ],
-    blurb: "Full web apps I've designed, built, and shipped end to end — live in production, not a recorded walkthrough.",
+    builds: motionPresentations,
+    blurb: "Short motion case studies of the custom websites. Each one walks through a build screen by screen, the way a visitor would see it.",
   },
   {
     id: "ghl",
