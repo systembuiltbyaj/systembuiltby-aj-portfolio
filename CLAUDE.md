@@ -1,4 +1,4 @@
-# System Built by AJ — Portfolio (systembuiltbyaj.com)
+# System Built by AJ — Portfolio (workwithaj.ajautomate.co)
 
 Personal portfolio / lead-gen site for an automation builder. Dark-mode only.
 
@@ -34,8 +34,20 @@ TypeScript, framer-motion, lucide-react. Deploy: Vercel.
 ## Homepage sections (order) — components/sections/
 Hero → TechStack → IntroVideo → Vault → Philosophy → FeaturedBuilds → Testimonials
 → WorkflowScreens → AutomationFlows → Services → FAQ → FinalCTA
-Other pages: /about /services /packages /system-builds /projects /portfolio /mentors
-/consult /tools/*  (plus dev-only preview routes: /preview /intro-preview /pulse-preview /slides-preview)
+(That's v1, served at /v1. "/" serves v2 by default — see `lib/site-version.ts`.)
+
+## v2 routes
+Each v2 rail section is a real, server-rendered route: / /live-system/[[...path]]
+/real-result /services /credentials /testimonials /about /contact. Each page.tsx
+renders `<V2Content initial=… />` with its own metadata; in-app navigation swaps
+panels via pushState (no reload). Section URLs live in `SECTIONS` (app/v2/v2-shell.tsx).
+Old `/#section` links are upgraded client-side.
+Other pages (v1 design): /packages /system-builds /projects /portfolio /mentors /real-apps
+/consult /tools/*  (plus noindexed dev-only previews: /preview /intro-preview /pulse-preview /slides-preview)
+
+## AEO/GEO (AI search visibility)
+Canonical origin is `SITE_URL` in `lib/structured-data.ts` (also holds the JSON-LD).
+When adding or removing a public route, update `app/sitemap.ts` and `public/llms.txt`.
 
 ## Related app (separate repo)
 The Funnel Section Builder was extracted out of this portfolio into its own

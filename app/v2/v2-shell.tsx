@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { isV2Live } from "@/lib/site-version";
 
 export type SectionId =
   | "home"
@@ -15,17 +16,28 @@ export type SectionId =
   | "about"
   | "contact";
 
-/** `slug` is the URL hash for the section (#live-system). Home has none. */
-export const SECTIONS: { id: SectionId; slug: string; label: string; icon: React.ReactNode }[] = [
-  { id: "home", slug: "", label: "Home", icon: <path d="M3 10.5 12 3l9 7.5V21H3z" /> },
-  { id: "builds", slug: "live-system", label: "Live System", icon: <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> },
-  { id: "screens", slug: "real-result", label: "Real Result", icon: <path d="M3 4h18v12H3zM8 20h8M12 16v4" /> },
-  { id: "services", slug: "services", label: "Services", icon: <path d="M12 3 3 8l9 5 9-5zM3 14l9 5 9-5" /> },
-  { id: "credentials", slug: "credentials", label: "Credentials", icon: <path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7z" /> },
-  { id: "testimonials", slug: "testimonials", label: "Testimonials", icon: <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3z" /> },
-  { id: "about", slug: "about", label: "About me", icon: <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" /> },
-  { id: "contact", slug: "contact", label: "Contact", icon: <path d="M3 6h18v12H3zM3 7l9 6 9-6" /> },
+/**
+ * Every section is a real URL, so each one is server-rendered on its own and
+ * can be crawled, indexed and cited. Home lives at "/" while v2 is the live
+ * version; otherwise v2 keeps its /v2 preview address.
+ */
+export const SECTIONS: { id: SectionId; href: string; label: string; icon: React.ReactNode }[] = [
+  { id: "home", href: isV2Live() ? "/" : "/v2", label: "Home", icon: <path d="M3 10.5 12 3l9 7.5V21H3z" /> },
+  { id: "builds", href: "/live-system", label: "Live System", icon: <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> },
+  { id: "screens", href: "/real-result", label: "Real Result", icon: <path d="M3 4h18v12H3zM8 20h8M12 16v4" /> },
+  { id: "services", href: "/services", label: "Services", icon: <path d="M12 3 3 8l9 5 9-5zM3 14l9 5 9-5" /> },
+  { id: "credentials", href: "/credentials", label: "Credentials", icon: <path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7z" /> },
+  { id: "testimonials", href: "/testimonials", label: "Testimonials", icon: <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3z" /> },
+  { id: "about", href: "/about", label: "About me", icon: <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" /> },
+  { id: "contact", href: "/contact", label: "Contact", icon: <path d="M3 6h18v12H3zM3 7l9 6 9-6" /> },
 ];
+
+/** True for any URL v2 renders, including sub-paths like /live-system/funnels. */
+export function isV2Path(pathname: string | null) {
+  if (!pathname) return false;
+  if (pathname === "/v2") return true;
+  return SECTIONS.some((s) => pathname === s.href || (s.href !== "/" && pathname.startsWith(`${s.href}/`)));
+}
 
 /**
  * Digital globe backdrop. Held well back behind a scrim so copy contrast stays
@@ -175,10 +187,17 @@ export function V2Shell({
             {SECTIONS.map((s) => {
               const on = s.id === active;
               return (
-                <button
+                // A real link so crawlers can follow it; a plain click still
+                // swaps the panel in place, and modified clicks open a new tab.
+                <a
                   key={s.id}
-                  type="button"
-                  onClick={() => { onNavigate(s.id); setRailOpen(false); }}
+                  href={s.href}
+                  onClick={(e) => {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                    e.preventDefault();
+                    onNavigate(s.id);
+                    setRailOpen(false);
+                  }}
                   aria-label={s.label}
                   aria-current={on ? "page" : undefined}
                   className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
@@ -193,7 +212,7 @@ export function V2Shell({
                   <span className="pointer-events-none absolute left-[calc(100%+10px)] z-50 whitespace-nowrap rounded-lg border border-black/10 bg-white px-2.5 py-1.5 text-xs font-medium text-[#14101f] opacity-0 shadow-xl transition-opacity group-hover:opacity-100 dark:border-white/10 dark:bg-[#141024] dark:text-white max-md:hidden">
                     {s.label}
                   </span>
-                </button>
+                </a>
               );
             })}
           </nav>

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { AboutContent } from "./about-content";
+import { V2Content } from "@/app/v2/v2-content";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About AJ Bactad",
   description:
-    "Learn about AJ, growth engineer specializing in GoHighLevel automation systems, funnels, and CRM infrastructure.",
+    "AJ Bactad spent five years in Amazon eCommerce operations, ending as Head of Operations, and now builds GoHighLevel, n8n and AI automation systems with an operator's eye for bottlenecks.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
-  return <AboutContent />;
+  return <V2Content initial={{ section: "about", path: [] }} />;
 }

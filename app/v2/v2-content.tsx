@@ -6,52 +6,60 @@ import {
   HomeSection, BuildsSection, ScreensSection, ServicesSection,
   CredentialsSection, TestimonialsSection, AboutSection, ContactSection,
 } from "./v2-sections";
+import { cleanSegments, type V2Route } from "./v2-route";
 
-/**
- * Where the visitor is: a section plus an optional sub-path inside it, e.g.
- * #live-system/funnels/websites → { section: "builds", path: ["funnels", "websites"] }.
- * Kept in the URL hash so any view can be linked to and the back button works,
- * without a route per view (v2 is served from both "/" and "/v2").
- */
-type V2Route = { section: SectionId; path: string[] };
-
+// Every view is a real URL so the server can render it for crawlers. Moving
+// between views swaps panels client-side via pushState, with no reload.
 const HOME: V2Route = { section: "home", path: [] };
+const HOME_HREF = SECTIONS[0].href;
 
-function parseHash(hash: string): V2Route {
-  const [slug = "", ...rest] = decodeURIComponent(hash.replace(/^#/, "")).split("/");
-  const section = SECTIONS.find((s) => s.slug && s.slug === slug.toLowerCase());
+function routeFromPath(rawPath: string): V2Route {
+  let pathname: string;
+  try {
+    pathname = decodeURIComponent(rawPath).toLowerCase();
+  } catch {
+    return HOME;
+  }
+  const section = SECTIONS.find(
+    (s) => s.id !== "home" && (pathname === s.href || pathname.startsWith(`${s.href}/`)),
+  );
   if (!section) return HOME;
-  // Only plain segments survive; anything else is ignored rather than trusted.
-  const path = rest.map((p) => p.toLowerCase()).filter((p) => /^[a-z0-9-]{1,40}$/.test(p));
+  // Only Live System has views below the section itself.
+  const path = section.id === "builds" ? cleanSegments(pathname.slice(section.href.length).split("/")) : [];
   return { section: section.id, path };
 }
 
-function toHash({ section, path }: V2Route) {
-  const slug = SECTIONS.find((s) => s.id === section)?.slug;
-  return slug ? `#${[slug, ...path].join("/")}` : "";
+function toUrl({ section, path }: V2Route) {
+  const href = SECTIONS.find((s) => s.id === section)?.href ?? HOME_HREF;
+  return path.length ? `${href}/${path.join("/")}` : href;
 }
 
-export function V2Content() {
-  const [route, setRoute] = useState<V2Route>(HOME);
+export function V2Content({ initial = HOME }: { initial?: V2Route }) {
+  const [route, setRoute] = useState<V2Route>(initial);
 
-  // Read the hash after mount (the server never sees it), then follow
-  // back/forward and hand-edited hashes.
   useEffect(() => {
-    const sync = () => setRoute(parseHash(window.location.hash));
-    sync();
+    // Links shared before sections had their own URLs look like /#live-system/funnels.
+    // The server never sees the hash, so upgrade them here.
+    const { pathname, hash } = window.location;
+    if (hash.length > 1 && pathname === HOME_HREF) {
+      const legacy = routeFromPath(`/${hash.slice(1)}`);
+      if (legacy.section !== "home") {
+        window.history.replaceState(null, "", toUrl(legacy));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setRoute(legacy);
+      }
+    }
+
+    const sync = () => setRoute(routeFromPath(window.location.pathname));
     window.addEventListener("popstate", sync);
-    window.addEventListener("hashchange", sync);
-    return () => {
-      window.removeEventListener("popstate", sync);
-      window.removeEventListener("hashchange", sync);
-    };
+    return () => window.removeEventListener("popstate", sync);
   }, []);
 
   const navigate = useCallback((next: V2Route) => {
     setRoute(next);
-    const hash = toHash(next);
-    if (hash === window.location.hash) return;
-    window.history.pushState(null, "", hash || window.location.pathname + window.location.search);
+    const url = toUrl(next);
+    if (url === window.location.pathname) return;
+    window.history.pushState(null, "", url);
   }, []);
 
   const goSection = useCallback((id: SectionId) => navigate({ section: id, path: [] }), [navigate]);

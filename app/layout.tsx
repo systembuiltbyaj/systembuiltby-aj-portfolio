@@ -5,6 +5,8 @@ import { Footer } from "@/components/layout/footer";
 import { ChromeGate, MainShell } from "@/components/layout/chrome-gate";
 import { NameRevealIntro } from "@/components/intro/name-reveal-intro";
 import { DeferredChatBubble } from "@/components/chat/deferred-chat-bubble";
+import { JsonLd } from "@/components/seo/json-ld";
+import { SITE_URL, siteGraph } from "@/lib/structured-data";
 import "./globals.css";
 
 const inter = Inter({
@@ -22,13 +24,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://systembuiltbyaj.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "System Built by AJ, Growth Engineering",
+    default: "AJ Bactad, AI Automation & Business Systems Engineer | System Built by AJ",
     template: "%s | System Built by AJ",
   },
   description:
-    "Funnels that convert. Automations that scale. Workflows you don't have to babysit. Growth engineering by AJ.",
+    "AJ Bactad is a Certified GoHighLevel Admin who builds CRM, automation and AI systems with GoHighLevel, n8n, Zapier, AI agents and custom apps, so leads get followed up and work stops being done by hand.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -44,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} dark`}>
       <body className="font-sans bg-[#08060e] relative overflow-x-hidden">
+        <JsonLd data={siteGraph()} />
         <NameRevealIntro />
         {/* Ambient background blobs */}
         <div className="pointer-events-none fixed inset-0 z-0">

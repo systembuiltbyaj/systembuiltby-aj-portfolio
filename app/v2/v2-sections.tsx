@@ -258,7 +258,7 @@ type BuildTab = "funnels" | "automations";
 type FunnelTab = "funnels" | "websites";
 
 /**
- * The view comes from the URL (#live-system/<tab>/<sub>), so every level can be
+ * The view comes from the URL (/live-system/<tab>/<sub>), so every level can be
  * linked to directly. Unknown segments fall back to the level above.
  */
 export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path: string[]) => void }) {

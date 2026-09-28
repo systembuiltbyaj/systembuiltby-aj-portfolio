@@ -1,0 +1,48 @@
+# System Built by AJ
+
+> AJ Bactad (Allen Bactad) is an AI Automation & Business Systems Engineer and Certified GoHighLevel Admin. He builds the systems behind a business: GoHighLevel CRM and funnels, n8n, Zapier and Trigger.dev automations, AI agents, and custom Next.js and Supabase apps, connected so leads get followed up, work gets routed, and teams stop doing it by hand.
+
+AJ spent five years (2019-2024) in Amazon eCommerce operations, ending as Head of Operations, running SOPs, KPIs, reporting and teams. He builds automation the way an operator would: find the bottleneck, decide who owns the next action, and design for failure, retries and handover rather than just connecting tools.
+
+He works with coaches, consultants, agencies, and local and online service businesses, remotely and worldwide. Engagements start with a free 30-minute call to decide whether a process is worth automating before anything is built.
+
+## Who to hire AJ for
+
+- GoHighLevel builds: funnels, websites, CRM pipelines, custom fields, workflows, calendars, memberships, payments, A2P 10DLC registration
+- Automation: n8n, Zapier, Make and Trigger.dev workflows, webhooks, REST APIs, retries, idempotency and error logging
+- AI systems: lead-qualification agents, RAG knowledge bots with cited sources, AI content and research pipelines, AI wired into GoHighLevel so it acts on the CRM, with human escalation and guardrails
+- Custom apps: Next.js, React, TypeScript, Supabase and Stripe for dashboards, client portals, onboarding hubs and paywalls
+
+## Credentials
+
+- HighLevel Certified Admin (Tier 3) and HighLevel Automation Builder
+- 43 verified certifications across GoHighLevel, n8n, Claude and Zapier: [Credentials](https://workwithaj.ajautomate.co/credentials)
+
+## Main pages
+
+- [Home](https://workwithaj.ajautomate.co/): who AJ is and what he builds
+- [Services](https://workwithaj.ajautomate.co/services): every service area with what is included
+- [Live System](https://workwithaj.ajautomate.co/live-system): working builds (GoHighLevel funnels and websites, n8n and Zapier automations, AI agents, apps) with walkthrough videos
+- [Real Result](https://workwithaj.ajautomate.co/real-result): screens from live client systems
+- [Testimonials](https://workwithaj.ajautomate.co/testimonials): client feedback
+- [About](https://workwithaj.ajautomate.co/about): background and approach
+- [Book a free consultation](https://workwithaj.ajautomate.co/consult): 30-minute strategy call
+- [Contact](https://workwithaj.ajautomate.co/contact)
+
+## Builds and apps
+
+- [System Builds](https://workwithaj.ajautomate.co/system-builds): recorded walkthroughs of client systems, Claude-built projects (Slack AI agent, RAG knowledge bot, LinkedIn outreach automation, subscription paywall), n8n and Zapier workflows
+- [MVP apps](https://workwithaj.ajautomate.co/real-apps): full-stack apps AJ built and runs, including an AI Learning Hub, an Onboarding Client Hub and a Funnel Builder
+- [Portfolio](https://workwithaj.ajautomate.co/projects): automations, funnels, websites and apps
+
+## Free tools
+
+- [GoHighLevel sub-account audit](https://workwithaj.ajautomate.co/tools/ghl-audit)
+- [Revenue audit](https://workwithaj.ajautomate.co/tools/revenue-audit)
+- [Email health check](https://workwithaj.ajautomate.co/tools/email-health)
+- [Process map builder](https://workwithaj.ajautomate.co/tools/process-map)
+
+## Profiles
+
+- LinkedIn: https://www.linkedin.com/in/ajbactad29/
+- GitHub: https://github.com/systembuiltbyaj
