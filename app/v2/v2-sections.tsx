@@ -1020,7 +1020,7 @@ export function TestimonialsSection() {
               >
                 <TestimonialThumb t={t} />
                 <span className="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors group-hover:bg-black/0">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-persian text-white shadow-[0_10px_30px_-6px_rgba(94,23,235,0.7)] transition-transform duration-300 group-hover:scale-110 dark:bg-yellow dark:text-[#08060e] dark:shadow-[0_10px_30px_-6px_rgba(246,203,31,0.55)]">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-persian text-white shadow-[0_10px_30px_-6px_rgba(94,23,235,0.7)] ring-4 ring-white/15 transition-transform duration-300 group-hover:scale-110">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
                   </span>
                 </span>
@@ -1037,17 +1037,17 @@ export function TestimonialsSection() {
               </p>
 
               {t.title && (
-                <h3 className="mt-3.5 text-[clamp(1.15rem,1.7vw,1.45rem)] font-extrabold leading-snug text-persian dark:text-yellow">
+                <h3 className="mt-3.5 text-[clamp(1.15rem,1.7vw,1.45rem)] font-extrabold leading-snug text-[#14101f] dark:text-white">
                   {t.title}
                 </h3>
               )}
               {t.tag && (
-                <span className="mt-3 w-fit rounded-full border border-persian/30 bg-persian/[0.06] px-3 py-1 text-[12px] font-semibold text-persian dark:border-yellow/30 dark:bg-yellow/[0.07] dark:text-yellow">
+                <span className="mt-3 w-fit rounded-full border border-persian/30 bg-persian/[0.06] px-3 py-1 text-[12px] font-semibold text-persian dark:border-persian-light/35 dark:bg-persian/15 dark:text-persian-light">
                   {t.tag}
                 </span>
               )}
               {t.quote && (
-                <blockquote className="mt-5 border-l-2 border-persian/50 pl-4 text-[14.5px] italic leading-relaxed text-black/70 dark:border-yellow/40 dark:text-white/75">
+                <blockquote className="mt-5 border-l-2 border-persian/50 pl-4 text-[14.5px] italic leading-relaxed text-black/70 dark:border-persian-light/60 dark:text-white/75">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
               )}
