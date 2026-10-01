@@ -49,7 +49,7 @@ export function siteGraph() {
         alternateName: ["AJ Bactad", "AJ"],
         jobTitle: "AI Automation & Business Systems Engineer",
         description:
-          "Certified GoHighLevel Admin who builds CRM, automation and AI systems with GoHighLevel, n8n, Zapier, Trigger.dev, Next.js and Supabase. Former Head of Operations in Amazon eCommerce.",
+          "Certified GoHighLevel Admin who builds CRM, automation and AI systems with GoHighLevel, n8n, Zapier, Trigger.dev, Next.js and Supabase. Previously handled Team Lead and Purchasing Manager responsibilities in eCommerce operations.",
         url: SITE_URL,
         image: `${SITE_URL}/aj-bactad-photo.webp`,
         sameAs: SAME_AS,

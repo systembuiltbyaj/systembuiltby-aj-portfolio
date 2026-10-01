@@ -1204,22 +1204,41 @@ function IntroVideoCard() {
   );
 }
 
+const aboutPhotos = [
+  { src: "/about/aj-black-blazer.webp", alt: "AJ Bactad in a black blazer", aspect: "aspect-[3/4]" },
+  { src: "/about/aj-portrait-hands.webp", alt: "AJ Bactad, close-up portrait", aspect: "aspect-square" },
+  { src: "/about/aj-mono.webp", alt: "AJ Bactad, black-and-white portrait", aspect: "aspect-[4/5]" },
+  { src: "/about/aj-brown-suit.webp", alt: "AJ Bactad seated in a brown suit", aspect: "aspect-square" },
+  { src: "/about/aj-street.webp", alt: "AJ Bactad on the street in a beige suit", aspect: "aspect-[3/4]" },
+  { src: "/about/aj-studio.webp", alt: "AJ Bactad in a black tee at a desk", aspect: "aspect-[4/5]" },
+];
+
 export function AboutSection() {
   return (
     <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      <div className="mx-auto w-full max-w-[380px] lg:h-full">
-        {/* aj-bactad-photo is natively 4:5, so it fills this frame without being
-            upscaled from a square — which is what looked soft before. */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] lg:aspect-auto lg:h-full">
-          <Image
-            src="/aj-bactad-photo.webp"
-            alt="AJ Bactad"
-            fill
-            quality={92}
-            sizes="(max-width: 1024px) 80vw, 380px"
-            className="object-cover object-top"
-          />
-        </div>
+      {/* Two staggered columns of photos; the right column sits lower so the
+          collage reads as a scattered set rather than a grid. On phones it
+          follows the copy so the story comes first. On desktop its width tracks
+          the viewport height so the whole collage fits on a laptop screen. */}
+      <div className="order-last mx-auto grid w-full max-w-[400px] grid-cols-2 gap-3 sm:gap-4 lg:order-none lg:max-w-[min(400px,calc((100dvh_-_208px)*0.558_+_16px))] lg:self-start">
+        {[aboutPhotos.slice(0, 3), aboutPhotos.slice(3)].map((column, i) => (
+          <div key={i} className={`space-y-3 sm:space-y-4 ${i === 1 ? "pt-10 sm:pt-14" : ""}`}>
+            {column.map((photo) => (
+              <div
+                key={photo.src}
+                className={`group relative overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] ${photo.aspect}`}
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 640px) 45vw, 220px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <div className="min-w-0">
@@ -1228,14 +1247,18 @@ export function AboutSection() {
 
         <div className={`mt-5 space-y-3.5 text-[14.5px] leading-relaxed ${MUTED}`}>
           <p>
-            Five years running eCommerce operations, ending as Head of Operations. SOPs, KPIs,
-            team management, and the daily work of finding where a process quietly breaks.
+            Before automation, I spent five years in eCommerce operations, eventually handling Team
+            Lead and Purchasing Manager responsibilities for an online arbitrage business. I reviewed
+            products, monitored performance, approved purchases, tracked KPIs, and helped keep daily
+            operations organized.
           </p>
           <p>
-            Last November I barely knew any of this. GoHighLevel, n8n, Zapier, Trigger.dev,
-            Claude. Ten months later I build real systems with the same stack, and the operations
-            background is the reason they hold up. I ask where the bottleneck is and who owns the
-            next action, not just which tool to connect.
+            In late 2025, I barely knew GoHighLevel, n8n, Zapier, Trigger.dev, or Claude. Ten months
+            later, I&rsquo;m using them to build real business systems that save time, reduce
+            repetitive work, improve follow-ups, and keep operations moving without constant manual
+            intervention. But the mindset stayed the same: understand the process, find the
+            bottleneck, define who owns the next action, then build around it. Process first. Tools
+            second.
           </p>
         </div>
 

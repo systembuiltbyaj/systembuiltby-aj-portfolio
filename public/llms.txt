@@ -2,7 +2,7 @@
 
 > AJ Bactad (Allen Bactad) is an AI Automation & Business Systems Engineer and Certified GoHighLevel Admin. He builds the systems behind a business: GoHighLevel CRM and funnels, n8n, Zapier and Trigger.dev automations, AI agents, and custom Next.js and Supabase apps, connected so leads get followed up, work gets routed, and teams stop doing it by hand.
 
-AJ spent five years (2019-2024) in Amazon eCommerce operations, ending as Head of Operations, running SOPs, KPIs, reporting and teams. He builds automation the way an operator would: find the bottleneck, decide who owns the next action, and design for failure, retries and handover rather than just connecting tools.
+AJ spent five years (2019-2024) in eCommerce operations for an online arbitrage business, eventually handling Team Lead and Purchasing Manager responsibilities: reviewing products, monitoring performance, approving purchases and tracking KPIs. He builds automation the way an operator would: find the bottleneck, decide who owns the next action, and design for failure, retries and handover rather than just connecting tools.
 
 He works with coaches, consultants, agencies, and local and online service businesses, remotely and worldwide. Engagements start with a free 30-minute call to decide whether a process is worth automating before anything is built.
 
