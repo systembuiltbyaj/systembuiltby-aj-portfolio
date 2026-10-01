@@ -370,14 +370,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Magnetic cursor (components/motion/magnetic-cursor.tsx). The class is only
-   added for a real mouse with motion allowed, so everyone else keeps the
-   native cursor. Text fields keep their I-beam. */
-html.magnetic-cursor,
-html.magnetic-cursor * {
-  cursor: none !important;
-}
-html.magnetic-cursor :is(input, textarea, select, [contenteditable="true"]) {
-  cursor: auto !important;
-}

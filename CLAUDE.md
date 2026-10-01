@@ -34,8 +34,6 @@ a dev-server check. This overrides the global "unit test every service function"
   (v2 routes render `V2Content` instead; see below)
 - `components/sections/` → page sections   ·   `components/ui/` → shadcn primitives
 - `components/layout/` → navbar, footer   ·   `components/motion/` → framer helpers
-- `components/motion/magnetic-cursor.tsx` → site-wide cursor (mouse only; force a look with
-  `data-cursor="wrap"` or `"view"`)
 - `components/interactive/` → embedded tools (ROI/revenue/audit widgets)   ·   `components/chat/` → chat bubble   ·   `components/intro/` → name-reveal intro
 - Page copy is INLINED in `*-content.tsx` and section files (no `content/` folder)
 - `lib/` → site-version flag, SEO data (`structured-data.ts`), utils   ·   `components/seo/` → JSON-LD tag

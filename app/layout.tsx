@@ -5,7 +5,6 @@ import { Footer } from "@/components/layout/footer";
 import { ChromeGate, MainShell } from "@/components/layout/chrome-gate";
 import { NameRevealIntro } from "@/components/intro/name-reveal-intro";
 import { DeferredChatBubble } from "@/components/chat/deferred-chat-bubble";
-import { MagneticCursor } from "@/components/motion/magnetic-cursor";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SITE_URL, siteGraph } from "@/lib/structured-data";
 import "./globals.css";
@@ -68,7 +67,6 @@ export default function RootLayout({
         <ChromeGate>
           <DeferredChatBubble />
         </ChromeGate>
-        <MagneticCursor />
       </body>
     </html>
   );
