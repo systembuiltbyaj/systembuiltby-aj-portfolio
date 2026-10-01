@@ -414,6 +414,20 @@ export const premiumWebsites = [
     url: "https://sorrel-dental.vercel.app/",
     thumbnail: "/showcase/sorrel-dental.webp",
   },
+  {
+    title: "Saltbox Housekeeping",
+    industry: "Home services",
+    subtitle: "House cleaning with a live price, then booking, in one flow",
+    url: "https://saltbox-housekeeping.vercel.app/",
+    thumbnail: "/showcase/saltbox-housekeeping.webp",
+  },
+  {
+    title: "Muster Point Mortgage",
+    industry: "Mortgage",
+    subtitle: "VA and FHA loan funnel for military families and first-time buyers",
+    url: "https://muster-point-mortgage.vercel.app/",
+    thumbnail: "/showcase/muster-point-mortgage.webp",
+  },
 ];
 
 /* ------------------------------------------------------------------ */

@@ -323,6 +323,26 @@ export const motionPresentations: SystemBuild[] = [
     image: "/system-builds/sorrel-case-study.webp",
     videoId: "7ZRtQ31t4Bk",
   },
+  {
+    title: "Muster Point Mortgage",
+    category: "Motion Presentation",
+    description:
+      "A mortgage funnel built for ad traffic: 18 landing pages from one template, headlines matched to the ad's keyword, and a one-question-per-screen application.",
+    duration: "0:55",
+    emoji: "🏡",
+    image: "/system-builds/muster-case-study.webp",
+    videoId: "RH93iOYyV50",
+  },
+  {
+    title: "Saltbox Housekeeping",
+    category: "Motion Presentation",
+    description:
+      "A cleaning site that prices the home before it books: pick bedrooms, bathrooms and frequency, watch a flat price update live, then choose an arrival window.",
+    duration: "0:53",
+    emoji: "🧽",
+    image: "/system-builds/saltbox-case-study.webp",
+    videoId: "2ellZdT5jCc",
+  },
 ];
 
 function BuildCard({ build, accent = "text-persian-light" }: { build: SystemBuild; accent?: string }) {
