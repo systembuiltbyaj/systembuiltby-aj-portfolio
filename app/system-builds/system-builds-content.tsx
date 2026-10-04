@@ -253,11 +253,22 @@ export const n8nProjects: SystemBuild[] = [
     videoId: "-WgDZJQwJQQ",
   },
   {
-    title: "Self-Hosted n8n Workflow",
+    title: "AI Sales System: From New Lead to Booked Call + Sales Call Audit",
     category: "n8n Automation",
     description:
-      "Building automations on self-hosted n8n, webhooks, scheduled jobs, and API chains running on my own infrastructure instead of a SaaS plan. Walkthrough recording in progress.",
-    emoji: "🔗",
+      "A practice sales system for a high-ticket coaching offer, built in n8n with Claude and GoHighLevel. It takes a new lead through to a booked call, then audits every sales call against a scoring rubric, sends coaching feedback, flags compliance issues, and logs notes back to the CRM.",
+    emoji: "📈",
+    image: "/system-builds/n8n-ai-sales-system.webp",
+    videoId: "6ZV_ogm_Me8",
+  },
+  {
+    title: "Lead Intake & Assignment: Qualify, Route & Follow Up Automatically",
+    category: "n8n Automation",
+    description:
+      "A practice lead system in n8n: capture leads from a form or webhook, let Claude classify the message, score and assign each lead to a rep with fixed rules, then enforce the response time with reminders, manager escalation, and a weekly report. AI classifies, rules decide, so every Hot lead can be explained.",
+    emoji: "🎯",
+    image: "/system-builds/n8n-lead-intake-assignment.webp",
+    videoId: "p1GQAltpVvY",
   },
 ];
 
