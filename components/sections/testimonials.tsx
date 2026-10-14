@@ -65,6 +65,17 @@ export const testimonials: Testimonial[] = [
     vertical: true,
   },
   {
+    type: "video",
+    name: "Fabi Paolini",
+    role: "Brand Communication Strategist",
+    title: "A Client Funnel That Came Out Better Than Expected",
+    tag: "Funnel Build",
+    quote:
+      "I hired AJ to build a client's landing page and funnel in GoHighLevel, and I'm so glad I did. He followed directions, responded fast and took action on everything I asked. The final result looked even better than I expected. He custom-coded a thank-you page and went above and beyond, adding the emails and the whole follow-up sequence. I really recommend working with AJ.",
+    videoId: "3Rsbnl0Ua8o",
+    poster: "/testimonials/fabi-paolini.webp",
+  },
+  {
     type: "text",
     name: "Daniel Reyes",
     role: "Founder & CEO · Northgate Consulting",
