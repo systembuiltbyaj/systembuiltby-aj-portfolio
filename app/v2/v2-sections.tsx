@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
+import { Children, Fragment, cloneElement, isValidElement, useEffect, useState } from "react";
 import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
@@ -1204,13 +1204,14 @@ function IntroVideoCard() {
   );
 }
 
+/** `core` tools get the accent underline: the ones the day-to-day builds actually run on. */
 const aboutStack = [
-  { group: "Frontend", tools: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "HTML/CSS"] },
-  { group: "Backend & APIs", tools: ["Node.js", "Python", "REST APIs", "Webhooks", "Next.js API Routes"] },
-  { group: "Database & Cloud", tools: ["Supabase", "PostgreSQL", "SQL", "Vercel", "Git", "GitHub"] },
-  { group: "AI Engineering", tools: ["Claude Code", "OpenAI", "Anthropic API", "RAG", "AI Agents", "MCP"] },
-  { group: "Automation & Business Systems", tools: ["GoHighLevel", "n8n", "Zapier", "Make", "Trigger.dev", "Slack API"] },
-  { group: "SaaS & Integrations", tools: ["Stripe", "Authentication", "REST APIs", "GA4", "Meta Pixel", "UTM Attribution"] },
+  { group: "Frontend", tools: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "HTML/CSS"], core: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+  { group: "Backend & APIs", tools: ["Node.js", "Python", "REST APIs", "Webhooks", "Next.js API Routes"], core: ["Python", "REST APIs", "Webhooks"] },
+  { group: "Database & Cloud", tools: ["Supabase", "PostgreSQL", "SQL", "Vercel", "Git", "GitHub"], core: ["Supabase", "PostgreSQL", "Vercel"] },
+  { group: "AI Engineering", tools: ["Claude Code", "OpenAI", "Anthropic API", "RAG", "AI Agents", "MCP"], core: ["Claude Code", "Anthropic API", "RAG"] },
+  { group: "Automation & Business Systems", tools: ["GoHighLevel", "n8n", "Zapier", "Make", "Trigger.dev", "Slack API"], core: ["GoHighLevel", "n8n", "Zapier", "Trigger.dev"] },
+  { group: "SaaS & Integrations", tools: ["Stripe", "Authentication", "REST APIs", "GA4", "Meta Pixel", "UTM Attribution"], core: ["Stripe", "GA4"] },
 ];
 
 function TechStackCard() {
@@ -1228,11 +1229,12 @@ function TechStackCard() {
   };
 
   return (
-    <section aria-labelledby="tech-stack-title" className={`p-5 sm:p-7 ${CARD}`}>
-      <div className="flex items-center justify-between gap-4 border-b border-black/[0.08] pb-4 dark:border-white/[0.08]">
-        <h3 id="tech-stack-title" className="text-[17px] font-extrabold text-[#14101f] dark:text-white">
+    <section aria-labelledby="tech-stack-title" className="pt-4 lg:pt-6">
+      <div className="relative flex items-end justify-between gap-4 border-b border-black/[0.1] pb-4 dark:border-white/[0.1]">
+        <h3 id="tech-stack-title" className="text-[clamp(1.35rem,2.2vw,1.85rem)] font-black uppercase leading-none tracking-[-0.01em] text-[#14101f] dark:text-white">
           Technical Stack
         </h3>
+        <span aria-hidden="true" className="absolute -bottom-px left-0 h-[2px] w-40 bg-persian dark:bg-yellow" />
         <button
           type="button"
           onClick={copyStack}
@@ -1245,20 +1247,32 @@ function TechStackCard() {
         </button>
       </div>
 
-      <div className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
         {aboutStack.map((s) => (
-          <div key={s.group}>
-            <p className="text-[13px] font-bold text-[#14101f] dark:text-white">{s.group}</p>
-            <ul className="mt-2.5 flex flex-wrap gap-1.5">
-              {s.tools.map((tool) => (
-                <li
-                  key={tool}
-                  className="rounded-md border border-black/[0.08] bg-black/[0.03] px-2 py-1 text-[12px] font-medium text-black/70 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/75"
-                >
-                  {tool}
-                </li>
+          <div key={s.group} className="border-b border-black/[0.1] py-7 dark:border-white/[0.1]">
+            <h4 className="text-[clamp(1.15rem,1.6vw,1.4rem)] font-extrabold leading-tight text-[#14101f] dark:text-white">
+              {s.group}
+            </h4>
+            <p className="mt-4 text-[15px] font-medium leading-[2.2] text-black/80 dark:text-white/85">
+              {s.tools.map((tool, i) => (
+                <Fragment key={tool}>
+                  {/* tool + its comma never split across lines; the space after is the break point */}
+                  <span className="whitespace-nowrap pr-1.5">
+                    <span
+                      className={
+                        s.core.includes(tool)
+                          ? "underline decoration-persian decoration-[2.5px] underline-offset-[7px] dark:decoration-yellow"
+                          : undefined
+                      }
+                    >
+                      {tool}
+                    </span>
+                    {i < s.tools.length - 1 && <span className={FAINT}>,</span>}
+                  </span>
+                  {i < s.tools.length - 1 && " "}
+                </Fragment>
               ))}
-            </ul>
+            </p>
           </div>
         ))}
       </div>
