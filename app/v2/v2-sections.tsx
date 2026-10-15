@@ -46,11 +46,12 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** Each route renders one section, so its title is that page's only h1. */
 function Title({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="v2-rise mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white" style={{ animationDelay: "70ms" }}>
+    <h1 className="v2-rise mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white" style={{ animationDelay: "70ms" }}>
       {children}
-    </h2>
+    </h1>
   );
 }
 
@@ -1442,11 +1443,11 @@ export function ContactSection() {
   return (
     <div className="mx-auto flex min-h-full max-w-[860px] flex-col items-center justify-start text-center lg:justify-center">
       <Eyebrow>Contact</Eyebrow>
-      <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black uppercase leading-[1.02] tracking-[-0.015em] text-[#14101f] dark:text-white">
+      <h1 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black uppercase leading-[1.02] tracking-[-0.015em] text-[#14101f] dark:text-white">
         Tell me what breaks.
         <br />
         <span className="text-[#14101f] underline decoration-yellow decoration-[6px] underline-offset-[10px] dark:text-yellow dark:no-underline">I&apos;ll map the fix.</span>
-      </h2>
+      </h1>
       <p className={`mt-5 max-w-[52ch] text-[15px] leading-relaxed ${MUTED}`}>
         A free 30-minute call. Bring the process that eats the most time and we will work out
         whether it is worth automating, before anyone talks about building anything.
