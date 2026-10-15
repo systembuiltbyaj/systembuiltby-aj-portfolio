@@ -37,7 +37,9 @@ const FAINT = "text-black/40 dark:text-white/40";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="v2-rise text-[11px] font-bold uppercase tracking-[0.2em] text-persian dark:text-persian-light">
+    <p className="v2-rise text-[11px] font-bold uppercase tracking-[0.2em] text-[#14101f] dark:text-persian-light">
+      {/* light mode marks eyebrows with a gold block, the way the print collateral does */}
+      <span aria-hidden="true" className="mr-2 inline-block h-2 w-2 bg-yellow align-[1px] dark:hidden" />
       {children}
     </p>
   );
@@ -103,8 +105,8 @@ function ToolsMarquee() {
         Tools I build with
       </p>
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#e9e7ee] to-transparent dark:from-[#0d0a18]" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e9e7ee] to-transparent dark:from-[#0d0a18]" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#f2f2f0] to-transparent dark:from-[#0d0a18]" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#f2f2f0] to-transparent dark:from-[#0d0a18]" />
         <ul className="marquee-scroll flex w-max gap-2.5 motion-reduce:[animation:none]">
           {doubled.map((t, i) => (
             <li
@@ -142,7 +144,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           hidden from assistive tech — it is texture, not content. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,19vw,17rem)] font-black leading-none tracking-[-0.055em] text-persian/[0.13] dark:text-persian/[0.22]"
+        className="pointer-events-none absolute left-0 top-6 select-none text-[clamp(5rem,19vw,17rem)] font-black leading-none tracking-[-0.055em] text-black/[0.045] dark:text-persian/[0.22]"
       >
         PORTFOLIO
       </span>
@@ -174,10 +176,11 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <p className={`${script.className} mt-5 text-[clamp(1.8rem,4vw,3.4rem)] leading-none text-black/70 dark:text-white/80`}>
             Hello, I&apos;m
           </p>
-          <h1 className="mt-1.5 text-[clamp(2.7rem,8vw,6.8rem)] font-black leading-[0.9] tracking-[-0.05em] text-[#231145] dark:text-white">
+          <h1 className="mt-1.5 text-[clamp(2.7rem,8vw,6.8rem)] font-black leading-[0.9] tracking-[-0.05em] text-[#14101f] dark:text-white">
             AJ BACTAD
           </h1>
-          <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-persian dark:text-yellow">
+          <p className="mt-3.5 text-[clamp(0.9rem,1.75vw,1.35rem)] font-bold uppercase tracking-[0.12em] text-[#14101f] dark:text-yellow">
+            <span aria-hidden="true" className="mr-3 inline-block h-[0.7em] w-[0.7em] bg-yellow align-[0.02em] dark:hidden" />
             AI Automation &amp; Business Systems Engineer
           </p>
 
@@ -190,14 +193,14 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <div className="mt-7 flex flex-wrap gap-3.5">
             <Link
               href="/consult"
-              className="cta-primary inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-persian px-8 text-[15.5px] font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="cta-primary inline-flex h-[3.4rem] items-center gap-2 rounded-full bg-yellow px-8 text-[15.5px] font-bold text-[#14101f] dark:bg-persian dark:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
             >
               Book a Free Consultation →
             </Link>
             <button
               type="button"
               onClick={() => go("builds")}
-              className="cta-lift inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+              className="cta-lift inline-flex h-[3.4rem] items-center rounded-full border border-black/12 bg-black/[0.03] px-8 text-[15.5px] font-bold text-[#14101f] hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
             >
               See What I&apos;ve Built
             </button>
@@ -211,7 +214,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <div className="flex flex-row justify-between gap-5 lg:flex-col lg:items-end lg:gap-8">
             {heroStats.map((st) => (
               <div key={st.l} className="lg:text-right">
-                <p className="text-[clamp(2.1rem,5.2vw,4.2rem)] font-black leading-none text-persian dark:text-yellow">
+                <p className="text-[clamp(2.1rem,5.2vw,4.2rem)] font-black leading-none text-[#14101f] underline decoration-yellow decoration-[5px] underline-offset-[10px] dark:text-yellow dark:no-underline">
                   {st.n}
                 </p>
                 <p className={`mt-1.5 text-[clamp(0.68rem,0.85vw,0.8rem)] font-medium uppercase tracking-wider ${FAINT}`}>{st.l}</p>
@@ -222,7 +225,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
           <button
             type="button"
             onClick={() => go("credentials")}
-            className="cta-lift inline-flex h-[3.1rem] items-center gap-2 rounded-full bg-persian px-6 text-[14.5px] font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+            className="cta-lift inline-flex h-[3.1rem] items-center gap-2 rounded-full bg-yellow px-6 text-[14.5px] font-bold text-[#14101f] dark:bg-persian dark:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm-3 11.5 3 1.8 3-1.8V22l-3-1.8L9 22z" />
@@ -239,7 +242,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
                 rel="noopener noreferrer"
                 aria-label={so.name}
                 title={so.name}
-                className="flex h-[3.1rem] w-[3.1rem] items-center justify-center rounded-xl border border-black/10 bg-white text-black/50 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/45 dark:hover:text-white"
+                className="flex h-[3.1rem] w-[3.1rem] items-center justify-center rounded-xl border border-black/10 bg-white text-black/50 transition-colors hover:border-yellow dark:hover:border-persian/50 hover:text-[#14101f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/45 dark:hover:text-white"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{so.icon}</svg>
               </a>
@@ -371,13 +374,13 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
             type="button"
             onClick={() => onPick(o.id)}
             style={{ animationDelay: `${110 + i * 90}ms` }}
-            className={`v2-rise group overflow-hidden text-left transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_14px_38px_-16px_rgba(94,23,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+            className={`v2-rise group overflow-hidden text-left transition-all duration-300 hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 hover:shadow-[0_14px_38px_-16px_rgba(20,16,31,0.22)] dark:hover:shadow-[0_14px_38px_-16px_rgba(94,23,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/8] overflow-hidden bg-black/5 dark:bg-black/40">
               {o.art && <Image src={o.art} alt="" fill sizes="620px" className="object-cover opacity-85 transition-opacity group-hover:opacity-100" />}
               <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
               <span className="absolute bottom-4 left-4 flex items-center gap-2.5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-persian text-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow text-[#14101f] dark:bg-persian dark:text-white">
                   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{o.icon}</svg>
                 </span>
                 <span className="text-[20px] font-black tracking-[-0.02em] text-white">{o.title}</span>
@@ -388,7 +391,7 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
             </span>
             <span className="flex items-center justify-between gap-4 p-5">
               <span className={`text-[13.5px] leading-relaxed ${MUTED}`}>{o.blurb}</span>
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-yellow group-hover:text-[#14101f] dark:group-hover:bg-persian dark:group-hover:text-white dark:border-white/15 dark:text-white/60">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </span>
             </span>
@@ -404,7 +407,7 @@ function BackBar({ onBack, label }: { onBack: () => void; label: string }) {
     <button
       type="button"
       onClick={onBack}
-      className="mb-4 inline-flex h-11 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.03] pl-3 pr-4 text-[13px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
+      className="mb-4 inline-flex h-11 items-center gap-2 self-start rounded-full border border-black/10 bg-black/[0.03] pl-3 pr-4 text-[13px] font-bold text-[#14101f] transition-colors hover:bg-black/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.09]"
     >
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
       {label}
@@ -480,9 +483,9 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
               role="tab"
               aria-selected={on}
               onClick={() => onView(t.id)}
-              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-bold transition-colors sm:gap-2 sm:px-4 sm:text-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
+              className={`inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-bold transition-colors sm:gap-2 sm:px-4 sm:text-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${
                 on
-                  ? "bg-persian text-white"
+                  ? "bg-yellow text-[#14101f] dark:bg-persian dark:text-white"
                   : "text-black/55 hover:text-black dark:text-white/55 dark:hover:text-white"
               }`}
             >
@@ -501,7 +504,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
             href={f.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+            className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/10] overflow-hidden bg-black/[0.06] dark:bg-black/50" style={f.background ? { background: f.background } : undefined}>
               {f.thumbnail && (
@@ -513,7 +516,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
                   className={f.cover ? "object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" : "object-contain"}
                 />
               )}
-              <span className="absolute left-3 top-3 rounded-full bg-persian px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-white shadow-lg">
+              <span className="absolute left-3 top-3 rounded-full bg-yellow px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:bg-persian dark:text-white shadow-lg">
                 {f.badge}
               </span>
             </span>
@@ -522,7 +525,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
                 <span className="block truncate text-[14.5px] font-bold text-[#14101f] dark:text-white">{f.title}</span>
                 <span className={`mt-0.5 block text-[12.5px] leading-snug ${MUTED}`}>{f.subtitle}</span>
               </span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-yellow group-hover:text-[#14101f] dark:group-hover:bg-persian dark:group-hover:text-white dark:border-white/15 dark:text-white/60">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
               </span>
             </span>
@@ -552,7 +555,7 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
             type="button"
             onClick={() => onPick(g.id)}
             disabled={g.builds.length === 0}
-            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
+            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
           >
             <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
               {g.builds[0]?.image ? (
@@ -634,7 +637,7 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
                       </span>
                     )}
                     {b.url && (
-                      <span className="absolute left-3 top-3 rounded-full bg-persian px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-white shadow-lg">
+                      <span className="absolute left-3 top-3 rounded-full bg-yellow px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:bg-persian dark:text-white shadow-lg">
                         Live app
                       </span>
                     )}
@@ -643,10 +646,10 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
                         type="button"
                         onClick={() => setPlaying(b.title)}
                         aria-label={`Play ${b.title}`}
-                        className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+                        className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
                       >
-                        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-persian">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
+                        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-yellow dark:group-hover:bg-persian">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#14101f] dark:group-hover:text-white"><path d="M8 5v14l11-7z" /></svg>
                         </span>
                       </button>
                     )}
@@ -663,7 +666,7 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
                   <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
                 </span>
                 {b.url && (
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-persian group-hover:text-white dark:border-white/15 dark:text-white/60">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-yellow group-hover:text-[#14101f] dark:group-hover:bg-persian dark:group-hover:text-white dark:border-white/15 dark:text-white/60">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
                   </span>
                 )}
@@ -678,7 +681,7 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
                 href={b.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${CARD}`}
+                className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
               >
                 {card}
               </a>
@@ -719,12 +722,12 @@ export function ScreensSection() {
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {screens.map((sc) => (
-          <figure key={sc.label} className={`group overflow-hidden transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_14px_34px_-16px_rgba(94,23,235,0.45)] ${CARD}`}>
+          <figure key={sc.label} className={`group overflow-hidden transition-all duration-300 hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 hover:shadow-[0_14px_34px_-16px_rgba(20,16,31,0.22)] dark:hover:shadow-[0_14px_34px_-16px_rgba(94,23,235,0.45)] ${CARD}`}>
             <button
               type="button"
               onClick={() => setOpen(sc)}
               aria-label={`View ${sc.label} full size`}
-              className="relative block aspect-[16/10] w-full overflow-hidden bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-persian dark:bg-black/40"
+              className="relative block aspect-[16/10] w-full overflow-hidden bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:bg-black/40"
             >
               {sc.image && (
                 <Image
@@ -737,7 +740,7 @@ export function ScreensSection() {
               )}
               {/* These screenshots are dense; the cue says the full view exists. */}
               <span className="absolute inset-0 flex items-center justify-center bg-[#08060e]/0 opacity-0 transition-all duration-300 group-hover:bg-[#08060e]/45 group-hover:opacity-100">
-                <span className="inline-flex items-center gap-2 rounded-full bg-persian px-4 py-2 text-[12.5px] font-bold text-white shadow-lg">
+                <span className="inline-flex items-center gap-2 rounded-full bg-yellow px-4 py-2 text-[12.5px] font-bold text-[#14101f] dark:bg-persian dark:text-white shadow-lg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="11" cy="11" r="7" /><path d="M20 20l-4.3-4.3M11 8v6M8 11h6" />
                   </svg>
@@ -784,7 +787,7 @@ function ScreenLightbox({ screen, onClose }: { screen: ScreenItem; onClose: () =
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow dark:focus-visible:outline-persian"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
@@ -810,7 +813,7 @@ function ScreenLightbox({ screen, onClose }: { screen: ScreenItem; onClose: () =
               href={screen.image}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-block text-[12.5px] font-semibold text-persian-light underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="mt-2 inline-block text-[12.5px] font-semibold text-yellow underline-offset-4 dark:text-persian-light hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow dark:focus-visible:outline-persian"
             >
               Open full resolution
             </a>
@@ -839,7 +842,7 @@ export function ServicesSection() {
         {services.map((s) => (
           <div
             key={s.title}
-            className={`v2-wired group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-persian/50 hover:shadow-[0_10px_30px_-12px_rgba(94,23,235,0.35)] ${CARD}`}
+            className={`v2-wired group relative overflow-hidden p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 hover:shadow-[0_10px_30px_-12px_rgba(20,16,31,0.22)] dark:hover:shadow-[0_10px_30px_-12px_rgba(94,23,235,0.35)] ${CARD}`}
           >
             <div className="flex items-start gap-3">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-black/[0.08] bg-black/[0.03] text-xl transition-transform duration-300 group-hover:scale-110 dark:border-white/10 dark:bg-white/[0.06]">
@@ -854,7 +857,7 @@ export function ServicesSection() {
               {s.items.slice(0, 3).map((it: string, i: number) => (
                 <li key={it} className={`flex gap-2.5 text-[12.5px] leading-relaxed ${MUTED}`}>
                   <span
-                    className="v2-step mt-[7px] h-1 w-1 shrink-0 rounded-full bg-persian dark:bg-yellow"
+                    className="v2-step mt-[7px] h-1 w-1 shrink-0 rounded-full bg-yellow"
                     style={{ animationDelay: `${i * 110}ms` }}
                   />
                   {it}
@@ -899,9 +902,9 @@ export function CredentialsSection() {
                 key={t.id}
                 type="button"
                 onClick={() => setTool(t)}
-                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
+                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${
                   on
-                    ? "border-persian/60 bg-persian/10 dark:bg-persian/15"
+                    ? "border-yellow bg-yellow/15 dark:border-persian/60 dark:bg-persian/15"
                     : "border-black/[0.08] bg-white hover:bg-black/[0.03] dark:border-white/[0.08] dark:bg-white/[0.035] dark:hover:bg-white/[0.07]"
                 }`}
               >
@@ -912,12 +915,12 @@ export function CredentialsSection() {
                   <span className="block text-[14px] font-bold text-[#14101f] dark:text-white">{t.name}</span>
                   <span className={`block text-[12px] ${MUTED}`}>{t.badges.length} credentials</span>
                 </span>
-                {on && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-persian dark:bg-yellow" />}
+                {on && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-yellow" />}
               </button>
             );
           })}
           <p className={`pt-1 text-center text-[12.5px] ${FAINT}`}>
-            <span className="font-bold text-persian dark:text-yellow">{total}</span> verified in total
+            <span className="font-bold text-[#14101f] dark:text-yellow">{total}</span> verified in total
           </p>
         </div>
 
@@ -929,7 +932,7 @@ export function CredentialsSection() {
                 type="button"
                 onClick={() => setZoom(b)}
                 aria-label={`View ${b.label} full size`}
-                className="group rounded-xl border border-black/[0.06] bg-black/[0.02] p-2.5 text-left transition-all hover:-translate-y-[2px] hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/[0.07] dark:bg-white/[0.03]"
+                className="group rounded-xl border border-black/[0.06] bg-black/[0.02] p-2.5 text-left transition-all hover:-translate-y-[2px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/[0.07] dark:bg-white/[0.03]"
               >
                 <span className="relative block aspect-square">
                   <Image src={b.src} alt="" fill sizes="150px" className="object-contain transition-transform group-hover:scale-105" />
@@ -971,7 +974,7 @@ function BadgeLightbox({ badge, onClose }: { badge: BadgeItem; onClose: () => vo
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow dark:focus-visible:outline-persian"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
@@ -1016,11 +1019,11 @@ export function TestimonialsSection() {
                 type="button"
                 onClick={() => setPlaying(t)}
                 aria-label={`Play ${t.name}'s testimonial`}
-                className="group relative aspect-video w-full overflow-hidden rounded-xl bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:bg-black/40"
+                className="group relative aspect-video w-full overflow-hidden rounded-xl bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:bg-black/40"
               >
                 <TestimonialThumb t={t} />
                 <span className="absolute inset-0 flex items-center justify-center bg-black/15 transition-colors group-hover:bg-black/0">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-persian text-white shadow-[0_10px_30px_-6px_rgba(94,23,235,0.7)] ring-4 ring-white/15 transition-transform duration-300 group-hover:scale-110">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow text-[#14101f] shadow-[0_10px_30px_-6px_rgba(20,16,31,0.45)] dark:bg-persian dark:text-white dark:shadow-[0_10px_30px_-6px_rgba(94,23,235,0.7)] ring-4 ring-white/15 transition-transform duration-300 group-hover:scale-110">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1"><path d="M8 5v14l11-7z" /></svg>
                   </span>
                 </span>
@@ -1042,12 +1045,12 @@ export function TestimonialsSection() {
                 </h3>
               )}
               {t.tag && (
-                <span className="mt-3 w-fit rounded-full border border-persian/30 bg-persian/[0.06] px-3 py-1 text-[12px] font-semibold text-persian dark:border-persian-light/35 dark:bg-persian/15 dark:text-persian-light">
+                <span className="mt-3 w-fit rounded-full border border-yellow/80 bg-yellow/25 px-3 py-1 text-[12px] font-semibold text-[#14101f] dark:border-persian-light/35 dark:bg-persian/15 dark:text-persian-light">
                   {t.tag}
                 </span>
               )}
               {t.quote && (
-                <blockquote className="mt-5 border-l-2 border-persian/50 pl-4 text-[14.5px] italic leading-relaxed text-black/70 dark:border-persian-light/60 dark:text-white/75">
+                <blockquote className="mt-5 border-l-2 border-yellow pl-4 text-[14.5px] italic leading-relaxed text-black/70 dark:border-persian-light/60 dark:text-white/75">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
               )}
@@ -1130,7 +1133,7 @@ function TestimonialLightbox({ t, onClose }: { t: VideoTestimonial; onClose: () 
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+          className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow dark:focus-visible:outline-persian"
         >
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M5 5l14 14M19 5L5 19" /></svg>
         </button>
@@ -1187,10 +1190,10 @@ function IntroVideoCard() {
               type="button"
               onClick={() => setPlaying(true)}
               aria-label="Play AJ's introduction"
-              className="group absolute inset-0 flex items-center justify-center bg-black/30 transition-colors hover:bg-black/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian"
+              className="group absolute inset-0 flex items-center justify-center bg-black/30 transition-colors hover:bg-black/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
             >
-              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-persian">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white"><path d="M8 5v14l11-7z" /></svg>
+              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-yellow dark:group-hover:bg-persian">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#14101f] dark:group-hover:text-white"><path d="M8 5v14l11-7z" /></svg>
               </span>
             </button>
           </>
@@ -1234,11 +1237,11 @@ function TechStackCard() {
         <h3 id="tech-stack-title" className="text-[clamp(1.35rem,2.2vw,1.85rem)] font-black uppercase leading-none tracking-[-0.01em] text-[#14101f] dark:text-white">
           Technical Stack
         </h3>
-        <span aria-hidden="true" className="absolute -bottom-px left-0 h-[2px] w-40 bg-persian dark:bg-yellow" />
+        <span aria-hidden="true" className="absolute -bottom-px left-0 h-[2px] w-40 bg-yellow" />
         <button
           type="button"
           onClick={copyStack}
-          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:text-white/75 dark:hover:text-persian-light"
+          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 transition-colors hover:border-yellow dark:hover:border-persian/50 hover:text-[#14101f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/12 dark:text-white/75 dark:hover:text-persian-light"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             {copied ? <path d="M20 6 9 17l-5-5" /> : <><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></>}
@@ -1261,7 +1264,7 @@ function TechStackCard() {
                     <span
                       className={
                         s.core.includes(tool)
-                          ? "underline decoration-persian decoration-[2.5px] underline-offset-[7px] dark:decoration-yellow"
+                          ? "underline decoration-yellow decoration-[2.5px] underline-offset-[7px]"
                           : undefined
                       }
                     >
@@ -1341,7 +1344,7 @@ export function AboutSection() {
         <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stats.map((s) => (
             <div key={s.l} className="rounded-xl border border-black/[0.08] bg-white px-4 py-3 dark:border-white/[0.08] dark:bg-white/[0.035]">
-              <p className="text-2xl font-black leading-none text-persian dark:text-yellow">{s.n}</p>
+              <p className="text-2xl font-black leading-none text-[#14101f] underline decoration-yellow decoration-[3px] underline-offset-[6px] dark:text-yellow dark:no-underline">{s.n}</p>
               <p className={`mt-1.5 text-[11.5px] leading-snug ${MUTED}`}>{s.l}</p>
             </div>
           ))}
@@ -1387,7 +1390,7 @@ export function ContactSection() {
       <h2 className="mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] font-black uppercase leading-[1.02] tracking-[-0.015em] text-[#14101f] dark:text-white">
         Tell me what breaks.
         <br />
-        <span className="text-persian dark:text-yellow">I&apos;ll map the fix.</span>
+        <span className="text-[#14101f] underline decoration-yellow decoration-[6px] underline-offset-[10px] dark:text-yellow dark:no-underline">I&apos;ll map the fix.</span>
       </h2>
       <p className={`mt-5 max-w-[52ch] text-[15px] leading-relaxed ${MUTED}`}>
         A free 30-minute call. Bring the process that eats the most time and we will work out
@@ -1397,7 +1400,7 @@ export function ContactSection() {
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link
           href="/consult"
-          className="cta-primary inline-flex h-12 items-center rounded-full bg-persian px-7 text-[14.5px] font-bold text-white dark:bg-yellow dark:text-[#08060e]"
+          className="cta-primary inline-flex h-12 items-center rounded-full bg-yellow px-7 text-[14.5px] font-bold text-[#14101f] dark:text-[#08060e]"
         >
           Book a free consult
         </Link>
@@ -1420,7 +1423,7 @@ export function ContactSection() {
             rel="noopener noreferrer"
             aria-label={s.name}
             title={s.name}
-            className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/10 bg-white text-black/55 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.05] dark:text-white/60 dark:hover:text-white"
+            className="flex h-12 w-12 items-center justify-center rounded-xl border border-black/10 bg-white text-black/55 transition-colors hover:border-yellow dark:hover:border-persian/50 hover:text-[#14101f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:border-white/12 dark:bg-white/[0.05] dark:text-white/60 dark:hover:text-white"
           >
             <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">{s.icon}</svg>
           </a>

@@ -84,7 +84,7 @@ function GlobeBackdrop({ still, dark }: { still: boolean; dark: boolean }) {
           {/* Heaviest over the left column where the copy sits. It no longer
               fades to nothing on the right: bare backdrop there read as glare
               against the smoke ground. The dot pattern still shows through. */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#e9e7ee]/94 via-[#e9e7ee]/62 to-[#e9e7ee]/55" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#f2f2f0]/94 via-[#f2f2f0]/62 to-[#f2f2f0]/55" />
         </>
       )}
     </div>
@@ -151,7 +151,7 @@ export function V2Shell({
 
   return (
     <div>
-      <div className="relative h-[100dvh] w-full overflow-hidden bg-[#e9e7ee] text-[#14101f] transition-colors duration-300 dark:bg-[#08060e] dark:text-[#ece9f4]">
+      <div className="relative h-[100dvh] w-full overflow-hidden bg-[#f2f2f0] text-[#14101f] transition-colors duration-300 dark:bg-[#08060e] dark:text-[#ece9f4]">
         <GlobeBackdrop still={Boolean(reduce)} dark={dark} />
 
         {/* ------------------------------------------------ rail */}
@@ -171,14 +171,14 @@ export function V2Shell({
                   blinking at someone trying to read the page. */}
               <span
                 aria-hidden="true"
-                className="absolute inset-1 rounded-full bg-persian/35 blur-lg motion-safe:animate-pulse dark:bg-persian/45"
+                className="absolute inset-1 rounded-full bg-yellow/45 blur-lg motion-safe:animate-pulse dark:bg-persian/45"
               />
               <Image
-                src={dark ? "/aj-mark-dark.webp" : "/aj-mark-violet.webp"}
+                src="/aj-mark-dark.webp"
                 alt=""
                 fill
                 sizes="56px"
-                className="relative object-contain drop-shadow-[0_2px_8px_rgba(94,23,235,0.45)]"
+                className="relative object-contain brightness-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)] dark:brightness-100 dark:drop-shadow-[0_2px_8px_rgba(94,23,235,0.45)]"
               />
             </span>
           </Link>
@@ -200,9 +200,9 @@ export function V2Shell({
                   }}
                   aria-label={s.label}
                   aria-current={on ? "page" : undefined}
-                  className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian ${
+                  className={`group relative flex h-11 w-11 items-center justify-center rounded-xl transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${
                     on
-                      ? "bg-persian text-white"
+                      ? "bg-yellow text-[#14101f] dark:bg-persian dark:text-white"
                       : "text-black/40 hover:bg-black/[0.06] hover:text-black dark:text-white/40 dark:hover:bg-white/[0.07] dark:hover:text-white"
                   }`}
                 >
@@ -223,7 +223,7 @@ export function V2Shell({
             onClick={toggleTheme}
             aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
             aria-pressed={dark}
-            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-black/45 transition-colors hover:bg-black/[0.06] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:text-white/45 dark:hover:bg-white/[0.07] dark:hover:text-white"
+            className="mt-3 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-black/45 transition-colors hover:bg-black/[0.06] hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian dark:text-white/45 dark:hover:bg-white/[0.07] dark:hover:text-white"
           >
             {dark ? (
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
@@ -242,7 +242,7 @@ export function V2Shell({
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow opacity-70 motion-reduce:animate-none" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-yellow" />
             </span>
-            <p className="text-center text-[9px] font-bold uppercase leading-[1.4] tracking-[0.08em] text-persian dark:text-yellow">
+            <p className="text-center text-[9px] font-bold uppercase leading-[1.4] tracking-[0.08em] text-[#14101f] dark:text-yellow">
               Open
               <br />
               for work
@@ -267,7 +267,7 @@ export function V2Shell({
         {/* ------------------------------------------------ floating CTA */}
         <Link
           href="/consult"
-          className="cta-lift absolute right-5 top-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-persian px-5 text-sm font-bold text-white shadow-[0_10px_34px_-8px_rgba(94,23,235,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian max-sm:right-4 max-sm:h-10 max-sm:px-4 max-sm:text-[13px]"
+          className="cta-lift absolute right-5 top-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-yellow px-5 text-sm font-bold text-[#14101f] shadow-[0_10px_34px_-8px_rgba(20,16,31,0.35)] dark:bg-persian dark:text-white dark:shadow-[0_10px_34px_-8px_rgba(94,23,235,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian max-sm:right-4 max-sm:h-10 max-sm:px-4 max-sm:text-[13px]"
         >
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
@@ -296,7 +296,7 @@ export function V2Shell({
             <span
               key={s.id}
               className={`h-1 rounded-full transition-all ${
-                s.id === active ? "w-6 bg-persian dark:bg-yellow" : "w-1.5 bg-black/15 dark:bg-white/20"
+                s.id === active ? "w-6 bg-[#14101f] dark:bg-yellow" : "w-1.5 bg-black/15 dark:bg-white/20"
               }`}
             />
           ))}

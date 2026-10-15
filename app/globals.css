@@ -345,6 +345,23 @@
 .cta-primary:hover::after,
 .cta-primary:focus-visible::after { animation-duration: 1.2s; }
 
+/* v2 light mode is gold + gray, so its CTAs drop the violet glow. Every other
+   page keeps `dark` on <html>, so this only ever matches v2 in light mode. */
+:root:not(.dark) .cta-primary { box-shadow: 0 12px 30px -12px rgba(20, 16, 31, 0.45); }
+:root:not(.dark) .cta-primary:hover,
+:root:not(.dark) .cta-primary:focus-visible { box-shadow: 0 18px 38px -12px rgba(20, 16, 31, 0.5); }
+:root:not(.dark) .cta-lift:hover,
+:root:not(.dark) .cta-lift:focus-visible { box-shadow: 0 16px 34px -14px rgba(20, 16, 31, 0.4); }
+/* Gated so it can't outrank the reduced-motion `animation: none` below. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.dark) .cta-primary::after { animation-name: cta-ring-out-gold; }
+}
+@keyframes cta-ring-out-gold {
+  0%   { box-shadow: 0 0 0 0 rgba(246, 203, 31, 0.7); }
+  70%  { box-shadow: 0 0 0 15px rgba(246, 203, 31, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(246, 203, 31, 0); }
+}
+
 /* Secondary buttons take the lift only; one thing on screen pulses. */
 .cta-lift {
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),

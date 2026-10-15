@@ -15,6 +15,9 @@ DESIGN/LAYOUT from.
 
 ## Brand invariants — never change without being asked
 - Violet `#5e17eb` (persian), gold `#f6cb1f` (yellow), near-black bg `#08060e`.
+- v2 light mode is gold + neutral gray (`#f2f2f0`) with no violet: gold fills with ink text,
+  ink for text accents (gold text is unreadable on light), gold blocks/underlines. Violet
+  stays as the `dark:` variant.
 - Font: **Inter** for headings + body, loaded via next/font in app/layout.tsx. One approved
   exception: Dancing Script for the "Hello, I'm" accent (`hero.tsx`, v2 `HomeSection`). No others.
 - Signature effects: `.glow-border` (violet→gold), `.cta-glow`. Radius base 0.625rem.
