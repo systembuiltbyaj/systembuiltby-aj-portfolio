@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { V2Shell, SECTIONS, type SectionId } from "./v2-shell";
 import {
   HomeSection, BuildsSection, ScreensSection, ServicesSection,
-  CredentialsSection, TestimonialsSection, AboutSection, ContactSection,
+  CredentialsSection, AiStackSection, TestimonialsSection, AboutSection, ContactSection,
 } from "./v2-sections";
 import { cleanSegments, type V2Route } from "./v2-route";
 
@@ -71,6 +71,7 @@ export function V2Content({ initial = HOME }: { initial?: V2Route }) {
     screens: <ScreensSection />,
     services: <ServicesSection />,
     credentials: <CredentialsSection />,
+    stack: <AiStackSection />,
     testimonials: <TestimonialsSection />,
     about: <AboutSection />,
     contact: <ContactSection />,

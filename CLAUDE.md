@@ -51,7 +51,8 @@ Hero → TechStack → IntroVideo → Vault → Philosophy → FeaturedBuilds �
 
 ## v2 routes
 Each v2 rail section is a real, server-rendered route: / /live-system/[[...path]]
-/real-result /services /credentials /testimonials /about /contact. Each page.tsx
+/real-result /services /credentials /ai-stack /testimonials /about /contact. The AI Stack
+cards (also used by /tools) live in `lib/ai-stack.ts`. Each page.tsx
 renders `<V2Content initial=… />` with its own metadata; in-app navigation swaps
 panels via pushState (no reload). Section URLs live in `SECTIONS` (app/v2/v2-shell.tsx).
 Old `/#section` links are upgraded client-side.

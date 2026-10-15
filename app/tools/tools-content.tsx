@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PageTransition } from "@/components/motion/page-transition";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { StaggerChildren, StaggerItem } from "@/components/motion/stagger-children";
+import { aiStack } from "@/lib/ai-stack";
 
 type Tool = {
   href: string;
@@ -71,102 +72,6 @@ const buildLearnTools: Tool[] = [
       "My process for taking a client from first message to retainer, the call checklist I run live, and the prompts I paste before every build.",
     cta: "Open Playbook",
     badge: "PRIVATE",
-  },
-];
-
-// The Claude Code skills & frameworks I actually have installed, ordered by
-// GitHub stars. Star counts were read from the GitHub API on 2026-09-09 and are
-// rounded — they are a sense of scale, not a live counter.
-const aiStack = [
-  {
-    name: "Superpowers",
-    author: "obra",
-    tag: "Agentic Framework",
-    icon: "⚡",
-    stars: "284k",
-    description:
-      "Brainstorm → plan → TDD → review. The skill methodology behind how I ship, structured, test-driven, and reviewed before merge.",
-    href: "https://github.com/obra/superpowers",
-  },
-  {
-    name: "Karpathy Skills",
-    author: "forrestchang",
-    tag: "Coding Taste",
-    icon: "🧭",
-    stars: "212k",
-    description:
-      "Andrej Karpathy's engineering principles as a rules file. The taste layer that keeps generated code simple, readable, and boring in the right places.",
-    href: "https://github.com/forrestchang/andrej-karpathy-skills",
-  },
-  {
-    name: "Agent Skills",
-    author: "Anthropic",
-    tag: "Official Skills",
-    icon: "🎨",
-    stars: "175k",
-    description:
-      "Anthropic's own skill library. Frontend Design lives here, the anti-template design layer behind my funnels and sites.",
-    href: "https://github.com/anthropics/skills",
-  },
-  {
-    name: "Claude Mem",
-    author: "thedotmack",
-    tag: "Memory",
-    icon: "🧠",
-    stars: "94k",
-    description:
-      "Persistent memory across sessions, captures the work, compresses it, and re-injects the relevant context next time.",
-    href: "https://github.com/thedotmack/claude-mem",
-  },
-  {
-    name: "Ruflo",
-    author: "ruvnet",
-    tag: "Swarm",
-    icon: "🌊",
-    stars: "72k",
-    description:
-      "The original agent meta-harness. Multi-agent swarms with shared memory, for work too big to fit in one context window.",
-    href: "https://github.com/ruvnet/ruflo",
-  },
-  {
-    name: "GSD, Get Shit Done",
-    author: "gsd-build",
-    tag: "Workflow",
-    icon: "🎯",
-    stars: "65k",
-    description:
-      "A plan / execute / verify coding workflow with atomic commits, cross-session memory, and drift-detection safeguards.",
-    href: "https://github.com/gsd-build/get-shit-done",
-  },
-  {
-    name: "Context Mode",
-    author: "mksglu",
-    tag: "Context",
-    icon: "🪟",
-    stars: "22k",
-    description:
-      "Sandboxes tool output so a huge log, page snapshot, or API response never floods the context window mid-build.",
-    href: "https://github.com/mksglu/context-mode",
-  },
-  {
-    name: "Supabase Agent Skills",
-    author: "Supabase",
-    tag: "Database",
-    icon: "🗄️",
-    stars: "2.6k",
-    description:
-      "Supabase's official skills for schema, auth, and row-level security, the database layer behind the Funnel Section Builder app.",
-    href: "https://github.com/supabase/agent-skills",
-  },
-  {
-    name: "Obsidian CLI",
-    author: "pablo-mano",
-    tag: "Knowledge Base",
-    icon: "🗂️",
-    stars: "431",
-    description:
-      "Drives my Obsidian vault straight from the terminal, so build notes, client context, and process maps stay one place I can query.",
-    href: "https://github.com/pablo-mano/Obsidian-CLI-skill",
   },
 ];
 

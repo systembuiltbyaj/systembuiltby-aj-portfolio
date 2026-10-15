@@ -18,6 +18,7 @@ const allBuilds = [
 ];
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
+import { aiStack } from "@/lib/ai-stack";
 import { techStack } from "@/components/sections/certificates-explorer";
 import { screens } from "@/components/sections/workflow-screens";
 
@@ -987,6 +988,60 @@ function BadgeLightbox({ badge, onClose }: { badge: BadgeItem; onClose: () => vo
         />
         <p className="mt-4 text-center text-[13.5px] font-semibold text-white">{badge.label}</p>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  4b · AI Stack                                                      */
+/* ------------------------------------------------------------------ */
+
+export function AiStackSection() {
+  return (
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+      <Eyebrow>My AI dev stack</Eyebrow>
+      <Title>The skills I build with.</Title>
+      <p className={`mt-3 max-w-[64ch] text-[14.5px] leading-relaxed ${MUTED}`}>
+        The Claude Code skills and frameworks behind how I ship automations, funnels and AI
+        systems, fast and production-grade. Every one is installed and switched on in my own
+        setup, ordered by GitHub stars. Tap any to view it on GitHub.
+      </p>
+
+      <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {aiStack.map((s) => (
+          <a
+            key={s.name}
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`group flex flex-col p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-yellow hover:shadow-[0_14px_34px_-16px_rgba(20,16,31,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:hover:border-persian/50 dark:hover:shadow-[0_14px_34px_-16px_rgba(94,23,235,0.45)] dark:focus-visible:outline-persian ${CARD}`}
+          >
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-black/10 bg-black/[0.03] text-lg dark:border-white/10 dark:bg-white/[0.06]">
+                {s.icon}
+              </span>
+              <span className="truncate rounded-full border border-yellow/80 bg-yellow/25 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#14101f] dark:border-persian/35 dark:bg-persian/15 dark:text-persian-light">
+                {s.tag}
+              </span>
+              <span className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[12px] font-bold ${FAINT}`} title={`${s.stars} GitHub stars`}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" />
+                </svg>
+                {s.stars}
+              </span>
+            </div>
+            <h3 className="mt-4 text-[17px] font-extrabold leading-tight text-[#14101f] dark:text-white">{s.name}</h3>
+            <p className={`mt-0.5 text-[12px] ${FAINT}`}>by {s.author}</p>
+            <p className={`mt-2.5 flex-1 text-[13.5px] leading-relaxed ${MUTED}`}>{s.description}</p>
+            <span className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-bold text-[#14101f] underline decoration-yellow decoration-2 underline-offset-4 dark:text-yellow dark:no-underline">
+              View on GitHub
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </ScrollGrid>
     </div>
   );
 }

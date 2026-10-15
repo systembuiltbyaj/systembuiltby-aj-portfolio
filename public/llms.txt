@@ -24,6 +24,7 @@ He works with coaches, consultants, agencies, and local and online service busin
 - [Services](https://workwithaj.ajautomate.co/services): every service area with what is included
 - [Live System](https://workwithaj.ajautomate.co/live-system): working builds (GoHighLevel funnels and websites, n8n and Zapier automations, AI agents, apps) with walkthrough videos
 - [Real Result](https://workwithaj.ajautomate.co/real-result): screens from live client systems
+- [AI Stack](https://workwithaj.ajautomate.co/ai-stack): the Claude Code skills and frameworks AJ builds with, from Superpowers and Agent Skills to Playwright, Supabase and Stripe
 - [Testimonials](https://workwithaj.ajautomate.co/testimonials): client feedback
 - [About](https://workwithaj.ajautomate.co/about): background and approach
 - [Book a free consultation](https://workwithaj.ajautomate.co/consult): 30-minute strategy call
