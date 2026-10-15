@@ -1204,6 +1204,68 @@ function IntroVideoCard() {
   );
 }
 
+const aboutStack = [
+  { group: "Frontend", tools: ["Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "HTML/CSS"] },
+  { group: "Backend & APIs", tools: ["Node.js", "Python", "REST APIs", "Webhooks", "Next.js API Routes"] },
+  { group: "Database & Cloud", tools: ["Supabase", "PostgreSQL", "SQL", "Vercel", "Git", "GitHub"] },
+  { group: "AI Engineering", tools: ["Claude Code", "OpenAI", "Anthropic API", "RAG", "AI Agents", "MCP"] },
+  { group: "Automation & Business Systems", tools: ["GoHighLevel", "n8n", "Zapier", "Make", "Trigger.dev", "Slack API"] },
+  { group: "SaaS & Integrations", tools: ["Stripe", "Authentication", "REST APIs", "GA4", "Meta Pixel", "UTM Attribution"] },
+];
+
+function TechStackCard() {
+  const [copied, setCopied] = useState(false);
+
+  const copyStack = async () => {
+    const text = aboutStack.map((s) => `${s.group}: ${s.tools.join(", ")}`).join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // clipboard can be blocked (insecure context, permissions); the list stays readable on the page
+    }
+  };
+
+  return (
+    <section aria-labelledby="tech-stack-title" className={`p-5 sm:p-7 ${CARD}`}>
+      <div className="flex items-center justify-between gap-4 border-b border-black/[0.08] pb-4 dark:border-white/[0.08]">
+        <h3 id="tech-stack-title" className="text-[17px] font-extrabold text-[#14101f] dark:text-white">
+          Technical Stack
+        </h3>
+        <button
+          type="button"
+          onClick={copyStack}
+          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-black/70 transition-colors hover:border-persian/50 hover:text-persian focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-persian dark:border-white/12 dark:text-white/75 dark:hover:text-persian-light"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            {copied ? <path d="M20 6 9 17l-5-5" /> : <><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" /></>}
+          </svg>
+          <span aria-live="polite">{copied ? "Copied" : "Copy stack"}</span>
+        </button>
+      </div>
+
+      <div className="mt-5 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+        {aboutStack.map((s) => (
+          <div key={s.group}>
+            <p className="text-[13px] font-bold text-[#14101f] dark:text-white">{s.group}</p>
+            <ul className="mt-2.5 flex flex-wrap gap-1.5">
+              {s.tools.map((tool) => (
+                <li
+                  key={tool}
+                  className="rounded-md border border-black/[0.08] bg-black/[0.03] px-2 py-1 text-[12px] font-medium text-black/70 dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/75"
+                >
+                  {tool}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 const aboutPhotos = [
   { src: "/about/aj-black-blazer.webp", alt: "AJ Bactad in a black blazer", aspect: "aspect-[3/4]" },
   { src: "/about/aj-portrait-hands.webp", alt: "AJ Bactad, close-up portrait", aspect: "aspect-square" },
@@ -1272,6 +1334,11 @@ export function AboutSection() {
         </div>
 
         <IntroVideoCard />
+      </div>
+
+      {/* Full width under both columns; on phones it follows the photo collage. */}
+      <div className="order-last min-w-0 lg:order-none lg:col-span-2">
+        <TechStackCard />
       </div>
     </div>
   );
