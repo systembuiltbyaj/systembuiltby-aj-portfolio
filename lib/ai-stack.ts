@@ -106,6 +106,16 @@ export const aiStack: AiStackItem[] = [
     href: "https://github.com/vercel-labs/agent-skills",
   },
   {
+    name: "Google Workspace CLI",
+    author: "Google Workspace",
+    tag: "Workspace",
+    icon: "📬",
+    stars: "32k",
+    description:
+      "One command line for Gmail, Drive, Calendar, Sheets, and Docs. My agents triage the inbox and work client data in Sheets without switching apps.",
+    href: "https://github.com/googleworkspace/cli",
+  },
+  {
     name: "Context Mode",
     author: "mksglu",
     tag: "Context",
