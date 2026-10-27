@@ -7,15 +7,9 @@ import { Dancing_Script } from "next/font/google";
 import type { SectionId } from "./v2-shell";
 import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
 import {
-  clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects, motionPresentations,
+  clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects, motionPresentations, mvpApps,
+  type SystemBuild,
 } from "@/app/system-builds/system-builds-content";
-
-// Every recorded build, not just the client ones, so the count here matches
-// what the Automations panels actually hold.
-const allBuilds = [
-  ...clientProjects, ...ajTutorials, ...claudeProjects, ...zapierTutorials, ...n8nProjects,
-  ...motionPresentations,
-];
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
 import { aiStack } from "@/lib/ai-stack";
@@ -261,7 +255,7 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
 /* ------------------------------------------------------------------ */
 
 type BuildTab = "funnels" | "automations";
-type FunnelTab = "funnels" | "websites";
+type FunnelTab = "funnels" | "websites" | "motion";
 
 /**
  * The view comes from the URL (/live-system/<tab>/<sub>), so every level can be
@@ -270,12 +264,14 @@ type FunnelTab = "funnels" | "websites";
 export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path: string[]) => void }) {
   const [tab, sub] = path;
 
-  if (tab === "funnels") {
-    const view: FunnelTab = sub === "websites" ? "websites" : "funnels";
+  // Motion presentations moved from Automations to Funnels; the old URL still lands on them.
+  const legacyMotion = tab === "automations" && sub === "motion";
+  if (tab === "funnels" || legacyMotion) {
+    const view: FunnelTab = legacyMotion || sub === "motion" ? "motion" : sub === "websites" ? "websites" : "funnels";
     return (
       <FunnelsPanel
         view={view}
-        onView={(v) => onPath(v === "websites" ? ["funnels", "websites"] : ["funnels"])}
+        onView={(v) => onPath(v === "funnels" ? ["funnels"] : ["funnels", v])}
         onBack={() => onPath([])}
       />
     );
@@ -289,11 +285,19 @@ export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path:
   return <BuildsChooser onPick={(t: BuildTab) => onPath([t])} />;
 }
 
-/* The five groups mirror the sections on the v1 /system-builds page, accent
-   colours included, so both pages describe the work the same way. */
+/* The groups mirror the sections on the v1 /system-builds page, accent
+   colours included, so both pages describe the work the same way. AJ's own
+   apps lead; motion case studies live under Funnels next to the sites. */
 const AUTOMATION_GROUPS: {
-  id: string; label: string; accent: string; builds: typeof clientProjects; blurb: string;
+  id: string; label: string; accent: string; builds: SystemBuild[]; blurb: string;
 }[] = [
+  {
+    id: "mvp",
+    label: "MVP Apps",
+    accent: "#2dd4bf",
+    builds: mvpApps,
+    blurb: "Full-stack apps I designed and built end to end: Next.js, Supabase, auth and AI. Each one has a walkthrough of how it works and why I built it.",
+  },
   {
     id: "client",
     label: "GHL Project",
@@ -307,13 +311,6 @@ const AUTOMATION_GROUPS: {
     accent: "#EA4B71",
     builds: n8nProjects,
     blurb: "n8n experiments for heavier logic — API integrations, data transformation, AI workflows and scalable self-hosted orchestration.",
-  },
-  {
-    id: "motion",
-    label: "Motion Presentation",
-    accent: "#8b5cf6",
-    builds: motionPresentations,
-    blurb: "Short motion case studies of the custom websites. Each one walks through a build screen by screen, the way a visitor would see it.",
   },
   {
     id: "ghl",
@@ -354,7 +351,8 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       id: "automations",
       title: "Automations & Systems",
       blurb: "What runs underneath. GHL workflows, n8n, APIs and AI chasing leads at 2am, recorded end to end with nothing edited out.",
-      count: `${allBuilds.length} walkthroughs`,
+      // Recorded walkthroughs only, so apps still waiting on a video don't inflate it.
+      count: `${AUTOMATION_GROUPS.flatMap((g) => g.builds).filter((b) => b.videoId || b.vimeoId).length} walkthroughs`,
       art: "/system-builds/ghl-proposal-walkthrough.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
     },
@@ -423,8 +421,10 @@ type LiveCard = {
   badge: string; background?: string; cover: boolean;
 };
 
+/** Link tabs carry `cards`; the motion tab carries playable `videos` instead. */
 const FUNNEL_TABS: {
-  id: FunnelTab; label: string; eyebrow: string; title: string; blurb: string; footer: string; cards: LiveCard[];
+  id: FunnelTab; label: string; eyebrow: string; title: string; blurb: string; footer: string;
+  cards: LiveCard[]; videos?: SystemBuild[];
 }[] = [
   {
     id: "funnels",
@@ -463,10 +463,23 @@ const FUNNEL_TABS: {
       cover: true,
     })),
   },
+  {
+    id: "motion",
+    label: "Motion presentations",
+    eyebrow: "Motion",
+    title: "Motion case studies.",
+    blurb: "Short motion case studies of the custom websites. Each one walks through a build screen by screen, the way a visitor would see it.",
+    footer: `All ${motionPresentations.length} motion presentations`,
+    cards: [],
+    videos: motionPresentations,
+  },
 ];
+
+const MOTION_ACCENT = "#8b5cf6";
 
 function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: FunnelTab) => void; onBack: () => void }) {
   const active = FUNNEL_TABS.find((t) => t.id === view) ?? FUNNEL_TABS[0];
+  const [playing, setPlaying] = useState<string | null>(null);
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
@@ -492,7 +505,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
               }`}
             >
               {t.label}
-              <span className={`text-[11px] ${on ? "text-white/70" : FAINT}`}>{t.cards.length}</span>
+              <span className={`text-[11px] ${on ? "text-[#14101f]/60 dark:text-white/70" : FAINT}`}>{(t.videos ?? t.cards).length}</span>
             </button>
           );
         })}
@@ -500,6 +513,9 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
 
       {/* Keyed on the tab so the cards replay their entrance when it switches. */}
       <ScrollGrid key={active.id} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {active.videos?.map((b) => (
+          <WalkthroughCard key={b.title} build={b} accent={MOTION_ACCENT} playing={playing === b.title} onPlay={() => setPlaying(b.title)} />
+        ))}
         {active.cards.map((f) => (
           <a
             key={f.key}
@@ -547,7 +563,7 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
       <Eyebrow>Automations</Eyebrow>
       <Title>Pick a stack.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        Client work first, then the builds I broke on purpose to learn each tool.
+        My own apps and client work first, then the builds I broke on purpose to learn each tool.
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -608,98 +624,125 @@ function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void
       <Title>The actual build.</Title>
 
       <ScrollGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {group.builds.map((b) => {
-          const card = (
-            <>
-              {/* Thumbnails are designed graphics with text on them, so they are
-                  contained rather than cropped — object-cover cut the titles off. */}
-              <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
-                {playing === b.title && (b.videoId || b.vimeoId) ? (
-                  <iframe
-                    src={
-                      b.vimeoId
-                        ? `https://player.vimeo.com/video/${b.vimeoId}?autoplay=1`
-                        : `https://www.youtube.com/embed/${b.videoId}?autoplay=1`
-                    }
-                    title={b.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 h-full w-full"
-                  />
-                ) : (
-                  <>
-                    {b.image ? (
-                      <Image src={b.image} alt="" fill sizes="420px" className="object-contain" />
-                    ) : (
-                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                        <span className="text-5xl opacity-70">{b.emoji}</span>
-                        <span className={`text-[11px] font-bold uppercase tracking-wider ${FAINT}`}>
-                          Recording in progress
-                        </span>
-                      </span>
-                    )}
-                    {b.url && (
-                      <span className="absolute left-3 top-3 rounded-full bg-yellow px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:bg-persian dark:text-white shadow-lg">
-                        Live app
-                      </span>
-                    )}
-                    {(b.videoId || b.vimeoId) && (
-                      <button
-                        type="button"
-                        onClick={() => setPlaying(b.title)}
-                        aria-label={`Play ${b.title}`}
-                        className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
-                      >
-                        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-yellow dark:group-hover:bg-persian">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#14101f] dark:group-hover:text-white"><path d="M8 5v14l11-7z" /></svg>
-                        </span>
-                      </button>
-                    )}
-                    {b.duration && (
-                      <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{b.duration}</span>
-                    )}
-                  </>
-                )}
-              </div>
-              <div className="flex items-center justify-between gap-3 p-4">
-                <span className="min-w-0">
-                  <span className="text-[10.5px] font-bold uppercase tracking-wider" style={{ color: group.accent }}>{b.category}</span>
-                  <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
-                  <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
-                </span>
-                {b.url && (
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-yellow group-hover:text-[#14101f] dark:group-hover:bg-persian dark:group-hover:text-white dark:border-white/15 dark:text-white/60">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
-                  </span>
-                )}
-              </div>
-            </>
-          );
-
-          if (b.url) {
-            return (
-              <a
-                key={b.title}
-                href={b.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
-              >
-                {card}
-              </a>
-            );
-          }
-
-          return (
-            <div key={b.title} className={`overflow-hidden ${CARD}`}>
-              {card}
-            </div>
-          );
-        })}
+        {group.builds.map((b) => (
+          <WalkthroughCard key={b.title} build={b} accent={group.accent} playing={playing === b.title} onPlay={() => setPlaying(b.title)} />
+        ))}
       </ScrollGrid>
       <p className={`mt-3 text-center text-[12.5px] ${FAINT}`}>
         {group.builds.length} in {group.label}
       </p>
+    </div>
+  );
+}
+
+/**
+ * One recorded build: plays its video in place, or opens its live app when it has
+ * a `url`. `className`/`style` come from ScrollGrid's staggered entrance.
+ */
+function WalkthroughCard({
+  build: b, accent, playing, onPlay, className = "", style,
+}: {
+  build: SystemBuild; accent: string; playing: boolean; onPlay: () => void;
+  className?: string; style?: React.CSSProperties;
+}) {
+  const hasVideo = Boolean(b.videoId || b.vimeoId);
+  const card = (
+    <>
+      {/* Thumbnails are designed graphics with text on them, so they are
+          contained rather than cropped — object-cover cut the titles off. */}
+      <div className="relative aspect-[16/9] bg-black/[0.06] dark:bg-black/50">
+        {playing && hasVideo ? (
+          <iframe
+            src={
+              b.vimeoId
+                ? `https://player.vimeo.com/video/${b.vimeoId}?autoplay=1`
+                : `https://www.youtube.com/embed/${b.videoId}?autoplay=1`
+            }
+            title={b.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+          />
+        ) : (
+          <>
+            {b.image ? (
+              <Image src={b.image} alt="" fill sizes="420px" className="object-contain" />
+            ) : (
+              <span className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <span className="text-5xl opacity-70">{b.emoji}</span>
+                <span className={`text-[11px] font-bold uppercase tracking-wider ${FAINT}`}>
+                  Recording in progress
+                </span>
+              </span>
+            )}
+            {b.url && (
+              <span className="absolute left-3 top-3 rounded-full bg-yellow px-3 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:bg-persian dark:text-white shadow-lg">
+                Live app
+              </span>
+            )}
+            {hasVideo && (
+              <button
+                type="button"
+                onClick={onPlay}
+                aria-label={`Play ${b.title}`}
+                className="group absolute inset-0 flex items-center justify-center bg-black/25 transition-colors hover:bg-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-yellow dark:group-hover:bg-persian">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#14101f] dark:group-hover:text-white"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </button>
+            )}
+            {b.duration && (
+              <span className="absolute bottom-3 right-3 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">{b.duration}</span>
+            )}
+            {/* Placeholder until the walkthrough is on YouTube: the screenshot stands in as the thumbnail. */}
+            {!hasVideo && b.image && (
+              <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                Video coming soon
+              </span>
+            )}
+          </>
+        )}
+      </div>
+      <div className="flex items-center justify-between gap-3 p-4">
+        <span className="min-w-0">
+          {/* Group accents are tool colours; light mode keeps text ink, per the gold + gray rule. */}
+          <span
+            className="text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:text-(--accent)"
+            style={{ "--accent": accent } as React.CSSProperties}
+          >
+            {b.category}
+          </span>
+          <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
+          <p className={`mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed ${MUTED}`}>{b.description}</p>
+        </span>
+        {b.url && (
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-black/12 text-black/50 transition-colors group-hover:bg-yellow group-hover:text-[#14101f] dark:group-hover:bg-persian dark:group-hover:text-white dark:border-white/15 dark:text-white/60">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
+          </span>
+        )}
+      </div>
+    </>
+  );
+
+  if (b.url) {
+    return (
+      <a
+        href={b.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={style}
+        className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD} ${className}`}
+      >
+        {card}
+      </a>
+    );
+  }
+
+  return (
+    <div style={style} className={`overflow-hidden ${CARD} ${className}`}>
+      {card}
     </div>
   );
 }

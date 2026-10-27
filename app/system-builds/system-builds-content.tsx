@@ -356,6 +356,40 @@ export const motionPresentations: SystemBuild[] = [
   },
 ];
 
+/**
+ * AJ's own full-stack apps (same three as /real-apps). Walkthrough videos are
+ * still being recorded: add each `videoId` once its YouTube link exists.
+ */
+export const mvpApps: SystemBuild[] = [
+  {
+    title: "AI Learning Hub",
+    category: "MVP App",
+    description:
+      "A plain-English reference for AI terminology, RAG, MCP, tokens and A2A: the vocabulary and the tools under the surface, explained clearly.",
+    emoji: "📚",
+    image: "/real-apps/ai-learning-hub.webp",
+    url: "https://ai-specialist-learning-hub.vercel.app/",
+  },
+  {
+    title: "Onboarding Client Hub",
+    category: "MVP App",
+    description:
+      "A client portal for project onboarding. Invited clients sign in with a magic link, no passwords to manage, and track their project from one place.",
+    emoji: "🗂️",
+    image: "/real-apps/onboarding-client-hub.webp",
+    url: "https://onboarding-client-hub.vercel.app/login",
+  },
+  {
+    title: "Funnel Builder",
+    category: "MVP App",
+    description:
+      "Turns the 10P framework into copy-ready AI prompts for every funnel section. Pick your sections and walk away with prompts that build the whole page.",
+    emoji: "🧱",
+    image: "/real-apps/funnel-builder.webp",
+    url: "https://funnel-section-builder.vercel.app/",
+  },
+];
+
 function BuildCard({ build, accent = "text-persian-light" }: { build: SystemBuild; accent?: string }) {
   const [playing, setPlaying] = useState(false);
   const hasVideo = Boolean(build.videoId || build.vimeoId);
