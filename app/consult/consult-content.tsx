@@ -1,8 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect } from "react";
 import { PageTransition } from "@/components/motion/page-transition";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+
+// GHL "AJ | Discovery Call Booking" form. Submitting it redirects to the calendar
+// (configured in GHL), so the call is booked with the answers already on the contact.
+const FORM_ID = "rkTBTF1jrx6qCMuKuv9D";
+const FORM_EMBED_SCRIPT = "https://connect.ajautomate.co/js/form_embed.js";
 
 const infoCards = [
   {
@@ -26,12 +31,22 @@ const infoCards = [
 ];
 
 const steps = [
-  { num: "01", title: "Pick a Time", desc: "Choose a slot that works for you on the next page." },
-  { num: "02", title: "Quick Chat", desc: "15-minute call to review your current setup and goals." },
-  { num: "03", title: "Get Your Roadmap", desc: "Walk away with a clear action plan \u2014 no strings attached." },
+  { num: "01", title: "Tell Me About Your Business", desc: "A few quick questions below, so the call starts on your setup instead of small talk." },
+  { num: "02", title: "Pick a Time", desc: "The calendar opens as soon as you submit. Choose a slot that works for you." },
+  { num: "03", title: "Get Your Roadmap", desc: "15-minute call, and you walk away with a clear action plan \u2014 no strings attached." },
 ];
 
 export function ConsultContent() {
+  useEffect(() => {
+    // form_embed.js sizes the iframe to the form and handles the post-submit redirect.
+    if (!document.querySelector(`script[src="${FORM_EMBED_SCRIPT}"]`)) {
+      const script = document.createElement("script");
+      script.src = FORM_EMBED_SCRIPT;
+      script.type = "text/javascript";
+      document.body.appendChild(script);
+    }
+  }, []);
+
   return (
     <PageTransition>
       <div className="min-h-screen">
@@ -66,12 +81,12 @@ export function ConsultContent() {
 
             <ScrollReveal delay={0.2}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-                <Link
-                  href="/consult/booking"
+                <a
+                  href="#book"
                   className="inline-flex items-center rounded-xl bg-persian px-8 py-3.5 font-bold text-white transition-all border border-persian/60 hover:shadow-[0_0_30px_rgba(94,23,235,0.35)] hover:bg-persian-dark"
                 >
                   Book a Free Call &rarr;
-                </Link>
+                </a>
                 <a
                   href="https://wa.me/639100809837?text=Hi%20AJ%2C%20I%27m%20interested%20in%20your%20automation%20services."
                   target="_blank"
@@ -131,15 +146,49 @@ export function ConsultContent() {
               </div>
             </div>
 
-            <ScrollReveal delay={0.3}>
-              <div className="mt-12 text-center">
-                <Link
-                  href="/consult/booking"
-                  className="inline-block rounded-full bg-yellow px-10 py-4 text-xs font-bold uppercase tracking-widest text-black transition-all hover:shadow-[0_0_32px_rgba(246,203,31,0.25)]"
-                >
-                  Schedule Your Free Call &rarr;
-                </Link>
+          </div>
+        </section>
+
+        {/* Discovery form: step 01. GHL redirects to the calendar on submit. */}
+        <section id="book" className="scroll-mt-24 pb-24 pt-4">
+          <div className="max-w-3xl mx-auto px-6">
+            <ScrollReveal>
+              <h2 className="text-center text-2xl font-black uppercase text-white mb-3">
+                Start Here: <span className="text-yellow">Book Your Call</span>
+              </h2>
+              <p className="text-center text-sm text-white/45 mb-8">
+                Answer a few questions, then pick your time on the next screen.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <div className="rounded-2xl overflow-hidden bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-[0_16px_48px_rgba(0,0,0,0.3)]">
+                {/* Inline layout of the same GHL form; min-height holds the space until
+                    form_embed.js measures the form, so the page doesn't jump. */}
+                <iframe
+                  src={`https://connect.ajautomate.co/widget/form/${FORM_ID}`}
+                  id={`inline-${FORM_ID}`}
+                  title="AJ | Discovery Call Booking"
+                  className="block w-full border-0 min-h-[1246px]"
+                  data-layout="{'id':'INLINE'}"
+                  data-trigger-type="alwaysShow"
+                  data-trigger-value=""
+                  data-activation-type="alwaysActivated"
+                  data-activation-value=""
+                  data-deactivation-type="neverDeactivate"
+                  data-deactivation-value=""
+                  data-form-name="AJ | Discovery Call Booking"
+                  data-height="1246"
+                  data-layout-iframe-id={`inline-${FORM_ID}`}
+                  data-form-id={FORM_ID}
+                />
               </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.2}>
+              <p className="text-center text-xs text-white/20 mt-6 uppercase tracking-widest">
+                100% Free &middot; No credit card required &middot; No obligations
+              </p>
             </ScrollReveal>
           </div>
         </section>
