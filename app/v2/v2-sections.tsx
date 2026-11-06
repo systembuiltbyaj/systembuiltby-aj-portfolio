@@ -866,6 +866,9 @@ function WalkthroughCard({
   className?: string; style?: React.CSSProperties;
 }) {
   const hasVideo = Boolean(b.videoId || b.vimeoId);
+  // The group's accent drives the category label and the dark-mode hover glow.
+  const rootStyle = { ...style, "--accent": accent } as React.CSSProperties;
+  const glow = "transition-all dark:border-(--accent)/40 dark:hover:border-(--accent)/80 dark:hover:shadow-[0_0_40px_-14px_var(--accent)]";
   const card = (
     <>
       {/* Thumbnails are designed graphics with text on them, so they are
@@ -928,10 +931,7 @@ function WalkthroughCard({
       <div className="flex items-center justify-between gap-3 p-4">
         <span className="min-w-0">
           {/* Group accents are tool colours; light mode keeps text ink, per the gold + gray rule. */}
-          <span
-            className="text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:text-(--accent)"
-            style={{ "--accent": accent } as React.CSSProperties}
-          >
+          <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:text-(--accent)">
             {b.category}
           </span>
           <p className="mt-1.5 text-[14.5px] font-bold leading-snug text-[#14101f] dark:text-white">{b.title}</p>
@@ -952,8 +952,8 @@ function WalkthroughCard({
         href={b.url}
         target="_blank"
         rel="noopener noreferrer"
-        style={style}
-        className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD} ${className}`}
+        style={rootStyle}
+        className={`group overflow-hidden hover:-translate-y-[3px] hover:border-yellow ${glow} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD} ${className}`}
       >
         {card}
       </a>
@@ -961,7 +961,7 @@ function WalkthroughCard({
   }
 
   return (
-    <div style={style} className={`overflow-hidden ${CARD} ${className}`}>
+    <div style={rootStyle} className={`overflow-hidden hover:border-yellow ${glow} ${CARD} ${className}`}>
       {card}
     </div>
   );
