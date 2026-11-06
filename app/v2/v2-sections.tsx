@@ -8,7 +8,7 @@ import { SECTIONS, type SectionId } from "./v2-shell";
 import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
 import {
   clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects, motionPresentations, mvpApps,
-  type SystemBuild,
+  mvpOverviewVideoId, AJ_AUTOMATE_SIGNUP_URL, type EcosystemApp, type SystemBuild,
 } from "@/app/system-builds/system-builds-content";
 import { services } from "@/app/services/services-content";
 import { testimonials } from "@/components/sections/testimonials";
@@ -340,7 +340,7 @@ const AUTOMATION_GROUPS: {
     label: "MVP Apps",
     accent: "#2dd4bf",
     builds: mvpApps,
-    blurb: "Full-stack apps I designed and built end to end: Next.js, Supabase, auth and AI. Each one has a walkthrough of how it works and why I built it.",
+    blurb: "My own AI apps under AJ Automate: Learning Hub, Creative Studio and Call Assist. The Learning Hub is live and free; the other two are coming soon.",
   },
   {
     id: "client",
@@ -657,9 +657,192 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
   );
 }
 
+const MVP_POINTS = [
+  { label: "Build skills faster", icon: <path d="M13 2 4 14h7l-1 8 9-12h-7z" /> },
+  { label: "Turn ideas into outputs", icon: <path d="M12 3 3 8l9 5 9-5zM3 13l9 5 9-5" /> },
+  { label: "Be more prepared", icon: <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12h.01" /> },
+];
+
+const PLAY_BADGE = (
+  <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 backdrop-blur-sm transition-colors group-hover:bg-yellow dark:group-hover:bg-persian">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="ml-1 text-white group-hover:text-[#14101f] dark:group-hover:text-white"><path d="M8 5v14l11-7z" /></svg>
+  </span>
+);
+
+/**
+ * The overview video. Until it's on YouTube, its thumbnail sends people to the
+ * sign-up page instead, so the click still goes somewhere useful.
+ */
+function MvpVideo() {
+  const [playing, setPlaying] = useState(false);
+  const frame = "relative block aspect-video overflow-hidden rounded-2xl border border-black/10 bg-black shadow-[0_18px_50px_-20px_rgba(20,16,31,0.45)] dark:border-persian/60 dark:shadow-[0_0_44px_-10px_rgba(94,23,235,0.7)]";
+
+  if (!mvpOverviewVideoId) {
+    return (
+      <a
+        href={AJ_AUTOMATE_SIGNUP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="AJ Automate overview video, coming soon. Open the sign-up page"
+        className={`v2-rise group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${frame}`}
+      >
+        <Image src="/real-apps/aj-automate-overview.webp" alt="" fill priority sizes="(max-width: 1024px) 92vw, 720px" className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+        <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/75 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-sm">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          Video coming soon
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    <div className={`v2-rise ${frame}`}>
+      {playing ? (
+        <iframe
+          src={`https://www.youtube.com/embed/${mvpOverviewVideoId}?autoplay=1`}
+          title="Meet the AJ Automate apps"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+          allowFullScreen
+          className="absolute inset-0 h-full w-full"
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setPlaying(true)}
+          aria-label="Play: meet the AJ Automate apps"
+          className="group absolute inset-0 flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian"
+        >
+          <Image src="/real-apps/aj-automate-overview.webp" alt="" fill priority sizes="(max-width: 1024px) 92vw, 720px" className="object-cover" />
+          <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/5" />
+          <span className="relative">{PLAY_BADGE}</span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+/**
+ * One AJ Automate app. The whole card links to the shared sign-up page; apps it
+ * can't sign people up for yet say so rather than implying they're open.
+ */
+function EcosystemCard({ app, style }: { app: EcosystemApp; style?: React.CSSProperties }) {
+  return (
+    <a
+      href={app.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ ...style, "--accent": app.accent } as React.CSSProperties}
+      className={`v2-rise group flex flex-col overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:border-(--accent)/40 dark:hover:border-(--accent)/80 dark:hover:shadow-[0_0_40px_-14px_var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
+    >
+      <span className="relative block aspect-video overflow-hidden bg-black">
+        {app.image && (
+          <Image src={app.image} alt="" fill sizes="(max-width: 640px) 92vw, 440px" className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        )}
+      </span>
+      <span className="flex flex-1 flex-col p-5">
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-black/[0.06] px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider text-[#14101f] dark:bg-(--accent)/15 dark:text-(--accent)">
+            {app.category}
+          </span>
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider ${
+              app.available
+                ? "bg-yellow text-[#14101f]"
+                : "border border-black/12 text-black/55 dark:border-white/15 dark:text-white/60"
+            }`}
+          >
+            {app.available ? "Live · Free" : "Coming soon"}
+          </span>
+        </span>
+        <span className="mt-3 block text-[19px] font-black leading-tight text-[#14101f] dark:text-white">{app.brand}</span>
+        <span className="mt-0.5 block text-[13px] font-bold text-black/60 dark:text-(--accent)">{app.title}</span>
+        <span className={`mt-2 block flex-1 text-[13px] leading-relaxed ${MUTED}`}>{app.description}</span>
+        <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-black/15 px-4 py-2 text-[13px] font-bold text-[#14101f] transition-colors group-hover:border-yellow group-hover:bg-yellow dark:border-(--accent)/60 dark:text-white dark:group-hover:border-(--accent) dark:group-hover:bg-(--accent) dark:group-hover:text-[#08060e]">
+          {app.cta}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </span>
+      </span>
+    </a>
+  );
+}
+
+/**
+ * MVP Apps: the AJ Automate overview video and pitch, then the three apps,
+ * with connectors on desktop showing every card ends at the same sign-up page.
+ */
+function MvpPanel({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+      <BackBar onBack={onBack} label="Automations" />
+
+      <div className="grid items-center gap-7 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
+        <MvpVideo />
+        <div className="min-w-0">
+          <Eyebrow>The AJ Automate ecosystem</Eyebrow>
+          <Title>
+            Three tools.
+            <br />
+            <span className="underline decoration-yellow decoration-[5px] underline-offset-[8px] dark:text-yellow dark:no-underline">
+              One ecosystem.
+            </span>
+          </Title>
+          <p className={`v2-rise mt-4 max-w-[54ch] text-[14.5px] leading-relaxed ${MUTED}`} style={{ animationDelay: "140ms" }}>
+            A growing suite of AI and automation tools to help you learn new skills, create content
+            faster, and prepare for important conversations, built to be practical, simple, and
+            beginner-friendly.
+          </p>
+          <ul className="v2-rise mt-6 grid gap-3 sm:grid-cols-3" style={{ animationDelay: "210ms" }}>
+            {MVP_POINTS.map((p) => (
+              <li key={p.label} className="flex items-center gap-2.5 text-[13px] font-bold leading-snug text-[#14101f] dark:text-white">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-yellow text-[#14101f] dark:bg-persian/20 dark:text-yellow">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    {p.icon}
+                  </svg>
+                </span>
+                {p.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-10 flex items-center gap-4">
+        <span className="h-px flex-1 bg-black/10 dark:bg-gradient-to-r dark:from-transparent dark:to-persian/50" />
+        <p className={`text-[11px] font-bold uppercase tracking-[0.24em] ${FAINT}`}>Explore the apps</p>
+        <span className="h-px flex-1 bg-black/10 dark:bg-gradient-to-l dark:from-transparent dark:to-persian/50" />
+      </div>
+
+      {/* The page scrolls as a whole here, so the cards skip ScrollGrid's inner scroll. */}
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {mvpApps.map((app, i) => (
+          <EcosystemCard key={app.title} app={app} style={{ animationDelay: `${260 + i * 60}ms` }} />
+        ))}
+      </div>
+
+      {/* Connectors from the outer cards' centres and the middle card down into the pill. */}
+      <div aria-hidden="true" className="relative mx-auto hidden h-10 w-[calc(200%/3)] lg:block">
+        <span className="absolute left-0 top-0 h-full w-[calc(50%-9.5rem)] rounded-bl-2xl border-b-2 border-l-2 border-black/15 dark:border-persian/70" />
+        <span className="absolute right-0 top-0 h-full w-[calc(50%-9.5rem)] rounded-br-2xl border-b-2 border-r-2 border-black/15 dark:border-persian/70" />
+        <span className="absolute left-1/2 top-0 h-5 w-0.5 -translate-x-1/2 bg-black/15 dark:bg-persian/70" />
+      </div>
+      <a
+        href={AJ_AUTOMATE_SIGNUP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mx-auto mt-5 inline-flex items-center gap-2.5 rounded-full border border-black/12 bg-white px-5 py-2.5 text-[13px] font-bold text-[#14101f] transition-colors hover:border-yellow hover:bg-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:border-white/12 dark:bg-[#140f26] dark:text-white dark:hover:border-persian dark:hover:bg-persian dark:focus-visible:outline-persian lg:-mt-5"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#14101f] dark:text-yellow" aria-hidden="true"><path d="M3 4h18l-7 8.5V19l-4 2v-8.5z" /></svg>
+        Click any app to go to the sign-up page
+      </a>
+    </div>
+  );
+}
+
 function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void }) {
   const [playing, setPlaying] = useState<string | null>(null);
   const group = AUTOMATION_GROUPS.find((g) => g.id === catId) ?? AUTOMATION_GROUPS[0];
+
+  if (group.id === "mvp") return <MvpPanel onBack={onBack} />;
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
