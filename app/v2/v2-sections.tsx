@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Children, Fragment, cloneElement, isValidElement, useEffect, useState } from "react";
 import { Dancing_Script } from "next/font/google";
-import type { SectionId } from "./v2-shell";
+import { SECTIONS, type SectionId } from "./v2-shell";
 import { coachingFunnels, premiumWebsites } from "@/app/projects/projects-content";
 import {
   clientProjects, ajTutorials, claudeProjects, zapierTutorials, n8nProjects, motionPresentations, mvpApps,
@@ -46,6 +46,50 @@ function Title({ children }: { children: React.ReactNode }) {
     <h1 className="v2-rise mt-2.5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.8rem)] font-black uppercase leading-[1.04] tracking-[-0.01em] text-[#14101f] dark:text-white" style={{ animationDelay: "70ms" }}>
       {children}
     </h1>
+  );
+}
+
+const ABOUT_TABS: { id: SectionId; label: string }[] = [
+  { id: "about", label: "Who I am" },
+  { id: "services", label: "Services" },
+  { id: "credentials", label: "Credentials" },
+  { id: "stack", label: "AI Stack" },
+];
+
+/**
+ * Services, Credentials and AI Stack live under About in the rail. Each keeps
+ * its own URL, so these are real links; a plain click swaps the panel in place.
+ * Pages carrying this bar are top-aligned, not centered, so it holds still
+ * when switching between tabs of different heights.
+ */
+function AboutTabs({ active, go }: { active: SectionId; go: (id: SectionId) => void }) {
+  return (
+    <nav aria-label="About me" className="-mx-1 mb-6 overflow-x-auto px-1 pb-1">
+      <div className="inline-flex w-fit gap-1 rounded-full border border-black/10 bg-black/[0.03] p-1 dark:border-white/12 dark:bg-white/[0.04]">
+        {ABOUT_TABS.map((t) => {
+          const on = t.id === active;
+          return (
+            <a
+              key={t.id}
+              href={SECTIONS.find((s) => s.id === t.id)?.href}
+              onClick={(e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                e.preventDefault();
+                go(t.id);
+              }}
+              aria-current={on ? "page" : undefined}
+              className={`inline-flex h-9 items-center whitespace-nowrap rounded-full px-3 text-[12.5px] font-bold transition-colors sm:px-4 sm:text-[13px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${
+                on
+                  ? "bg-yellow text-[#14101f] dark:bg-persian dark:text-white"
+                  : "text-black/55 hover:text-black dark:text-white/55 dark:hover:text-white"
+              }`}
+            >
+              {t.label}
+            </a>
+          );
+        })}
+      </div>
+    </nav>
   );
 }
 
@@ -873,9 +917,10 @@ function ScreenLightbox({ screen, onClose }: { screen: ScreenItem; onClose: () =
 /*  Services                                                       */
 /* ------------------------------------------------------------------ */
 
-export function ServicesSection() {
+export function ServicesSection({ go }: { go: (id: SectionId) => void }) {
   return (
-    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col">
+      <AboutTabs active="services" go={go} />
       <Eyebrow>Services</Eyebrow>
       <Title>Built to run<br />without you.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
@@ -925,13 +970,14 @@ export function ServicesSection() {
 
 type BadgeItem = { src: string; label: string };
 
-export function CredentialsSection() {
+export function CredentialsSection({ go }: { go: (id: SectionId) => void }) {
   const total = techStack.reduce((n, t) => n + t.badges.length, 0);
   const [tool, setTool] = useState(techStack[0]);
   const [zoom, setZoom] = useState<BadgeItem | null>(null);
 
   return (
-    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col">
+      <AboutTabs active="credentials" go={go} />
       <Eyebrow>Credentials &amp; recognition</Eyebrow>
       <Title>Certified across<br />the stack.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
@@ -1040,9 +1086,10 @@ function BadgeLightbox({ badge, onClose }: { badge: BadgeItem; onClose: () => vo
 /*  4b · AI Stack                                                      */
 /* ------------------------------------------------------------------ */
 
-export function AiStackSection() {
+export function AiStackSection({ go }: { go: (id: SectionId) => void }) {
   return (
-    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col">
+      <AboutTabs active="stack" go={go} />
       <Eyebrow>My AI dev stack</Eyebrow>
       <Title>The skills I build with.</Title>
       <p className={`mt-3 max-w-[64ch] text-[14.5px] leading-relaxed ${MUTED}`}>
@@ -1391,70 +1438,74 @@ const aboutPhotos = [
   { src: "/about/aj-studio.webp", alt: "AJ Bactad in a black tee at a desk", aspect: "aspect-[4/5]" },
 ];
 
-export function AboutSection() {
+export function AboutSection({ go }: { go: (id: SectionId) => void }) {
   return (
-    <div className="mx-auto grid min-h-full max-w-[1340px] content-start gap-10 lg:content-center lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
-      {/* Two staggered columns of photos; the right column sits lower so the
-          collage reads as a scattered set rather than a grid. On phones it
-          follows the copy so the story comes first. On desktop its width tracks
-          the viewport height so the whole collage fits on a laptop screen. */}
-      <div className="order-last mx-auto grid w-full max-w-[400px] grid-cols-2 gap-3 sm:gap-4 lg:order-none lg:max-w-[min(400px,calc((100dvh_-_208px)*0.558_+_16px))] lg:self-start">
-        {[aboutPhotos.slice(0, 3), aboutPhotos.slice(3)].map((column, i) => (
-          <div key={i} className={`space-y-3 sm:space-y-4 ${i === 1 ? "pt-10 sm:pt-14" : ""}`}>
-            {column.map((photo) => (
-              <div
-                key={photo.src}
-                className={`group relative overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] ${photo.aspect}`}
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  sizes="(max-width: 640px) 45vw, 220px"
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div className="min-w-0">
-        <Eyebrow>About</Eyebrow>
-        <Title>Operator first. Builder second.</Title>
-
-        <div className={`mt-5 space-y-3.5 text-[14.5px] leading-relaxed ${MUTED}`}>
-          <p>
-            Before automation, I spent five years in eCommerce operations, eventually handling Team
-            Lead and Purchasing Manager responsibilities for an online arbitrage business. I reviewed
-            products, monitored performance, approved purchases, tracked KPIs, and helped keep daily
-            operations organized.
-          </p>
-          <p>
-            In late 2025, I barely knew GoHighLevel, n8n, Zapier, Trigger.dev, or Claude. Ten months
-            later, I&rsquo;m using them to build real business systems that save time, reduce
-            repetitive work, improve follow-ups, and keep operations moving without constant manual
-            intervention. But the mindset stayed the same: understand the process, find the
-            bottleneck, define who owns the next action, then build around it. Process first. Tools
-            second.
-          </p>
-        </div>
-
-        <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.l} className="rounded-xl border border-black/[0.08] bg-white px-4 py-3 dark:border-white/[0.08] dark:bg-white/[0.035]">
-              <p className="text-2xl font-black leading-none text-[#14101f] underline decoration-yellow decoration-[3px] underline-offset-[6px] dark:text-yellow dark:no-underline">{s.n}</p>
-              <p className={`mt-1.5 text-[11.5px] leading-snug ${MUTED}`}>{s.l}</p>
+    <div className="mx-auto flex min-h-full max-w-[1340px] flex-col">
+      <AboutTabs active="about" go={go} />
+      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+        {/* Two staggered columns of photos; the right column sits lower so the
+            collage reads as a scattered set rather than a grid. On phones it
+            follows the copy so the story comes first. On desktop its width tracks
+            the viewport height (less the tab bar) so the whole collage fits on a
+            laptop screen. */}
+        <div className="order-last mx-auto grid w-full max-w-[400px] grid-cols-2 gap-3 sm:gap-4 lg:order-none lg:max-w-[min(400px,calc((100dvh_-_272px)*0.558_+_16px))] lg:self-start">
+          {[aboutPhotos.slice(0, 3), aboutPhotos.slice(3)].map((column, i) => (
+            <div key={i} className={`space-y-3 sm:space-y-4 ${i === 1 ? "pt-10 sm:pt-14" : ""}`}>
+              {column.map((photo) => (
+                <div
+                  key={photo.src}
+                  className={`group relative overflow-hidden rounded-2xl border border-black/[0.08] dark:border-white/[0.09] ${photo.aspect}`}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 640px) 45vw, 220px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
 
-        <IntroVideoCard />
-      </div>
+        <div className="min-w-0">
+          <Eyebrow>About</Eyebrow>
+          <Title>Operator first. Builder second.</Title>
 
-      {/* Full width under both columns; on phones it follows the photo collage. */}
-      <div className="order-last min-w-0 lg:order-none lg:col-span-2">
-        <TechStackCard />
+          <div className={`mt-5 space-y-3.5 text-[14.5px] leading-relaxed ${MUTED}`}>
+            <p>
+              Before automation, I spent five years in eCommerce operations, eventually handling Team
+              Lead and Purchasing Manager responsibilities for an online arbitrage business. I reviewed
+              products, monitored performance, approved purchases, tracked KPIs, and helped keep daily
+              operations organized.
+            </p>
+            <p>
+              In late 2025, I barely knew GoHighLevel, n8n, Zapier, Trigger.dev, or Claude. Ten months
+              later, I&rsquo;m using them to build real business systems that save time, reduce
+              repetitive work, improve follow-ups, and keep operations moving without constant manual
+              intervention. But the mindset stayed the same: understand the process, find the
+              bottleneck, define who owns the next action, then build around it. Process first. Tools
+              second.
+            </p>
+          </div>
+
+          <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.l} className="rounded-xl border border-black/[0.08] bg-white px-4 py-3 dark:border-white/[0.08] dark:bg-white/[0.035]">
+                <p className="text-2xl font-black leading-none text-[#14101f] underline decoration-yellow decoration-[3px] underline-offset-[6px] dark:text-yellow dark:no-underline">{s.n}</p>
+                <p className={`mt-1.5 text-[11.5px] leading-snug ${MUTED}`}>{s.l}</p>
+              </div>
+            ))}
+          </div>
+
+          <IntroVideoCard />
+        </div>
+
+        {/* Full width under both columns; on phones it follows the photo collage. */}
+        <div className="order-last min-w-0 lg:order-none lg:col-span-2">
+          <TechStackCard />
+        </div>
       </div>
     </div>
   );

@@ -69,11 +69,11 @@ export function V2Content({ initial = HOME }: { initial?: V2Route }) {
     home: <HomeSection go={goSection} />,
     builds: <BuildsSection path={route.section === "builds" ? route.path : []} onPath={setBuildsPath} />,
     screens: <ScreensSection />,
-    services: <ServicesSection />,
-    credentials: <CredentialsSection />,
-    stack: <AiStackSection />,
+    services: <ServicesSection go={goSection} />,
+    credentials: <CredentialsSection go={goSection} />,
+    stack: <AiStackSection go={goSection} />,
     testimonials: <TestimonialsSection />,
-    about: <AboutSection />,
+    about: <AboutSection go={goSection} />,
     contact: <ContactSection />,
   };
 

@@ -50,8 +50,10 @@ Hero → TechStack → IntroVideo → Vault → Philosophy → FeaturedBuilds �
 (That's v1, served at /v1. "/" serves v2 by default — see `lib/site-version.ts`.)
 
 ## v2 routes
-Each v2 rail section is a real, server-rendered route: / /live-system/[[...path]]
-/real-result /services /credentials /ai-stack /testimonials /about /contact. The AI Stack
+Each v2 section is a real, server-rendered route: / /live-system/[[...path]]
+/real-result /about /services /credentials /ai-stack /testimonials /contact. The rail shows
+6 icons; /services, /credentials and /ai-stack have `parent: "about"` in `SECTIONS`, so
+they're reached through the About tab bar (`AboutTabs`) and light up the About icon. The AI Stack
 cards (also used by /tools) live in `lib/ai-stack.ts`. Each page.tsx
 renders `<V2Content initial=… />` with its own metadata; in-app navigation swaps
 panels via pushState (no reload). Section URLs live in `SECTIONS` (app/v2/v2-shell.tsx).

@@ -21,18 +21,23 @@ export type SectionId =
  * Every section is a real URL, so each one is server-rendered on its own and
  * can be crawled, indexed and cited. Home lives at "/" while v2 is the live
  * version; otherwise v2 keeps its /v2 preview address.
+ *
+ * Sections with a `parent` keep their own URL but are reached through the
+ * parent's tab bar instead of the rail, which stays short.
  */
-export const SECTIONS: { id: SectionId; href: string; label: string; icon: React.ReactNode }[] = [
+export const SECTIONS: { id: SectionId; href: string; label: string; icon: React.ReactNode; parent?: SectionId }[] = [
   { id: "home", href: isV2Live() ? "/" : "/v2", label: "Home", icon: <path d="M3 10.5 12 3l9 7.5V21H3z" /> },
   { id: "builds", href: "/live-system", label: "Live System", icon: <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /> },
   { id: "screens", href: "/real-result", label: "Real Result", icon: <path d="M3 4h18v12H3zM8 20h8M12 16v4" /> },
-  { id: "services", href: "/services", label: "Services", icon: <path d="M12 3 3 8l9 5 9-5zM3 14l9 5 9-5" /> },
-  { id: "credentials", href: "/credentials", label: "Credentials", icon: <path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7z" /> },
-  { id: "stack", href: "/ai-stack", label: "AI Stack", icon: <path d="M7 5h10v14H7zM10 9h4v6h-4zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h5M2 15h5M17 9h5M17 15h5" /> },
-  { id: "testimonials", href: "/testimonials", label: "Testimonials", icon: <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3z" /> },
   { id: "about", href: "/about", label: "About me", icon: <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0" /> },
+  { id: "services", href: "/services", label: "Services", icon: <path d="M12 3 3 8l9 5 9-5zM3 14l9 5 9-5" />, parent: "about" },
+  { id: "credentials", href: "/credentials", label: "Credentials", icon: <path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.4 9.3l6-.7z" />, parent: "about" },
+  { id: "stack", href: "/ai-stack", label: "AI Stack", icon: <path d="M7 5h10v14H7zM10 9h4v6h-4zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h5M2 15h5M17 9h5M17 15h5" />, parent: "about" },
+  { id: "testimonials", href: "/testimonials", label: "Testimonials", icon: <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6a8 8 0 0 1 8-8h2a8 8 0 0 1 8 3z" /> },
   { id: "contact", href: "/contact", label: "Contact", icon: <path d="M3 6h18v12H3zM3 7l9 6 9-6" /> },
 ];
+
+const RAIL = SECTIONS.filter((s) => !s.parent);
 
 /** True for any URL v2 renders, including sub-paths like /live-system/funnels. */
 export function isV2Path(pathname: string | null) {
@@ -131,13 +136,16 @@ export function V2Shell({
     });
   };
 
+  // A tabbed sub-section lights up its parent's rail icon.
+  const railActive = SECTIONS.find((s) => s.id === active)?.parent ?? active;
+
   // Sections swap rather than scroll, so arrow keys stand in for the scrollbar.
   const step = useCallback(
     (delta: number) => {
-      const i = SECTIONS.findIndex((s) => s.id === active);
-      onNavigate(SECTIONS[(i + delta + SECTIONS.length) % SECTIONS.length].id);
+      const i = RAIL.findIndex((s) => s.id === railActive);
+      onNavigate(RAIL[(i + delta + RAIL.length) % RAIL.length].id);
     },
-    [active, onNavigate],
+    [railActive, onNavigate],
   );
 
   useEffect(() => {
@@ -186,8 +194,8 @@ export function V2Shell({
           </Link>
 
           <nav className="mt-7 flex flex-1 flex-col items-center gap-1.5">
-            {SECTIONS.map((s) => {
-              const on = s.id === active;
+            {RAIL.map((s) => {
+              const on = s.id === railActive;
               return (
                 // A real link so crawlers can follow it; a plain click still
                 // swaps the panel in place, and modified clicks open a new tab.
@@ -294,11 +302,11 @@ export function V2Shell({
         </div>
 
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5">
-          {SECTIONS.map((s) => (
+          {RAIL.map((s) => (
             <span
               key={s.id}
               className={`h-1 rounded-full transition-all ${
-                s.id === active ? "w-6 bg-[#14101f] dark:bg-yellow" : "w-1.5 bg-black/15 dark:bg-white/20"
+                s.id === railActive ?"w-6 bg-[#14101f] dark:bg-yellow" : "w-1.5 bg-black/15 dark:bg-white/20"
               }`}
             />
           ))}
