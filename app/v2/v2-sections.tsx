@@ -295,11 +295,11 @@ export function HomeSection({ go }: { go: (id: SectionId) => void }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  2 · System builds — Funnels | Automations                          */
+/*  2 · System builds — Funnels | Automations | Apps                   */
 /* ------------------------------------------------------------------ */
 
-type BuildTab = "funnels" | "automations";
-type FunnelTab = "funnels" | "websites" | "motion";
+type BuildTab = "funnels" | "automations" | "apps";
+type FunnelTab = "funnels" | "websites";
 
 /**
  * The view comes from the URL (/live-system/<tab>/<sub>), so every level can be
@@ -308,21 +308,24 @@ type FunnelTab = "funnels" | "websites" | "motion";
 export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path: string[]) => void }) {
   const [tab, sub] = path;
 
-  // Motion presentations moved from Automations to Funnels; the old URL still lands on them.
-  const legacyMotion = tab === "automations" && sub === "motion";
-  if (tab === "funnels" || legacyMotion) {
-    const view: FunnelTab = legacyMotion || sub === "motion" ? "motion" : sub === "websites" ? "websites" : "funnels";
+  // MVP apps and motion presentations both moved; their old URLs still land on them.
+  if (tab === "apps" || (tab === "automations" && sub === "mvp")) {
+    return <MvpPanel onBack={() => onPath([])} />;
+  }
+  const legacyMotion = tab === "funnels" && sub === "motion";
+  if (tab === "funnels" && !legacyMotion) {
     return (
       <FunnelsPanel
-        view={view}
+        view={sub === "websites" ? "websites" : "funnels"}
         onView={(v) => onPath(v === "funnels" ? ["funnels"] : ["funnels", v])}
         onBack={() => onPath([])}
       />
     );
   }
-  if (tab === "automations") {
-    if (sub && AUTOMATION_GROUPS.some((g) => g.id === sub)) {
-      return <AutomationsPanel catId={sub} onBack={() => onPath(["automations"])} />;
+  if (tab === "automations" || legacyMotion) {
+    const group = legacyMotion ? "motion" : sub;
+    if (group && AUTOMATION_GROUPS.some((g) => g.id === group)) {
+      return <AutomationsPanel catId={group} onBack={() => onPath(["automations"])} />;
     }
     return <AutomationsChooser onBack={() => onPath([])} onPick={(id) => onPath(["automations", id])} />;
   }
@@ -330,24 +333,24 @@ export function BuildsSection({ path, onPath }: { path: string[]; onPath: (path:
 }
 
 /* The groups mirror the sections on the v1 /system-builds page, accent
-   colours included, so both pages describe the work the same way. AJ's own
-   apps lead; motion case studies live under Funnels next to the sites. */
+   colours included, so both pages describe the work the same way. Client work
+   and the motion case studies lead; AJ's own apps have their own top-level tab. */
 const AUTOMATION_GROUPS: {
   id: string; label: string; accent: string; builds: SystemBuild[]; blurb: string;
 }[] = [
-  {
-    id: "mvp",
-    label: "MVP Apps",
-    accent: "#2dd4bf",
-    builds: mvpApps,
-    blurb: "My own AI apps under AJ Automate: Learning Hub, Creative Studio and Call Assist. The Learning Hub is live and free; the other two are coming soon.",
-  },
   {
     id: "client",
     label: "GHL Project",
     accent: "#f6cb1f",
     builds: clientProjects,
     blurb: "Real client builds — planning and funnel setup through CRM automation, testing and handover. Each one is designed around an actual business process, not a demo.",
+  },
+  {
+    id: "motion",
+    label: "Motion Presentations",
+    accent: "#8b5cf6",
+    builds: motionPresentations,
+    blurb: "Short motion case studies of the custom websites. Each one walks through a build screen by screen, the way a visitor would see it.",
   },
   {
     id: "n8n",
@@ -400,6 +403,14 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       art: "/system-builds/ghl-proposal-walkthrough.webp",
       icon: <path d="M4 5h16v14H4zM10 9l5 3-5 3z" />,
     },
+    {
+      id: "apps",
+      title: "Apps & Products",
+      blurb: "What I ship under my own name. The AJ Automate apps: the Learning Hub is live and free, Creative Studio and Call Assist are coming soon.",
+      count: `${mvpApps.length} apps`,
+      art: "/real-apps/aj-automate-overview.webp",
+      icon: <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />,
+    },
   ];
 
   return (
@@ -407,11 +418,11 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
       <Eyebrow>System builds</Eyebrow>
       <Title>What I build.<br />How it runs.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        Start with the funnels and websites customers click through, or go behind them to the
-        workflows doing the follow-up.
+        Start with the funnels and websites customers click through, go behind them to the
+        workflows doing the follow-up, or open the apps I ship myself.
       </p>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-2">
+      <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {options.map((o, i) => (
           <button
             key={o.id}
@@ -421,13 +432,14 @@ function BuildsChooser({ onPick }: { onPick: (t: BuildTab) => void }) {
             className={`v2-rise group overflow-hidden text-left transition-all duration-300 hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 hover:shadow-[0_14px_38px_-16px_rgba(20,16,31,0.22)] dark:hover:shadow-[0_14px_38px_-16px_rgba(94,23,235,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/8] overflow-hidden bg-black/5 dark:bg-black/40">
-              {o.art && <Image src={o.art} alt="" fill sizes="620px" className="object-cover opacity-85 transition-opacity group-hover:opacity-100" />}
-              <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+              {o.art && <Image src={o.art} alt="" fill sizes="(max-width: 1024px) 92vw, 440px" className="object-cover opacity-85 transition-opacity group-hover:opacity-100" />}
+              {/* Heavy at the foot so the title stays readable over art with its own lettering. */}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 via-35% to-transparent" />
               <span className="absolute bottom-4 left-4 flex items-center gap-2.5">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow text-[#14101f] dark:bg-persian dark:text-white">
                   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{o.icon}</svg>
                 </span>
-                <span className="text-[20px] font-black tracking-[-0.02em] text-white">{o.title}</span>
+                <span className="text-[20px] font-black tracking-[-0.02em] text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.95),0_1px_3px_rgba(0,0,0,0.9)]">{o.title}</span>
               </span>
               <span className="absolute right-4 top-4 rounded-full bg-black/65 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
                 {o.count}
@@ -465,10 +477,8 @@ type LiveCard = {
   badge: string; background?: string; cover: boolean;
 };
 
-/** Link tabs carry `cards`; the motion tab carries playable `videos` instead. */
 const FUNNEL_TABS: {
-  id: FunnelTab; label: string; eyebrow: string; title: string; blurb: string; footer: string;
-  cards: LiveCard[]; videos?: SystemBuild[];
+  id: FunnelTab; label: string; eyebrow: string; title: string; blurb: string; footer: string; cards: LiveCard[];
 }[] = [
   {
     id: "funnels",
@@ -507,23 +517,10 @@ const FUNNEL_TABS: {
       cover: true,
     })),
   },
-  {
-    id: "motion",
-    label: "Motion presentations",
-    eyebrow: "Motion",
-    title: "Motion case studies.",
-    blurb: "Short motion case studies of the custom websites. Each one walks through a build screen by screen, the way a visitor would see it.",
-    footer: `All ${motionPresentations.length} motion presentations`,
-    cards: [],
-    videos: motionPresentations,
-  },
 ];
-
-const MOTION_ACCENT = "#8b5cf6";
 
 function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: FunnelTab) => void; onBack: () => void }) {
   const active = FUNNEL_TABS.find((t) => t.id === view) ?? FUNNEL_TABS[0];
-  const [playing, setPlaying] = useState<string | null>(null);
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
@@ -549,7 +546,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
               }`}
             >
               {t.label}
-              <span className={`text-[11px] ${on ? "text-[#14101f]/60 dark:text-white/70" : FAINT}`}>{(t.videos ?? t.cards).length}</span>
+              <span className={`text-[11px] ${on ? "text-[#14101f]/60 dark:text-white/70" : FAINT}`}>{t.cards.length}</span>
             </button>
           );
         })}
@@ -557,9 +554,6 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
 
       {/* Keyed on the tab so the cards replay their entrance when it switches. */}
       <ScrollGrid key={active.id} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {active.videos?.map((b) => (
-          <WalkthroughCard key={b.title} build={b} accent={MOTION_ACCENT} playing={playing === b.title} onPlay={() => setPlaying(b.title)} />
-        ))}
         {active.cards.map((f) => (
           <a
             key={f.key}
@@ -607,7 +601,7 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
       <Eyebrow>Automations</Eyebrow>
       <Title>Pick a stack.</Title>
       <p className={`mt-3 max-w-[58ch] text-[14.5px] leading-relaxed ${MUTED}`}>
-        My own apps and client work first, then the builds I broke on purpose to learn each tool.
+        Client work and motion case studies first, then the builds I broke on purpose to learn each tool.
       </p>
 
       <ScrollGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -767,13 +761,13 @@ function EcosystemCard({ app, style }: { app: EcosystemApp; style?: React.CSSPro
 }
 
 /**
- * MVP Apps: the AJ Automate overview video and pitch, then the three apps,
+ * Apps & Products: the AJ Automate overview video and pitch, then the three apps,
  * with connectors on desktop showing every card ends at the same sign-up page.
  */
 function MvpPanel({ onBack }: { onBack: () => void }) {
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
-      <BackBar onBack={onBack} label="Automations" />
+      <BackBar onBack={onBack} label="System builds" />
 
       <div className="grid items-center gap-7 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
         <MvpVideo />
@@ -841,8 +835,6 @@ function MvpPanel({ onBack }: { onBack: () => void }) {
 function AutomationsPanel({ catId, onBack }: { catId: string; onBack: () => void }) {
   const [playing, setPlaying] = useState<string | null>(null);
   const group = AUTOMATION_GROUPS.find((g) => g.id === catId) ?? AUTOMATION_GROUPS[0];
-
-  if (group.id === "mvp") return <MvpPanel onBack={onBack} />;
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1340px] flex-col justify-start lg:justify-center">
