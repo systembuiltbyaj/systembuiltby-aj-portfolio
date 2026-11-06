@@ -560,7 +560,7 @@ function FunnelsPanel({ view, onView, onBack }: { view: FunnelTab; onView: (v: F
             href={f.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:hover:border-persian/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
+            className={`group overflow-hidden transition-all hover:-translate-y-[3px] hover:border-yellow dark:border-persian/40 dark:hover:border-persian/80 dark:hover:shadow-[0_0_40px_-14px_#5e17eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian ${CARD}`}
           >
             <span className="relative block aspect-[16/10] overflow-hidden bg-black/[0.06] dark:bg-black/50" style={f.background ? { background: f.background } : undefined}>
               {f.thumbnail && (
@@ -611,7 +611,8 @@ function AutomationsChooser({ onBack, onPick }: { onBack: () => void; onPick: (i
             type="button"
             onClick={() => onPick(g.id)}
             disabled={g.builds.length === 0}
-            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
+            style={{ "--accent": g.accent } as React.CSSProperties}
+            className={`group overflow-hidden text-left transition-all hover:-translate-y-[3px] hover:border-yellow dark:border-(--accent)/40 dark:hover:border-(--accent)/80 dark:hover:shadow-[0_0_40px_-14px_var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#14101f] dark:focus-visible:outline-persian disabled:cursor-not-allowed disabled:opacity-50 ${CARD}`}
           >
             <span className="relative block aspect-[16/9] overflow-hidden bg-black/[0.06] dark:bg-black/50">
               {g.builds[0]?.image ? (
